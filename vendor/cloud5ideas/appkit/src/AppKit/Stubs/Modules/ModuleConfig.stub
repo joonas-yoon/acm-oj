@@ -1,0 +1,23 @@
+{
+	"name": "{{name}}",
+	"slug": "{{slug}}",
+	"version": "1.0",
+	"description": "This is the description for the {{name}} module.",
+	"enabled": true,
+	"requiresAccess": true,
+	"requiredAccess": "app.role|access.{{slug}}",
+	"navigable": false,
+	"navigation": [
+		{
+			"requiresAccess": true, 
+			"requiredAccess": "permission.{{slug}}", 
+			"menuText": "Create {{singular}}",  
+			"icon": "", 
+			"redirect": {"route": "{{slug}}.create"}
+		}
+	],
+	"menuText": "Menu Text",
+	"icon": "puzzle-piece",
+	"redirect": {"url": "{{slug}}"},
+	"order": 0
+}

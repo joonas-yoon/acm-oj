@@ -1,0 +1,99 @@
+<?php namespace {{namespace}}{{module}}\Http\Controllers;
+
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
+
+class {{name}}Controller extends Controller {
+
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		$this->middleware('auth');
+	}
+
+	/**
+	 * Display the {{slug}} index page.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		return view('{{slug}}::index');
+	}
+
+	/**
+	 * Show the form for creating a new {{singular}}.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		//return view('{{slug}}::create');
+	}
+
+	/**
+	 * Store a newly created {{singular}} in storage.
+	 *
+	 * @return Response
+	 */
+	public function store(Request $request)
+	{
+		// {{model}}::create($request::all());
+		// return view('{{slug}}::view');
+	}
+
+	/**
+	 * Display the specified {{singular}}.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		// ${{singular}} = {{model}}::findOrFail($id);
+		// return view('{{slug}}::show', compact('{{singular}}'));
+	}
+
+	/**
+	 * Show the form for editing the specified {{singular}}.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		// ${{singular}} = {{model}}::findOrFail($id);
+		// return view('{{slug}}::edit', compact('{{singular}}'));
+	}
+
+	/**
+	 * Update the specified {{singular}} in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id, Request $request)
+	{
+		// ${{singular}} = {{model}}::findOrFail($id);
+		// ${{singular}}->update($request->all());
+	}
+
+	/**
+	 * Remove the specified {{singular}} from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		// ${{singular}} = {{model}}::findOrFail($id);
+		// ${{singular}}->delete();
+	}
+
+}

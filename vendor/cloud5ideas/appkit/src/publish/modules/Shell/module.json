@@ -1,0 +1,8 @@
+{
+	"name": "Shell",
+	"slug": "shell",
+	"version": "1.0",
+	"description": "This is the application back-end shell. It provides the layout and navigation views.",
+	"enabled": true,
+	"navigable": false
+}

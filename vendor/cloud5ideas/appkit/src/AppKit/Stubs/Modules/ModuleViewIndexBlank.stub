@@ -1,0 +1,8 @@
+@extends('{{slug}}::layouts.{{slug}}')
+
+@section('content')
+
+    <div class="title">{{name}} Index</div>
+	<div class="quote">{{ Inspiring::quote() }}</div>
+
+@endsection

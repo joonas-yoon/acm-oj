@@ -21,7 +21,8 @@ class CreateProblemsTable extends Migration
             $table->text('sample_input')->nullable();
             $table->text('sample_output')->nullable();
             $table->text('hint');
-            $table->boolean('is_special');
+            $table->boolean('is_special')->default(0);
+            $table->boolean('is_hidden')->default(0);
             $table->integer('time_limit')->unsigned()->default(0);
             $table->integer('memory_limit')->unsigned()->default(128);
             $table->timestamps();

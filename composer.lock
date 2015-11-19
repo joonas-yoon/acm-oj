@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "83f591f180bc3c832c0831339189a2c2",
-    "content-hash": "b9d86bdb98b5b1419c444f46c717b9a8",
+    "hash": "8dee8ceaaaf82bd264a362ba497a3c33",
+    "content-hash": "17cfcd837bd5bd29f641440fb28528d7",
     "packages": [
         {
             "name": "bestmomo/scafold",
@@ -147,6 +147,67 @@
                 "preload"
             ],
             "time": "2015-11-09 22:51:51"
+        },
+        {
+            "name": "cloud5ideas/appkit",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Cloud5Ideas/laravel-appkit.git",
+                "reference": "12e690653c0a91d1103df8c914753e7fc2dd8426"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Cloud5Ideas/laravel-appkit/zipball/12e690653c0a91d1103df8c914753e7fc2dd8426",
+                "reference": "12e690653c0a91d1103df8c914753e7fc2dd8426",
+                "shasum": ""
+            },
+            "require": {
+                "fzaninotto/faker": "~1.4",
+                "illuminate/config": "~5.0",
+                "illuminate/database": "~5.0",
+                "illuminate/filesystem": "~5.0",
+                "illuminate/html": "~5.0",
+                "illuminate/routing": "~5.0",
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "C5\\AppKit\\": "src/AppKit/"
+                },
+                "files": [
+                    "src/AppKit/Functions/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Charl Gottschalk",
+                    "email": "cgottschalk@cloud5.co.za"
+                }
+            ],
+            "description": "Application kit for Laravel 5",
+            "keywords": [
+                "appkit",
+                "cloud5ideas",
+                "faker",
+                "flash",
+                "javascript",
+                "laravel",
+                "menus",
+                "modules"
+            ],
+            "time": "2015-09-01 05:25:29"
         },
         {
             "name": "danielstjules/stringy",
@@ -303,6 +364,58 @@
                 "string"
             ],
             "time": "2015-11-06 14:35:42"
+        },
+        {
+            "name": "fzaninotto/faker",
+            "version": "v1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fzaninotto/Faker.git",
+                "reference": "d0190b156bcca848d401fb80f31f504f37141c8d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/d0190b156bcca848d401fb80f31f504f37141c8d",
+                "reference": "d0190b156bcca848d401fb80f31f504f37141c8d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "suggest": {
+                "ext-intl": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Faker\\": "src/Faker/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Zaninotto"
+                }
+            ],
+            "description": "Faker is a PHP library that generates fake data for you.",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures"
+            ],
+            "time": "2015-05-29 06:29:14"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2197,58 +2310,6 @@
             "time": "2015-06-14 21:17:01"
         },
         {
-            "name": "fzaninotto/faker",
-            "version": "v1.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "d0190b156bcca848d401fb80f31f504f37141c8d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/d0190b156bcca848d401fb80f31f504f37141c8d",
-                "reference": "d0190b156bcca848d401fb80f31f504f37141c8d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~1.5"
-            },
-            "suggest": {
-                "ext-intl": "*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Faker\\": "src/Faker/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "François Zaninotto"
-                }
-            ],
-            "description": "Faker is a PHP library that generates fake data for you.",
-            "keywords": [
-                "data",
-                "faker",
-                "fixtures"
-            ],
-            "time": "2015-05-29 06:29:14"
-        },
-        {
             "name": "hamcrest/hamcrest-php",
             "version": "v1.2.2",
             "source": {
@@ -3367,7 +3428,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bestmomo/scafold": 20
+        "bestmomo/scafold": 20,
+        "cloud5ideas/appkit": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
