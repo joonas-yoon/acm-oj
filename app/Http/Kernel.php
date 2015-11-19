@@ -29,5 +29,11 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        /**
+         * Other middleware registrations ...
+         * 나중에 Route에서 'middleware' => 'role:admin' 또는
+         * 컨트롤러에서 $this->middleware('role:admin') 처럼 사용할 수 있다.
+         */
+        'role' => \Bican\Roles\Middleware\VerifyRole::class,
     ];
 }

@@ -146,12 +146,14 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        
-        
+
         /*
          * Semantic UI Framework Service Provider
          */
         SUI\SUIServiceProvider::class,
+
+        Laracasts\Flash\FlashServiceProvider::class,
+        Bican\Roles\RolesServiceProvider::class,
 
     ],
 
@@ -203,7 +205,7 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Form'      => Illuminate\Html\FormFacade::class,
         'Html'      => Illuminate\Html\HtmlFacade::class,
-
+        'Flash'     => Laracasts\Flash\Flash::class,
     ],
 
 ];
