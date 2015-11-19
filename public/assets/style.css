@@ -1,0 +1,99 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+#footer {
+    padding-top: 3em;
+}
+
+.ui.main.container {
+    padding: 3em 0;
+}
+
+.introhead {
+    background: #2C3141 !important;
+    padding: 0em;
+    color: rgba(255, 255, 255, 0.9);
+    overflow: hidden;
+}
+
+.introhead .container {
+    text-align: center;
+    display: block;
+    vertical-align: middle;
+    padding: 5rem 0em;
+    min-height: 600px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.introduction .header img.logo {
+    width: 10em;
+}
+
+.introduction .header .title {
+    color: #fff;
+    font-family: 'Lato';
+    font-weight: 100;
+    font-size: 96px;
+    line-height: 0.75em;
+}
+.introduction p.subtitle {
+    font-family: 'Lato';
+    font-size: 1.5em;
+    font-weight: 100;
+}
+
+.hello .stripe {
+    background-color: #FFFFFF;
+    padding: 7.5em 0px;
+    border-radius: 0em;
+    margin: 0em;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+.hello .alternative.stripe {
+    background-color: #F2F3F5;
+}
+
+#navigator .item.logo { padding: 0; }
+
+#navigator .ui.menu {
+    margin: 0em;
+    -webkit-transition: background .2s linear, border .2s linear;
+    transition: background .2s linear, border .2s linear;
+}
+#navigator .ui.text.menu {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+#navigator .nav.trigger { display:block;height:3.5rem; }
+#navigator .ui.text.menu,
+#navigator .nav.trigger {
+    background: #2C3141;
+}
+#navigator .ui.text.menu .container .item {
+    color: #fff;
+    -webkit-transition: color .2s linear;
+    transition: color .2s linear;
+}
+#navigator.light .ui.text.menu,
+#navigator.light .nav.trigger {
+    background: rgba(255,255,255,.9) !important;
+}
+#navigator.light .ui.text.menu {
+    border-bottom: 1px solid #DDDDDD;
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.04);
+}
+#navigator.light .ui.text.menu .container .item {
+    color: #000;
+}
+.ui.popup .ui.column .ui.header {
+    white-space: nowrap;
+}
+.ui.secondary.pointing.menu a.item:hover {
+    background-color: transparent;
+    border-color: rgba(34,36,38,.25);
+}
