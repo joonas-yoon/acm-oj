@@ -52,6 +52,12 @@ class ProblemsController extends Controller
     public function show($id)
     {
         $problem = Problem::findOrFail($id);
+
+        $problem->description = $problem->getMdDescription();
+        $problem->input       = $problem->getMdInput();
+        $problem->output      = $problem->getMdOutput();
+        $problem->hint        = $problem->getMdHint();
+
         return view('problems.show', compact('problem'));
     }
 

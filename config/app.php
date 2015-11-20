@@ -154,6 +154,7 @@ return [
 
         Laracasts\Flash\FlashServiceProvider::class,
         Bican\Roles\RolesServiceProvider::class,
+        GrahamCampbell\Markdown\MarkdownServiceProvider::class,
 
     ],
 
@@ -203,9 +204,11 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+
         'Form'      => Illuminate\Html\FormFacade::class,
         'Html'      => Illuminate\Html\HtmlFacade::class,
         'Flash'     => Laracasts\Flash\Flash::class,
+        'Markdown'  => GrahamCampbell\Markdown\Facades\Markdown::class,
     ],
 
 ];

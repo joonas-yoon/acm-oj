@@ -45,8 +45,8 @@
     <th>분류/태그</th>
   </tr></thead>
   <tbody><tr>
-    <td>{{ $problem->time_limit }} MS</td>
-    <td>{{ $problem->memory_limit }} MB</td>
+    <td>{{ $problem->time_limit }} 초</td>
+    <td>{{ $problem->memory_limit }} KB</td>
     <td>0</td>
     <td>0</td>
     <td>0 %</td>
@@ -68,13 +68,13 @@
     <a class="ui green basic label">해결</a>
 
     <h2 class="ui dividing header">Description</h2>
-    <div class="context">{{{ $problem->description."<hr/>" }}}</div>
+    <div class="context">{!! $problem->description !!}</div>
 
     <h2 class="ui dividing header">입력 형식</h2>
-    <div class="context">{{{ $problem->input }}}</div>
+    <div class="context">{!! $problem->input !!}</div>
 
     <h2 class="ui dividing header">출력 형식</h2>
-    <div class="context">{{{ $problem->output }}}</div>
+    <div class="context">{!! $problem->output !!}</div>
 
     <h2 class="ui dividing header">예제</h2>
     <div class="ui grid">
@@ -93,7 +93,7 @@
     </div>
 
     <h2 class="ui dividing header">Hint</h2>
-    <div class="context">{{{ $problem->hint }}}</div>
+    <div class="context">{!!  $problem->hint !!}</div>
   </div>
 
 @stop
