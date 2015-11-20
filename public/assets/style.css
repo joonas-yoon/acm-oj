@@ -31,6 +31,9 @@ html, body {
     background-color: transparent;
     border-color: rgba(34,36,38,.25);
 }
+.ui.comments {
+    max-width: 100%;
+}
 
 /**
  *
@@ -127,13 +130,22 @@ html, body {
  * Styling for sub-pages
  *
  */
-#problem .ui.dividing.header {
-    padding-top: 1rem;
+#problem .ui.horizontal.divider {
+    padding-top: 2.5rem;
 }
 #problem .context {
     font-size: medium;
     line-height: 30px;
 }
+.vhint.tags {
+    display: none;
+    -webkit-transition: display .2s linear;
+    transition: display .2s linear;
+}
+.vhint.tags.visible {
+    display: block;
+}
+
 
 /**
  *

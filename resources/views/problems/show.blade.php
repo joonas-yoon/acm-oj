@@ -42,11 +42,11 @@
     <th>정답 수</th>
     <th>정답률</th>
     <th>평점</th>
-    <th>분류/태그</th>
+    <th>태그 보기</th>
   </tr></thead>
   <tbody><tr>
     <td>{{ $problem->time_limit }} 초</td>
-    <td>{{ $problem->memory_limit }} KB</td>
+    <td>{{ $problem->memory_limit }} MB</td>
     <td>0</td>
     <td>0</td>
     <td>0 %</td>
@@ -54,7 +54,10 @@
       <div class="ui star rating" data-rating="5"></div>
     </td>
     <td>
-      <a href="#"><i class="lock icon"></i></a>
+      <div class="ui toggle checkbox vhint">
+        <input type="checkbox" name="vhint">
+        <label><i class="eye icon"></i></label>
+      </div>
     </td>
   </tr></tbody>
   </table>
@@ -67,16 +70,17 @@
     <a class="ui red basic label">도전 중</a>
     <a class="ui green basic label">해결</a>
 
-    <h2 class="ui dividing header">Description</h2>
+    <div class="ui horizontal divider">문제 설명</div>
     <div class="context">{!! $problem->description !!}</div>
 
-    <h2 class="ui dividing header">입력 형식</h2>
+    <div class="ui horizontal divider">입력 형식</div>
     <div class="context">{!! $problem->input !!}</div>
 
-    <h2 class="ui dividing header">출력 형식</h2>
+    <div class="ui horizontal divider">출력 형식</div>
     <div class="context">{!! $problem->output !!}</div>
 
-    <h2 class="ui dividing header">예제</h2>
+    <div class="ui horizontal divider">예제</div>
+
     <div class="ui grid">
       <div class="eight wide column">
         <div class="ui segment inverted">
@@ -92,8 +96,110 @@
       </div>
     </div>
 
-    <h2 class="ui dividing header">Hint</h2>
-    <div class="context">{!!  $problem->hint !!}</div>
+    <div class="ui horizontal divider">Hint</div>
+    <div class="context">
+      {!!  $problem->hint !!}
+      <div class="vhint tags">
+        <a class="ui tag label">Brute Force</a>
+        <a class="ui tag label">Greed</a>
+      </div>
+    </div>
+
+    <div class="ui horizontal divider">Thanks to</div>
+    <div class="context">
+      <div class="ui label">
+        번역
+        <a class="detail">@author1 @author2</a>
+      </div>
+      <div class="ui label">
+        오타
+        <a class="detail">@author3</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ui horizontal divider">Comments</div>
+
+  <div class="ui threaded comments" id="comments">
+  <div class="comment">
+    <a class="avatar">
+      <img src="/images/no-image.png">
+    </a>
+    <div class="content">
+      <a class="author">Matt</a>
+      <div class="metadata">
+        <span class="date">Today at 5:42PM</span>
+      </div>
+      <div class="text">
+        How artistic!
+      </div>
+      <div class="actions">
+        <a class="reply">Reply</a>
+      </div>
+    </div>
+  </div>
+  <div class="comment">
+    <a class="avatar">
+      <img src="/images/no-image.png">
+    </a>
+    <div class="content">
+      <a class="author">Elliot Fu</a>
+      <div class="metadata">
+        <span class="date">Yesterday at 12:30AM</span>
+      </div>
+      <div class="text">
+        <p>This has been very useful for my research. Thanks as well!</p>
+      </div>
+      <div class="actions">
+        <a class="reply">Reply</a>
+      </div>
+    </div>
+    <div class="comments">
+      <div class="comment">
+        <a class="avatar">
+          <img src="/images/no-image.png">
+        </a>
+        <div class="content">
+          <a class="author">Jenny Hess</a>
+          <div class="metadata">
+            <span class="date">Just now</span>
+          </div>
+          <div class="text">
+            Elliot you are always so right :)
+          </div>
+          <div class="actions">
+            <a class="reply">Reply</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="comment">
+    <a class="avatar">
+      <img src="/images/no-image.png">
+    </a>
+    <div class="content">
+      <a class="author">Joe Henderson</a>
+      <div class="metadata">
+        <span class="date">5 days ago</span>
+      </div>
+      <div class="text">
+        Dude, this is awesome. Thanks so much
+      </div>
+      <div class="actions">
+        <a class="reply">Reply</a>
+      </div>
+    </div>
+  </div>
+  <form class="ui reply form">
+    <div class="field">
+      <textarea></textarea>
+    </div>
+    <div class="ui blue labeled submit icon button">
+      <i class="icon edit"></i> 작성하기
+    </div>
+  </form>
   </div>
 
 @stop
@@ -118,6 +224,14 @@
     .rating({
       initialRating: 2,
       maxRating: 5
+    })
+  ;
+
+  $('.vhint.checkbox')
+    .checkbox({
+      onChange: function() {
+        $('.vhint.tags').fadeToggle(500);
+      }
     })
   ;
   </script>

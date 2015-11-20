@@ -24,7 +24,7 @@
                 </p>
 
                 <div class="ui hidden divider"></div>
-                <a href="/articles" class="ui inverted download button">Explore</a>
+                <a href="/problems" class="ui inverted download button">Explore</a>
                 <a href="/auth/login" class="ui inverted basic button">Sign In</a>
             </div>
         </div>
