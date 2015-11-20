@@ -11,6 +11,12 @@ class ProblemsTableSeeder extends Seeder
      */
     public function run()
     {
+        /**
+         * Attenction!
+         * It could be deleted records existed.
+         */
+        App\Problem::truncate();
+
         factory('App\Problem', 10)->create();
     }
 }

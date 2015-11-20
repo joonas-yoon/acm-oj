@@ -20,7 +20,7 @@ class ProblemsController extends Controller
         // return view('problems.index');
 
         $problems = Problem::all();
-        return $problems;
+        var_dump($problems->toArray());
     }
 
     /**

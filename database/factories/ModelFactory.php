@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(App\User::class, function ($faker) {
     return [
         'name'           => $faker->name,
         'email'          => $faker->email,
@@ -20,14 +20,14 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Problem::class, function (Fake\Generator $faker) {
+$factory->define(App\Problem::class, function ($faker) {
     return [
-        'title'         => $faker->sentence,
-        'description'   => $faker->paragraph,
+        'title'         => $faker->company,
+        'description'   => join('\n\n', $faker->paragraphs($faker->numberBetween(1,5))),
         'input'         => $faker->paragraph,
         'output'        => $faker->paragraph,
-        'sample_input'  => $faker->paragraph,
-        'sample_output' => $faker->paragraph,
+        'sample_input'  => $faker->postcode,
+        'sample_output' => $faker->city,
         'time_limit'    => ($faker->numberBetween(1, 3) * 1000),
         'memory_limit'  => ($faker->numberBetween(1, 5) * 128)
     ];
