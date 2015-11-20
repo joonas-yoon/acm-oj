@@ -62,8 +62,10 @@
   <div id="problem">
 
     @if ($problem->is_special)
-    <a class="ui red ribbon label">Special Judge</a>
+    <a class="ui red ribbon label">스페셜 저지</a>
     @endif
+    <a class="ui red basic label">도전 중</a>
+    <a class="ui green basic label">해결</a>
 
     <h2 class="ui dividing header">Description</h2>
     <div class="context">{{{ $problem->description."<hr/>" }}}</div>

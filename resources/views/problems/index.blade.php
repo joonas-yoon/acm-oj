@@ -27,9 +27,9 @@
         @endif
 
         <? if( ($a=rand(0,10))==2 ){ ?>
-          <a class="ui red basic label">실패</a>
+          <a class="ui red basic label">도전 중</a>
         <? } else if( rand(0,10) < 1 ){ ?>
-          <a class="ui green basic label">성공</a>
+          <a class="ui green basic label">해결</a>
         <? } ?>
       </td>
       <td><?=$a?></td>
