@@ -1,8 +1,0 @@
-{
-	"name": "Auth",
-	"slug": "auth",
-	"version": "1.0",
-	"description": "This the authentication module. It provides the registration and login services.",
-	"enabled": true,
-	"navigable": false
-}

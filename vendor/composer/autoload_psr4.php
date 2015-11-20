@@ -36,7 +36,6 @@ return array(
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
     'ClassPreloader\\' => array($vendorDir . '/classpreloader/classpreloader/src'),
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
-    'C5\\AppKit\\' => array($vendorDir . '/cloud5ideas/appkit/src/AppKit'),
     'Bestmomo\\Scafold\\' => array($vendorDir . '/bestmomo/scafold/src'),
     'App\\' => array($baseDir . '/app'),
 );

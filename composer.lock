@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8dee8ceaaaf82bd264a362ba497a3c33",
-    "content-hash": "17cfcd837bd5bd29f641440fb28528d7",
+    "hash": "dc334050c3d14d2460e510605bfb2e84",
+    "content-hash": "83a8e5c54b5bb4dfc7d29a71c47da843",
     "packages": [
         {
             "name": "bestmomo/scafold",
@@ -147,67 +147,6 @@
                 "preload"
             ],
             "time": "2015-11-09 22:51:51"
-        },
-        {
-            "name": "cloud5ideas/appkit",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Cloud5Ideas/laravel-appkit.git",
-                "reference": "12e690653c0a91d1103df8c914753e7fc2dd8426"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Cloud5Ideas/laravel-appkit/zipball/12e690653c0a91d1103df8c914753e7fc2dd8426",
-                "reference": "12e690653c0a91d1103df8c914753e7fc2dd8426",
-                "shasum": ""
-            },
-            "require": {
-                "fzaninotto/faker": "~1.4",
-                "illuminate/config": "~5.0",
-                "illuminate/database": "~5.0",
-                "illuminate/filesystem": "~5.0",
-                "illuminate/html": "~5.0",
-                "illuminate/routing": "~5.0",
-                "illuminate/support": "~5.0",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "C5\\AppKit\\": "src/AppKit/"
-                },
-                "files": [
-                    "src/AppKit/Functions/functions.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Charl Gottschalk",
-                    "email": "cgottschalk@cloud5.co.za"
-                }
-            ],
-            "description": "Application kit for Laravel 5",
-            "keywords": [
-                "appkit",
-                "cloud5ideas",
-                "faker",
-                "flash",
-                "javascript",
-                "laravel",
-                "menus",
-                "modules"
-            ],
-            "time": "2015-09-01 05:25:29"
         },
         {
             "name": "danielstjules/stringy",
@@ -3428,8 +3367,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bestmomo/scafold": 20,
-        "cloud5ideas/appkit": 20
+        "bestmomo/scafold": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
