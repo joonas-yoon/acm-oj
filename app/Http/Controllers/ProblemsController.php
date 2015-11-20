@@ -17,10 +17,9 @@ class ProblemsController extends Controller
      */
     public function index()
     {
-        // return view('problems.index');
-
         $problems = Problem::all();
-        var_dump($problems->toArray());
+
+        return view('problems.index', compact('problems'));
     }
 
     /**

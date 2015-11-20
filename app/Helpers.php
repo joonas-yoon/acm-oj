@@ -7,8 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Helpers extends Model
 {
-    public static function setActive($path, $active = 'active')
+    public static function setActive($path, $route = null, $active = 'active')
     {
+        if( is_object($route) )
+        {
+            return $route->getName() == $path ? $active : '';
+        }
+
         return Request::is($path) || Request::is($path.'/*') ? $active : '';
     }
 }

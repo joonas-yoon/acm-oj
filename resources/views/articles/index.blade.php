@@ -8,7 +8,7 @@
 
     <a class="fluid ui button" href="/articles/create">Write a Article</a>
 
-    @if( isset($article) )
+    @if( count($articles) > 0 )
     <p>No Items.</p>
     @else
     <div class="ui divided items">

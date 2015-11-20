@@ -23,12 +23,13 @@ $factory->define(App\User::class, function ($faker) {
 $factory->define(App\Problem::class, function ($faker) {
     return [
         'title'         => $faker->company,
-        'description'   => join('\n\n', $faker->paragraphs($faker->numberBetween(1,5))),
+        'description'   => join("\n\n", $faker->paragraphs($faker->numberBetween(1,5))),
         'input'         => $faker->paragraph,
         'output'        => $faker->paragraph,
         'sample_input'  => $faker->postcode,
-        'sample_output' => $faker->city,
-        'time_limit'    => ($faker->numberBetween(1, 3) * 1000),
-        'memory_limit'  => ($faker->numberBetween(1, 5) * 128)
+        'sample_output' => join("\n", $faker->words($faker->numberBetween(1,10))),
+        'time_limit'    => $faker->numberBetween(1, 5),
+        'memory_limit'  => ($faker->numberBetween(1, 5) * 128),
+        'is_special'    => $faker->boolean(15)
     ];
 });

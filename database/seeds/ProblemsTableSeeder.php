@@ -17,6 +17,6 @@ class ProblemsTableSeeder extends Seeder
          */
         App\Problem::truncate();
 
-        factory('App\Problem', 10)->create();
+        factory('App\Problem', 30)->create();
     }
 }

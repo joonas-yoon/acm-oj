@@ -1,3 +1,9 @@
+/**
+ *
+ * Override Default Elements
+ *
+ */
+
 html, body {
     margin: 0;
     padding: 0;
@@ -7,8 +13,33 @@ html, body {
     padding-top: 3em;
 }
 
+/**
+ *
+ * Override Derived Semantic Elements
+ *
+ */
+
 .ui.main.container {
-    padding: 3em 0;
+    padding-top: 1em;
+    padding-bottom: 3em;
+}
+
+.ui.popup .ui.column .ui.header {
+    white-space: nowrap;
+}
+.ui.secondary.pointing.menu a.item:hover {
+    background-color: transparent;
+    border-color: rgba(34,36,38,.25);
+}
+
+/**
+ *
+ * Styling for Site Index page
+ *
+ */
+
+.hello .ui.main.container {
+    padding-top: 3em;
 }
 
 .introhead {
@@ -74,7 +105,7 @@ html, body {
 #navigator .nav.trigger {
     background: #2C3141;
 }
-#navigator .ui.text.menu .container .item {
+#navigator .ui.text.menu .index.item {
     color: #fff;
     -webkit-transition: color .2s linear;
     transition: color .2s linear;
@@ -87,13 +118,36 @@ html, body {
     border-bottom: 1px solid #DDDDDD;
     box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.04);
 }
-#navigator.light .ui.text.menu .container .item {
+#navigator.light .ui.text.menu .index.item {
     color: #000;
 }
-.ui.popup .ui.column .ui.header {
-    white-space: nowrap;
+
+/**
+ *
+ * Styling for sub-pages
+ *
+ */
+#problem .ui.dividing.header {
+    padding-top: 1rem;
 }
-.ui.secondary.pointing.menu a.item:hover {
-    background-color: transparent;
-    border-color: rgba(34,36,38,.25);
+#problem .context {
+    font-size: medium;
+    line-height: 30px;
+}
+
+/**
+ *
+ * Responsive
+ *
+ */
+@media (max-width: 767px){
+    .table.responsive {
+        width: 100%;
+        margin-bottom: 15px;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        border: 1px solid #ddd;
+    }
 }
