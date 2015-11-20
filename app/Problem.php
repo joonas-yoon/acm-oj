@@ -24,4 +24,8 @@ class Problem extends Model
         'time_limit',
         'memory_limit'
     ];
+
+    public function contributors() {
+        //return $this->belongsTo('App\
+    }
 }

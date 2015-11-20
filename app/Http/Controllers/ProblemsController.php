@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Problem;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -16,7 +17,10 @@ class ProblemsController extends Controller
      */
     public function index()
     {
-        return view('problems.index');
+        // return view('problems.index');
+
+        $problems = Problem::all();
+        return $problems;
     }
 
     /**
@@ -48,7 +52,7 @@ class ProblemsController extends Controller
      */
     public function show($id)
     {
-        $problem = App\Problems::findOrFail($id);
+        $problem = Problem::findOrFail($id);
         return view('problems.show', compact('problem'));
     }
 
