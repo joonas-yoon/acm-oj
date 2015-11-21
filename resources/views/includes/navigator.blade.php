@@ -41,7 +41,7 @@
           <div class="column">
             <h4 class="ui header">커뮤니티</h4>
             <div class="ui link list">
-              <a class="item">랭킹</a>
+              <a class="item" href="{{ action('RankController@index') }}">랭킹</a>
               <a class="item" href="{{ action('ArticlesController@index') }}">게시판</a>
               <a class="item">팀</a>
               <a class="item">위키</a>
@@ -86,7 +86,7 @@
       <a href="/problems" class="ui item {{ \App\Helpers::setActive('problems') }}">문제</a>
       <a href="#" class="ui item">대회</a>
       <a href="#" class="ui item">채점 현황</a>
-      <a href="#" class="ui item">랭킹</a>
+      <a href="/rank" class="ui item" {{ \App\Helpers::setActive('rank') }}>랭킹</a>
       <a href="/articles" class="ui item {{ \App\Helpers::setActive('articles') }}">게시판</a>
       <a href="#" class="ui item">팀</a>
       @include('includes.navAuthButtons')

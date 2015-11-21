@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
         //$this->call(UsersTableSeeder::class);
         //$this->command->info('users table seeded');
 
-        $this->call(ProblemsTableSeeder::class);
-        $this->command->info('problems table seeded');
+        //$this->call(ProblemsTableSeeder::class);
+        //$this->command->info('problems table seeded');
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
         Model::reguard();

@@ -16,3 +16,5 @@ Route::get('/about', 'PagesController@about');
 
 Route::resource('articles', 'ArticlesController');
 Route::resource('problems', 'ProblemsController');
+
+Route::get('/rank', 'RankController@index');
