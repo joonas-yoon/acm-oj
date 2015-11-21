@@ -17,7 +17,7 @@ class ProblemsController extends Controller
      */
     public function index()
     {
-        $problems = Problem::where('is_hidden', false)->paginate(20);
+        $problems = Problem::where('is_published', true)->paginate(20);
 
         return view('problems.index', compact('problems'));
     }
@@ -51,7 +51,7 @@ class ProblemsController extends Controller
      */
     public function show($id)
     {
-        $problem = Problem::findOrFail($id);
+        $problem = Problem::where('is_published', true)->findOrFail($id);
 
         $problem->description = $problem->getMdDescription();
         $problem->input       = $problem->getMdInput();

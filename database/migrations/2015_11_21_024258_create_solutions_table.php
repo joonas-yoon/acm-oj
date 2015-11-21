@@ -33,6 +33,7 @@ class CreateSolutionsTable extends Migration
             $table->integer('memory')->default(-1);
             $table->integer('size');
             $table->boolean('is_hidden')->default(0);
+            $table->boolean('is_published')->default(1);
             $table->timestamps();
 
             $table->foreign('problem_id')->references('id')->on('problems')

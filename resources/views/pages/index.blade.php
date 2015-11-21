@@ -49,21 +49,11 @@
                 <div class="column">
                     <div class="ui blue segment">새로 추가된 문제</div>
                     <div class="ui stacked segments">
+                        @foreach($addedProblems as $problem)
                         <div class="ui segment">
-                            <p>Top</p>
+                            <p>{{ $problem->title }}</p>
                         </div>
-                        <div class="ui segment">
-                            <p>문제 #2</p>
-                        </div>
-                        <div class="ui segment">
-                            <p>Bottom</p>
-                        </div>
-                        <div class="ui segment">
-                            <p>문제 #4</p>
-                        </div>
-                        <div class="ui segment">
-                            <p>문제 #5</p>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="column">

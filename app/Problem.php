@@ -24,7 +24,8 @@ class Problem extends Model
         'sample_output',
         'hint',
         'time_limit',
-        'memory_limit'
+        'memory_limit',
+        'is_published'
     ];
 
     public function getMdDescription(){

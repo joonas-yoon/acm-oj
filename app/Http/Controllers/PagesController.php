@@ -10,9 +10,12 @@ use App\Http\Controllers\Controller;
 class PagesController extends Controller
 {
     function index() {
-        return view('pages.index');
+        $problems = \App\Problem::where('is_published', true);
+        $addedProblems = $problems->limit(5)->get();
+
+        return view('pages.index', compact('addedProblems'));
     }
- 
+
     function about() {
         return view('pages.about');
     }
