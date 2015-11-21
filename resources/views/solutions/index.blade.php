@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('content')
-  <table class="ui striped padded table unstackable">
+  <table class="ui striped blue table compact unstackable">
     <thead>
       <tr>
         <th>채점 번호</th>
@@ -20,7 +20,9 @@
       <tr>
         <td>{{ $solution->id }}</td>
         <td>{{ $solution->user_id }}</td>
-        <td>{{ $solution->problem->title }}</td>
+        <td>
+          <a href="/problems/{{ $solution->problem->id }}">{{ $solution->problem->title }}</a>
+        </td>
         <td>{{ $solution->result_id }}</td>
         <td>{{ $solution->lang_id }}</td>
         <td>{{ $solution->time }} MS</td>
@@ -31,6 +33,9 @@
     @endforeach
     </tbody>
   </table>
+
+  @include('includes.pagination', ['paginator' => $solutions])
+
 @stop
 
 @section('script')

@@ -18,7 +18,7 @@ class SolutionsController extends Controller
      */
     public function index()
     {
-        $solutions = Solution::all();
+        $solutions = Solution::where('is_hidden', false)->paginate(20);
 
         return view('solutions.index', compact('solutions'));
     }
