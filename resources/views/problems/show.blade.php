@@ -47,9 +47,9 @@
   <tbody><tr>
     <td>{{ $problem->time_limit }} 초</td>
     <td>{{ $problem->memory_limit }} MB</td>
-    <td>0</td>
-    <td>0</td>
-    <td>0 %</td>
+    <td>{{ $problem->getSubmitCount() }}</td>
+    <td>{{ $problem->solutions_accept()->count() }}</td>
+    <td>{{ $problem->getRate() }} %</td>
     <td>
       <div class="ui star rating" data-rating="5"></div>
     </td>

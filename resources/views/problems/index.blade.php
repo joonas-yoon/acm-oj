@@ -39,15 +39,15 @@
             <a class="ui teal basic label">스페셜 저지</a>
           @endif
 
-          <? if( ($a=rand(0,10))==2 ){ ?>
+          <? if( rand(0,10)==2 ){ ?>
             <a class="ui red basic label">도전 중</a>
           <? } else if( rand(0,10) < 1 ){ ?>
             <a class="ui green basic label">해결</a>
           <? } ?>
         </td>
-        <td><?=$a?></td>
-        <td><?=($b=rand($a,100))?></td>
-        <td><? $c=$b>0?$a/$b:0; printf("%.02f", 100*$c); ?>%</td>
+        <td>{{ $problem->solutions_accept()->count() }}</td>
+        <td>{{ $problem->getSubmitCount() }}</td>
+        <td>{{ number_format($problem->getRate(), 2) }} %</td>
       </tr>
       @endforeach
     </tbody>

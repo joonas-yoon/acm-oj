@@ -17,6 +17,6 @@ class SolutionsTableSeeder extends Seeder
          */
         App\Solution::truncate();
 
-        factory('App\Solution', 50)->create();
+        factory('App\Solution', 100)->create();
     }
 }

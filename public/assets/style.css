@@ -145,6 +145,12 @@ html, body {
 .vhint.tags.visible {
     display: block;
 }
+span.solution{color:#999;font-weight:normal;}
+span.solution.waiting,span.solution.etc{}
+span.solution.accept{color:#1F8C38;font-weight:bold;}
+span.solution.wrong{color:#db2828;}
+span.solution.compile{color:#00b5ad;}
+span.solution.runtime{color:#f2711c;}
 
 
 /**

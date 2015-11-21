@@ -51,7 +51,7 @@
                     <div class="ui stacked segments">
                         @foreach($addedProblems as $problem)
                         <div class="ui segment">
-                            <p>{{ $problem->title }}</p>
+                            <a href="/problems/{{ $problem->id }}" style="color:#333;">{{ $problem->title }}</a>
                         </div>
                         @endforeach
                     </div>

@@ -34,7 +34,7 @@
         <td>
           <a href="/problems/{{ $solution->problem->id }}">{{ $solution->problem->title }}</a>
         </td>
-        <td>{{ $solution->result_id }}</td>
+        <td>{!! $solution->resultToHtml() !!}</td>
         <td>{{ $solution->lang_id }}</td>
         <td>{{ $solution->time }} MS</td>
         <td>{{ $solution->memory }} KB</td>
