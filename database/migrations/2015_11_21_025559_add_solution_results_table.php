@@ -22,11 +22,12 @@ class AddSolutionResultsTable extends Migration
         Schema::create('solution_results', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('description');
         });
 
         Schema::table('solutions', function (Blueprint $table) {
-            $table->integer('result')->unsigned()->default(0);
-            $table->foreign('result')->references('id')->on('solution_results')
+            $table->integer('result_id')->unsigned()->default(0);
+            $table->foreign('result_id')->references('id')->on('solution_results')
                   ->onUpdate('cascade');
         });
     }
@@ -39,9 +40,10 @@ class AddSolutionResultsTable extends Migration
     public function down()
     {
         Schema::table('solutions', function(Blueprint $table) {
-            $table->dropForeign('solutions_result_foreign');
-            $table->dropColumn('result');
+            // 이 부분을 고쳐야 하는 데.....
+            $table->dropForeign('solutions_result_id_foreign');
+            $table->dropColumn('result_id');
         });
-        drop('solution_results');
+        Schema::drop('solution_results');
     }
 }

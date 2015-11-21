@@ -42,6 +42,6 @@ class AddLanguagesTable extends Migration
             $table->dropForeign('solutions_lang_id_foreign');
             $table->dropColumn('lang_id');
         });
-        drop('languages');
+        Schema::drop('languages');
     }
 }

@@ -18,3 +18,6 @@ Route::resource('articles', 'ArticlesController');
 Route::resource('problems', 'ProblemsController');
 
 Route::get('/rank', 'RankController@index');
+
+Route::get('/solutions', 'SolutionsController@index');
+Route::get('/submissions', 'SolutionsController@index');

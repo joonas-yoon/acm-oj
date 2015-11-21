@@ -33,3 +33,16 @@ $factory->define(App\Problem::class, function ($faker) {
         'is_special'    => $faker->boolean(15)
     ];
 });
+
+$factory->define(App\Solution::class, function ($faker) {
+    return [
+        //'lang_id'    => App\Language::all()->random()->id,
+        'problem_id' => App\Problem::all()->random()->id,
+        'user_id'    => App\User::all()->random()->id,
+        'time'       => $faker->numberBetween(1, 249) * 4,
+        'memory'     => $faker->numberBetween(0, 1024) * 4,
+        'size'       => $faker->numberBetween(20, 1200),
+        'is_hidden'  => $faker->boolean(15),
+        'result_id'  => $faker->numberBetween(0, 5)
+    ];
+});

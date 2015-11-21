@@ -43,4 +43,8 @@ class Problem extends Model
     public function contributors() {
         //return $this->belongsTo('App\
     }
+
+    public function solutions() {
+        return $this->hasMany('App\Solution');
+    }
 }

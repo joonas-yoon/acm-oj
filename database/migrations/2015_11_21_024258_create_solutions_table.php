@@ -64,7 +64,7 @@ class CreateSolutionsTable extends Migration
      */
     public function down()
     {
-        drop('solution_codes');
-        drop('solutions');
+        Schema::drop('solution_codes');
+        Schema::drop('solutions');
     }
 }

@@ -26,7 +26,7 @@
           <div class="column">
             <h4 class="ui header">채점 현황</h4>
             <div class="ui link list">
-              <a class="item">채점 현황</a>
+              <a class="item" href="/solutions">채점 현황</a>
               <a class="item">통계</a>
             </div>
           </div>
@@ -85,7 +85,7 @@
       </a>
       <a href="/problems" class="ui item {{ \App\Helpers::setActive('problems') }}">문제</a>
       <a href="#" class="ui item">대회</a>
-      <a href="#" class="ui item">채점 현황</a>
+      <a href="/solutions" class="ui item {{ \App\Helpers::setActive('solutions') }}">채점 현황</a>
       <a href="/rank" class="ui item" {{ \App\Helpers::setActive('rank') }}>랭킹</a>
       <a href="/articles" class="ui item {{ \App\Helpers::setActive('articles') }}">게시판</a>
       <a href="#" class="ui item">팀</a>
