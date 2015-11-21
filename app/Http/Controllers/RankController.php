@@ -17,7 +17,7 @@ class RankController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(20);
 
         return view('rank.index', compact('users'));
     }

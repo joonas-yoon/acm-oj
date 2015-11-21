@@ -17,7 +17,7 @@ class ProblemsController extends Controller
      */
     public function index()
     {
-        $problems = Problem::all();
+        $problems = Problem::where('is_hidden', false)->paginate(20);
 
         return view('problems.index', compact('problems'));
     }

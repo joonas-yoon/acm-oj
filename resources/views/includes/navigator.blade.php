@@ -86,7 +86,7 @@
       <a href="/problems" class="ui item {{ \App\Helpers::setActive('problems') }}">문제</a>
       <a href="#" class="ui item">대회</a>
       <a href="/solutions" class="ui item {{ \App\Helpers::setActive('solutions') }}">채점 현황</a>
-      <a href="/rank" class="ui item" {{ \App\Helpers::setActive('rank') }}>랭킹</a>
+      <a href="/rank" class="ui item {{ \App\Helpers::setActive('rank') }}">랭킹</a>
       <a href="/articles" class="ui item {{ \App\Helpers::setActive('articles') }}">게시판</a>
       <a href="#" class="ui item">팀</a>
       @include('includes.navAuthButtons')

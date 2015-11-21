@@ -15,8 +15,8 @@ class UsersTableSeeder extends Seeder
          * Attenction!
          * It could be deleted records existed.
          */
-        // App\User::truncate();
+        App\User::truncate();
 
-        factory('App\User', 10)->create();
+        factory('App\User', 50)->create();
     }
 }

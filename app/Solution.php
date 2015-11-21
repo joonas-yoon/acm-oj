@@ -33,4 +33,8 @@ class Solution extends Model
     public function result() {
         // get result from solution_results
     }
+
+    public function user() {
+        return $this->belongsTo('App\User');
+    }
 }

@@ -2,7 +2,7 @@
 
 @section('content')
 
-  <div class="ui breadcrumb" style="padding:1em 0;">
+  <div class="ui breadcrumb" style="padding-bottom:1em;">
     <a class="section">Home</a>
     <i class="right chevron icon divider"></i>
     <a class="section">Problems</a>

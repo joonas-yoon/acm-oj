@@ -1,6 +1,15 @@
 @extends('master')
 
 @section('content')
+
+  <h2 class="ui header">
+    <i class="flag icon"></i>
+    <div class="content">
+      채점 현황
+      <div class="sub header">Submissions</div>
+    </div>
+  </h2>
+
   <table class="ui striped blue table compact unstackable">
     <thead>
       <tr>
@@ -19,7 +28,9 @@
     @foreach($solutions as $solution)
       <tr>
         <td>{{ $solution->id }}</td>
-        <td>{{ $solution->user_id }}</td>
+        <td>
+          <a href="/user/{{ $solution->user->id }}">{{ $solution->user->name }}</a>
+        </td>
         <td>
           <a href="/problems/{{ $solution->problem->id }}">{{ $solution->problem->title }}</a>
         </td>
@@ -34,7 +45,7 @@
     </tbody>
   </table>
 
-  @include('includes.pagination', ['paginator' => $solutions])
+  @include('pagination.byPivot', ['paginator' => $solutions])
 
 @stop
 
