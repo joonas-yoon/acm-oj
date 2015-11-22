@@ -32,14 +32,16 @@
           <a href="/user/{{ $solution->user->id }}">{{ $solution->user->name }}</a>
         </td>
         <td>
-          <a href="/problems/{{ $solution->problem->id }}">{{ $solution->problem->title }}</a>
+          <a class="popup title" href="/problems/{{ $solution->problem->id }}" data-content="{{ $solution->problem->title }}" data-variation="inverted">{{ $solution->problem->id }}</a>
         </td>
         <td>{!! $solution->resultToHtml() !!}</td>
         <td>{{ $solution->lang_id }}</td>
         <td>{{ $solution->time }} MS</td>
         <td>{{ $solution->memory }} KB</td>
         <td>{{ $solution->size }} B</td>
-        <td>{{ $solution->created_at->diffForHumans() }}</td>
+        <td>
+          <a class="popup date" data-content="{{ $solution->created_at }}" data-variation="inverted">{{ $solution->created_at->diffForHumans() }}</a>
+        </td>
       </tr>
     @endforeach
     </tbody>
@@ -50,5 +52,8 @@
 @stop
 
 @section('script')
-
+  <script>
+  $('a.popup.title').popup({ position : 'left center', transition: 'vertical flip' });
+  $('a.popup.date').popup({ position : 'top center', transition: 'vertical flip' });
+  </script>
 @stop
