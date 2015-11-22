@@ -20,7 +20,7 @@ class CreateProblemsTable extends Migration
             $table->text('output')->nullable();
             $table->text('sample_input')->nullable();
             $table->text('sample_output')->nullable();
-            $table->text('hint');
+            $table->text('hint')->nullable();
             $table->boolean('is_special')->default(0);
             $table->boolean('is_published')->default(1);
             $table->integer('time_limit')->unsigned()->default(0);

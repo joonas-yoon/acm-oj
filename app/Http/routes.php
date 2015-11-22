@@ -11,6 +11,8 @@
 |
 */
 
+//DB::listen(function($sql, $bindings, $time){var_dump($sql);});
+
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 

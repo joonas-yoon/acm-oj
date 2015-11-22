@@ -83,13 +83,13 @@
 
     <div class="ui grid">
       <div class="eight wide column">
-        <div class="ui segment inverted">
+        <div class="ui segment code">
           <div class="ui top attached label">입력</div>
           <pre>{{ $problem->sample_input }}</pre>
         </div>
       </div>
       <div class="eight wide column">
-        <div class="ui segment inverted">
+        <div class="ui segment code">
           <div class="ui top attached label">출력</div>
           <pre>{{ $problem->sample_output }}</pre>
         </div>

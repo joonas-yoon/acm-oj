@@ -26,7 +26,7 @@ class CreateSolutionsTable extends Migration
         );
         */
         Schema::create('solutions', function (Blueprint $table) {
-            $table->increments('id')->default(1000);
+            $table->increments('id');
             $table->integer('problem_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('time')->default(-1);

@@ -26,8 +26,7 @@ class AddLanguagesTable extends Migration
 
         Schema::table('solutions', function (Blueprint $table) {
             $table->integer('lang_id')->unsigned()->after('id');
-            $table->foreign('lang_id')->references('id')->on('languages')
-                  ->onUpdate('cascade')->OnDelete('cascade');
+            $table->foreign('lang_id')->references('id')->on('languages');
         });
     }
 

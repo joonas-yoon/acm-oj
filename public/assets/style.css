@@ -34,6 +34,9 @@ html, body {
 .ui.comments {
     max-width: 100%;
 }
+.ui.comments .comment .avatar img, .ui.comments .comment img.avatar {
+    height: auto;
+}
 
 /**
  *
@@ -145,6 +148,13 @@ html, body {
 .vhint.tags.visible {
     display: block;
 }
+.ui.code.segment {
+    background: #f2f2f2;
+    /*box-shadow: none;*/
+    border: none;
+    border-radius: 0;
+}
+
 span.solution{color:#999;font-weight:normal;}
 span.solution.waiting,span.solution.etc{}
 span.solution.accept{color:#1F8C38;font-weight:bold;}

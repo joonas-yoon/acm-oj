@@ -52,7 +52,7 @@ class User extends Model implements AuthenticatableContract,
         return $this->hasMany('App\Solution');
     }
     public function solutions_accept() {
-        return $this->solutions->where('result_id', 1);
+        return $this->solutions->where('result_id', 2);
     }
 
     public function contributeProblems() {
