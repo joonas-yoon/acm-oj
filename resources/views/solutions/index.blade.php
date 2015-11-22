@@ -36,9 +36,13 @@
         </td>
         <td>{!! $solution->resultToHtml() !!}</td>
         <td>{{ $solution->lang_id }}</td>
-        <td>{{ $solution->time }} MS</td>
-        <td>{{ $solution->memory }} KB</td>
-        <td>{{ $solution->size }} B</td>
+        @if( $solution->isAccepted() )
+        <td>{{ $solution->time }} <span class="solution unit"> MS</span></td>
+        <td>{{ $solution->memory }} <span class="solution unit"> KB</span></td>
+        @else
+        <td></td><td></td>
+        @endif
+        <td>{{ $solution->size }} <span class="solution unit"> B</span></td>
         <td>
           <a class="popup date" data-content="{{ $solution->created_at }}" data-variation="inverted">{{ $solution->created_at->diffForHumans() }}</a>
         </td>

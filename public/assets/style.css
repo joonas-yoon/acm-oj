@@ -168,7 +168,7 @@ html, body {
 .solution.wrong{color:#db2828;}
 .solution.compile{color:#00b5ad;}
 .solution.runtime{color:#f2711c;}
-
+.solution.unit{color:#db2828;}
 
 /**
  *

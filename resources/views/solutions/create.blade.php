@@ -12,7 +12,7 @@
 
   <h2 class="ui dividing header">{{ $problem->title }}</h2>
 
-  {!! Form::open(['class' => 'ui form submit']) !!}
+  {!! Form::open(['url' => action('SolutionsController@index'), 'class' => 'ui form submit']) !!}
 
   <div class="ui grid">
     <div class="two wide column field column-label">언어</div>

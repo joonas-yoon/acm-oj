@@ -40,6 +40,10 @@ class Solution extends Model
         return $this->belongsTo('App\SolutionResult');
     }
 
+    public function isAccepted() {
+        return SolutionResult::find($this->result_id)->class_name == "accept";
+    }
+
     public function resultToHtml() {
         $result = SolutionResult::find($this->result_id);
 

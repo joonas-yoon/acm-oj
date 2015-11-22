@@ -42,7 +42,9 @@ class SolutionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $solution = new Solution($request->all());
+        //something ->save($solution);
+        //return redirect('/problems/'. $solution->;
     }
 
     /**
