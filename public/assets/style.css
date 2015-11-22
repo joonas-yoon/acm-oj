@@ -162,8 +162,9 @@ html, body {
     font-weight: bold;
 }
 
-.solution{color:#999;font-weight:normal;}
-.solution.waiting,.solution.etc{}
+.solution,
+.solution.waiting,
+.solution.etc{color:#999;font-weight:normal;}
 .solution.accept{color:#1F8C38;font-weight:bold;}
 .solution.wrong{color:#db2828;}
 .solution.compile{color:#00b5ad;}
@@ -184,5 +185,9 @@ html, body {
         -webkit-overflow-scrolling: touch;
         -ms-overflow-style: -ms-autohiding-scrollbar;
         border: 1px solid #ddd;
+    }
+
+    .ui.grid .column.column-label {
+        text-align: initial;
     }
 }

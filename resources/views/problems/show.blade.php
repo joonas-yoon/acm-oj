@@ -79,7 +79,7 @@
 
     <div class="ui horizontal divider">예제</div>
 
-    <div class="ui grid">
+    <div class="ui stackable grid">
       <div class="eight wide column">
         <div class="ui segment code">
           <div class="ui top attached label">입력</div>

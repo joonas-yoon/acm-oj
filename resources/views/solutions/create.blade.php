@@ -14,7 +14,7 @@
 
   {!! Form::open(['url' => action('SolutionsController@index'), 'class' => 'ui form submit']) !!}
 
-  <div class="ui grid">
+  <div class="ui stackable grid">
     <div class="two wide column field column-label">언어</div>
     <div class="fourteen wide column field">
       <select class="ui search selection dropdown">
@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  <div class="ui grid">
+  <div class="ui stackable grid">
     <div class="two wide column field column-label">공개 범위</div>
     <div class="fourteen wide column">
       <div class="inline fields">
@@ -51,7 +51,7 @@
     </div>
   </div>
 
-  <div class="ui grid">
+  <div class="ui stackable grid">
     <div class="two wide column field column-label">소스 코드</div>
     <div class="fourteen wide column field inline">
       {!! Form::textarea('code') !!}
