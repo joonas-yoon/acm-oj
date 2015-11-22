@@ -21,5 +21,7 @@ Route::resource('problems', 'ProblemsController');
 
 Route::get('/rank', 'RankController@index');
 
-Route::get('/solutions', 'SolutionsController@index');
-Route::get('/submissions', 'SolutionsController@index');
+Route::get('/solutions',  'SolutionsController@index');
+Route::post('/submit',    'SolutionsController@store');
+Route::get('/submit/{id}','SolutionsController@create');
+

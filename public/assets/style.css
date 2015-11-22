@@ -154,13 +154,20 @@ html, body {
     border: none;
     border-radius: 0;
 }
+.ui.form.submit {
+    margin-top: 1.725em;
+}
+.ui.grid .column.column-label {
+    text-align: right;
+    font-weight: bold;
+}
 
-span.solution{color:#999;font-weight:normal;}
-span.solution.waiting,span.solution.etc{}
-span.solution.accept{color:#1F8C38;font-weight:bold;}
-span.solution.wrong{color:#db2828;}
-span.solution.compile{color:#00b5ad;}
-span.solution.runtime{color:#f2711c;}
+.solution{color:#999;font-weight:normal;}
+.solution.waiting,.solution.etc{}
+.solution.accept{color:#1F8C38;font-weight:bold;}
+.solution.wrong{color:#db2828;}
+.solution.compile{color:#00b5ad;}
+.solution.runtime{color:#f2711c;}
 
 
 /**

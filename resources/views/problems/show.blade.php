@@ -3,9 +3,7 @@
 @section('content')
 
   <div class="ui breadcrumb" style="padding-bottom:1em;">
-    <a class="section">Home</a>
-    <i class="right chevron icon divider"></i>
-    <a class="section">Problems</a>
+    <a class="section" href="/problems">Problems</a>
     <i class="right chevron icon divider"></i>
     <div class="active section">{{ $problem->id }}. {{ $problem->title }}</div>
   </div>
@@ -17,7 +15,7 @@
     <a class="item" href="#">
       (출처)
     </a>
-    <a class="item" href="#">
+    <a class="item" href="/submit/{{ $problem->id }}">
       제출하기
     </a>
     <a class="item" href="#">
@@ -34,7 +32,7 @@
     </div>
   </div>
 
-  <table class="ui celled padded single line table segment">
+  <table class="ui celled padded single line table segment unstackable">
   <thead><tr>
     <th>시간 제한</th>
     <th>메모리 제한</th>
@@ -70,7 +68,7 @@
     <a class="ui red basic label">도전 중</a>
     <a class="ui green basic label">해결</a>
 
-    <div class="ui horizontal divider">문제 설명</div>
+    <div class="ui horizontal divider"><i class="pencil icon"></i>&nbsp;&nbsp;문제 설명</div>
     <div class="context">{!! $problem->description !!}</div>
 
     <div class="ui horizontal divider">입력 형식</div>
@@ -105,7 +103,7 @@
       </div>
     </div>
 
-    <div class="ui horizontal divider">Thanks to</div>
+    <div class="ui horizontal divider"><i class="heart icon"></i>&nbsp;Thanks to</div>
     <div class="context">
       <div class="ui label">
         번역

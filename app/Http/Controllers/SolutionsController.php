@@ -28,9 +28,10 @@ class SolutionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $problem = \App\Problem::findOrFail($id);
+        return view('solutions.create', compact('problem'));
     }
 
     /**
