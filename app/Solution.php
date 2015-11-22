@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\SolutionResult;
+
 class Solution extends Model
 {
     /**
@@ -15,6 +17,7 @@ class Solution extends Model
 
     protected $fillable = [
         'id',
+        'result_id',
         'lang_id',
         'problem_id',
         'user_id',
@@ -23,7 +26,6 @@ class Solution extends Model
         'size',
         'is_hidden',
         'created_at',
-        'result_id'
     ];
 
     public function problem() {
@@ -34,14 +36,14 @@ class Solution extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function results() {
+        return $this->belongsTo('App\SolutionResult');
+    }
+
     public function resultToHtml() {
-        // 임시로 설정
-        $cid = $this->result_id ? $this->result_id : 0;
+        $result = SolutionResult::find($this->result_id);
 
-        $className = ['null', 'waiting', 'accept', 'wrong', 'compile', 'runtime', 'etc'];
-        $renderStr = ['없음', '기다리는 중...', '맞았습니다!', '틀렸습니다', '컴파일 실패', '런타임 에러', '관리자에게 문의하세요'];
-
-        return "<span class=\"solution {$className[$cid]}\">{$renderStr[$cid]}</span>";
+        return "<span class=\"solution {$result->class_name}\">{$result->description}</span>";
     }
 
 }
