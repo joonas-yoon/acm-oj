@@ -11,10 +11,34 @@
   </h2>
 
   @if( $fromWhere == 'problem' )
-  문제로부터 넘어옴
+  문제로부터 넘어옴<br/><br/>
   @elseif( $fromWhere == 'contest' )
-  대회로부터 넘어옴
+  대회로부터 넘어옴<br/><br/>
   @endif
+
+  <!-- search form -->
+  <form method="GET" class="ui form">
+    <div class="three fields">
+      <div class="field">
+        <label for="problem_id">문제 번호</label>
+        <input type="text" name="problem_id" placeholder="문제 번호" value="{{ $problem_id }}" />
+      </div>
+      <div class="field">
+        <label for="result_id">결과</label>
+        <select class="ui fluid search selection dropdown" name="result_id">
+          <option value="0">모든 결과</option>
+          <option value="1">임시 항목 #1</option>
+          <option value="2">임시 항목 #2</option>
+          <option value="3">임시 항목 #3</option>
+          <option value="4">임시 항목 #4</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <button type="submit" class="ui blue button"><i class="search icon"></i>&nbsp;검색</button>
+      </div>
+    </div>
+  </form>
 
   <table class="ui striped blue table compact unstackable">
     <thead>
@@ -65,5 +89,6 @@
   <script>
   $('a.popup.title').popup({ position : 'left center', transition: 'vertical flip' });
   $('a.popup.date').popup({ position : 'top center', transition: 'vertical flip' });
+  $('select.dropdown').dropdown();
   </script>
 @stop

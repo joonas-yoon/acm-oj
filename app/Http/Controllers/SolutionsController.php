@@ -35,7 +35,9 @@ class SolutionsController extends Controller
 
         $solutions = $solutions->paginate(20);
 
-        return view('solutions.index', compact('solutions', 'fromWhere'));
+        return view('solutions.index', compact(
+            'solutions', 'problem_id', 'result_id', 'fromWhere'
+        ));
     }
 
     /**
