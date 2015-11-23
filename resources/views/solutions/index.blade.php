@@ -28,7 +28,7 @@
         <select class="ui fluid search selection dropdown" name="result_id" value="{{ $result_id }}">
           <option value="0">모든 결과</option>
           @foreach($resultRefs as $option)
-          <option value="{{ $option->id }}">{{ $option->description }}</option>
+          <option value="{{ $option->id }}" {{ $option->id == $result_id ? 'selected':'' }}>{{ $option->description }}</option>
           @endforeach
         </select>
       </div>
