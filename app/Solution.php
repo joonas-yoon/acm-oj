@@ -37,15 +37,16 @@ class Solution extends Model
     }
 
     public function result() {
-        return $this->belongsTo('App\Result')->where('id', $this->result_id);
+        return $this->belongsTo('App\Result')
+                    ->where('id', $this->result_id);
     }
 
     public function publishedResult() {
-        return $this->result->where('published', '!=', 0);
+        return $this->result()->where('published', '!=', 0);
     }
 
     public function isAccepted() {
-        return Result::find($this->result_id)->class_name == "accept";
+        return $this->result()->where('remark', '=', 'ACC');
     }
 
     public function resultToHtml() {

@@ -36,8 +36,8 @@
   <thead><tr>
     <th>시간 제한</th>
     <th>메모리 제한</th>
-    <th>제출 수</th>
     <th>정답 수</th>
+    <th>제출 수</th>
     <th>정답률</th>
     <th>평점</th>
     <th>태그 보기</th>
@@ -45,8 +45,8 @@
   <tbody><tr>
     <td>{{ $problem->time_limit }} 초</td>
     <td>{{ $problem->memory_limit }} MB</td>
+    <td>{{ $problem->getAcceptCount() }}</td>
     <td>{{ $problem->getSubmitCount() }}</td>
-    <td>{{ $problem->solutions_accept()->count() }}</td>
     <td>{{ number_format($problem->getRate(), 2) }} %</td>
     <td>
       <div class="ui star rating" data-rating="5"></div>

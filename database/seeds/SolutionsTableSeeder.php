@@ -21,10 +21,12 @@ class SolutionsTableSeeder extends Seeder
 
         // 기본 설정 추가
         $stuffs = [
-            ['desc' => '대기 중'    , 'rmk' => 'QUE', 'class_name' => ''],
+            ['desc' => '저장 중'    , 'rmk' => 'TMP', 'class_name' => 'temp hidden'],
+            ['desc' => '대기 중'    , 'rmk' => 'QUE', 'class_name' => 'wait'],
+            ['desc' => '채점 중'    , 'rmk' => 'RUN', 'class_name' => 'running'],
             ['desc' => '맞았습니다!', 'rmk' => 'ACC', 'class_name' => 'accept'],
             ['desc' => '틀렸습니다' , 'rmk' => 'WA' , 'class_name' => 'wrong error'],
-            ['desc' => '컴파일 실패', 'rmk' => 'CLE', 'class_name' => 'compile error'],
+            ['desc' => '컴파일 에러', 'rmk' => 'CLE', 'class_name' => 'compile error'],
             ['desc' => '런타임 에러', 'rmk' => 'RTE', 'class_name' => 'runtime error'],
             ['desc' => '시간 초과',   'rmk' => 'TLE', 'class_name' => 'time limit error'],
             ['desc' => '메모리 초과', 'rmk' => 'MLE', 'class_name' => 'memory limit error'],

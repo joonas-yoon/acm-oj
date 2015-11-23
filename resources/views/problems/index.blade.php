@@ -45,8 +45,16 @@
             <a class="ui green basic label">해결</a>
           <? } ?>
         </td>
-        <td>{{ $problem->solutions_accept()->count() }}</td>
-        <td>{{ $problem->getSubmitCount() }}</td>
+        <td>
+          <a href="/solutions/?problem_id={{ $problem->id }}&result_id=2">
+            {{ $problem->getAcceptCount() }}
+          </a>
+        </td>
+        <td>
+          <a href="/solutions/?problem_id={{ $problem->id }}">
+            {{ $problem->getSubmitCount() }}
+          </a>
+        </td>
         <td>{{ number_format($problem->getRate(), 2) }} %</td>
       </tr>
       @endforeach

@@ -169,7 +169,7 @@ html, body {
 .solution.wrong,
 .solution.limit,
 .solution.presentation{color:#db2828;}
-.solution.compile{color:#00b5ad;}
+.solution.compile{color:#2185D0;}
 .solution.runtime{color:#f2711c;}
 .solution.unit{color:#db2828;padding-left: 3px;}
 

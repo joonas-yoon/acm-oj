@@ -23,5 +23,6 @@ Route::get('/rank', 'RankController@index');
 
 Route::get('/solutions',  'SolutionsController@index');
 Route::post('/solutions', 'SolutionsController@store');
+Route::get('/solutions/{id}', 'SolutionsController@show');
 Route::get('/submit/{id}','SolutionsController@create');
 

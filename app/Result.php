@@ -20,7 +20,7 @@ class Result extends Model
         'published'
     ];
 
-    protected $hidden = [
+    protected $guarded = [
         'remark'
     ];
 

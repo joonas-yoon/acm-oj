@@ -36,8 +36,12 @@ class SolutionsController extends Controller
 
         $solutions = $solutions->paginate(20);
 
+        //$resultRefs = \App\Result::all()->;
+
         return view('solutions.index', compact(
-            'solutions', 'problem_id', 'result_id', 'fromWhere'
+            'fromWhere', 'solutions',
+            'problem_id',
+            'result_id', 'resultRefs'
         ));
     }
 
@@ -68,8 +72,8 @@ class SolutionsController extends Controller
             'problem_id' => 'required|numeric|min:0',
             'lang_id'    => 'required|numeric|min:0',
             'user_id'    => 'required',
-            'code'       => 'required|min:2',
-            'size'       => 'required|min:2'
+            'code'       => 'required',
+            'size'       => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -79,8 +83,11 @@ class SolutionsController extends Controller
         }
 
         $solution = new Solution($request->all());
-        // code
         $solution->save();
+        // 일단 코드를 수정으로 삽입했음
+        \DB::table('codes')->insert(
+            [ 'id' => $solution->id, 'code' => $request->code ]
+        );
 
         return redirect('/solutions/?problem_id=' . $request->problem_id
             . '&user_id=' . $request->user_id );
@@ -94,7 +101,9 @@ class SolutionsController extends Controller
      */
     public function show($id)
     {
-        //
+        $code = \DB::table('codes')->where('id', $id)->first();
+
+        return view('solutions.show', compact('code'));
     }
 
     /**
