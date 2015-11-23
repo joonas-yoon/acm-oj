@@ -18,7 +18,7 @@
     <a class="item" href="/submit/{{ $problem->id }}">
       제출하기
     </a>
-    <a class="item" href="#">
+    <a class="item" href="/solutions?from=problem&problem_id={{ $problem->id }}">
       채점 현황
     </a>
     <div class="right menu">

@@ -10,6 +10,12 @@
     </div>
   </h2>
 
+  @if( $fromWhere == 'problem' )
+  문제로부터 넘어옴
+  @elseif( $fromWhere == 'contest' )
+  대회로부터 넘어옴
+  @endif
+
   <table class="ui striped blue table compact unstackable">
     <thead>
       <tr>

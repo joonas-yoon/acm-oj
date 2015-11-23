@@ -49,5 +49,4 @@ class Solution extends Model
 
         return "<span class=\"solution {$result->class_name}\">{$result->description}</span>";
     }
-
 }
