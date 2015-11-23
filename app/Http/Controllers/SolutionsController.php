@@ -36,7 +36,7 @@ class SolutionsController extends Controller
 
         $solutions = $solutions->paginate(20);
 
-        //$resultRefs = \App\Result::all()->;
+        $resultRefs = \App\Result::where('id', '>', 1)->get();
 
         return view('solutions.index', compact(
             'fromWhere', 'solutions',
