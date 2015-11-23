@@ -16,7 +16,7 @@ class SolutionsTableSeeder extends Seeder
          * It could be deleted records existed.
          */
         App\Solution::truncate();
-        DB::table('solution_results')->truncate();
+        DB::table('results')->truncate();
         DB::table('languages')->truncate();
 
         // 기본 설정 추가
@@ -33,7 +33,7 @@ class SolutionsTableSeeder extends Seeder
             ['desc' => '관리자 문의', 'rmk' => 'ETC', 'class_name' => '']
         ];
         foreach($stuffs as $stuff){
-            DB::table('solution_results')->insert(
+            DB::table('results')->insert(
                 array (
                     'description' => $stuff['desc'],
                     'remark'      => $stuff['rmk'],

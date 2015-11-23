@@ -40,7 +40,7 @@ $factory->define(App\Solution::class, function ($faker) {
         //'lang_id'    => App\Language::all()->random()->id,
         'problem_id' => App\Problem::all()->random()->id,
         'user_id'    => App\User::all()->random()->id,
-        'result_id'  => App\SolutionResult::all()->random()->id,
+        'result_id'  => App\Result::all()->random()->id,
         'time'       => $faker->numberBetween(1, 249) * 4,
         'memory'     => $faker->numberBetween(0, 1024) * 4,
         'size'       => $faker->numberBetween(20, 1200),

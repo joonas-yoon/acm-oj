@@ -64,7 +64,7 @@ class SolutionsController extends Controller
         $request['result_id'] = 1;
 
         $validator = \Validator::make($request->all(), [
-            'problem_id' => 'required|numeric|min:3',
+            'problem_id' => 'required|numeric|min:0',
             'lang_id'    => 'required|numeric|min:0',
             'user_id'    => 'required',
             'code'       => 'required|min:2'

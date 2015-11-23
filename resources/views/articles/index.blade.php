@@ -9,8 +9,6 @@
     <a class="fluid ui button" href="/articles/create">Write a Article</a>
 
     @if( count($articles) > 0 )
-    <p>No Items.</p>
-    @else
     <div class="ui divided items">
         @foreach($articles as $article)
         <div class="item">
@@ -29,5 +27,7 @@
         </div>
         @endforeach
     </div>
+    @else
+    <p>No Items.</p>
     @endif
 @stop

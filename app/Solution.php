@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\SolutionResult;
+use App\Result;
 
 class Solution extends Model
 {
@@ -36,16 +36,20 @@ class Solution extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function results() {
-        return $this->belongsTo('App\SolutionResult');
+    public function result() {
+        return $this->belongsTo('App\Result')->where('id', $this->result_id);
+    }
+
+    public function publishedResult() {
+        return $this->result->where('published', '!=', 0);
     }
 
     public function isAccepted() {
-        return SolutionResult::find($this->result_id)->class_name == "accept";
+        return Result::find($this->result_id)->class_name == "accept";
     }
 
     public function resultToHtml() {
-        $result = SolutionResult::find($this->result_id);
+        $result = Result::find($this->result_id);
 
         return "<span class=\"solution {$result->class_name}\">{$result->description}</span>";
     }
