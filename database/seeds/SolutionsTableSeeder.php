@@ -21,12 +21,15 @@ class SolutionsTableSeeder extends Seeder
 
         // 기본 설정 추가
         $stuffs = [
-            ['desc' => '기본 값'    , 'rmk' => 'NUL', 'class_name' => ''],
             ['desc' => '대기 중'    , 'rmk' => 'QUE', 'class_name' => ''],
             ['desc' => '맞았습니다!', 'rmk' => 'ACC', 'class_name' => 'accept'],
             ['desc' => '틀렸습니다' , 'rmk' => 'WA' , 'class_name' => 'wrong error'],
             ['desc' => '컴파일 실패', 'rmk' => 'CLE', 'class_name' => 'compile error'],
             ['desc' => '런타임 에러', 'rmk' => 'RTE', 'class_name' => 'runtime error'],
+            ['desc' => '시간 초과',   'rmk' => 'TLE', 'class_name' => 'time limit error'],
+            ['desc' => '메모리 초과', 'rmk' => 'MLE', 'class_name' => 'memory limit error'],
+            ['desc' => '출력 초과',   'rmk' => 'PLE', 'class_name' => 'print limit error'],
+            ['desc' => '출력 형식이 잘못되었습니다', 'rmk' => 'PE', 'class_name' => 'presentation error'],
             ['desc' => '관리자 문의', 'rmk' => 'ETC', 'class_name' => '']
         ];
         foreach($stuffs as $stuff){
@@ -48,7 +51,6 @@ class SolutionsTableSeeder extends Seeder
                 )
             );
         }
-
 
         factory('App\Solution', 100)->create();
     }

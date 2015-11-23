@@ -92,6 +92,7 @@ class CreateSolutionsTable extends Migration
             $table->string('description');
             $table->string('class_name');
             $table->string('remark'); /* 비고. ACC, WA 등이 들어감 */
+            $table->integer('published'
         });
 
         Schema::table('solutions', function (Blueprint $table) {

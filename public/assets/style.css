@@ -166,10 +166,12 @@ html, body {
 .solution.waiting,
 .solution.etc{color:#999;font-weight:normal;}
 .solution.accept{color:#1F8C38;font-weight:bold;}
-.solution.wrong{color:#db2828;}
+.solution.wrong,
+.solution.limit,
+.solution.presentation{color:#db2828;}
 .solution.compile{color:#00b5ad;}
 .solution.runtime{color:#f2711c;}
-.solution.unit{color:#db2828;}
+.solution.unit{color:#db2828;padding-left: 3px;}
 
 /**
  *
