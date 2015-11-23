@@ -47,7 +47,7 @@
     <td>{{ $problem->memory_limit }} MB</td>
     <td>{{ $problem->getSubmitCount() }}</td>
     <td>{{ $problem->solutions_accept()->count() }}</td>
-    <td>{{ $problem->getRate() }} %</td>
+    <td>{{ number_format($problem->getRate(), 2) }} %</td>
     <td>
       <div class="ui star rating" data-rating="5"></div>
     </td>

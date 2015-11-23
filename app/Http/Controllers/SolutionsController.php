@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
+use App\Solution;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
-use App\Solution;
 use Input;
 
 class SolutionsController extends Controller
@@ -19,16 +20,16 @@ class SolutionsController extends Controller
      */
     public function index()
     {
-        $solutions = Solution::where('is_hidden', false);
+        $solutions = Solution::where('is_hidden', false)->orderBy('id', 'desc');
 
         $fromWhere = Input::get('from', null);
 
-        if( ($problem_id = Input::get('problem_id', '-1')) > 0 ){
+        if( ($problem_id = Input::get('problem_id', '')) > 0 ){
             $temp = $solutions->where('problem_id', $problem_id);
             if( $temp->count() > 0 ) $solutions = $temp;
         }
 
-        if( ($result_id = Input::get('result_id', '-1')) > 0 ){
+        if( ($result_id = Input::get('result_id', '')) > 0 ){
             $temp = $solutions->where('result_id', $result_id);
             if( $temp->count() > 0 ) $solutions = $temp;
         }
@@ -57,11 +58,29 @@ class SolutionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Requests\CreateSolutionRequest $request)
     {
+        $request['user_id'] = \Auth::user()->id;
+        $request['result_id'] = 1;
+
+        $validator = \Validator::make($request->all(), [
+            'problem_id' => 'required|numeric|min:3',
+            'lang_id'    => 'required|numeric|min:0',
+            'user_id'    => 'required',
+            'code'       => 'required|min:2'
+        ]);
+
+        if ($validator->fails()) {
+            return \Redirect::back()
+                    ->withErrors($validator)
+                    ->withInput();
+        }
+
         $solution = new Solution($request->all());
-        //something ->save($solution);
-        //return redirect('/problems/'. $solution->;
+        $solution->save();
+
+        return redirect('/solutions/?problem_id=' . $request->problem_id
+            . '&user_id=' . $request->user_id );
     }
 
     /**
@@ -93,7 +112,7 @@ class SolutionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Requests\CreateSolutionRequest $request, $id)
     {
         //
     }

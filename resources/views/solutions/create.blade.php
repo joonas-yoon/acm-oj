@@ -17,11 +17,7 @@
   <div class="ui stackable grid">
     <div class="two wide column field column-label">언어</div>
     <div class="fourteen wide column field">
-      <select class="ui search selection dropdown">
-        <option value="">선택하세요</option>
-        <option value="0">C</option>
-        <option value="1">C++</option>
-      </select>
+      {!! Form::select('lang_id', ['선택하세요', 'C', 'C++'], Input::old('lang_id'), ['class' => 'ui search selection dropdown']) !!}
     </div>
   </div>
 
@@ -31,25 +27,45 @@
       <div class="inline fields">
         <div class="field">
           <div class="ui radio checkbox">
-            <input type="radio" name="published" tabindex="0" class="hidden" checked>
+            <input type="radio" name="is_published" value="0" tabindex="0" class="hidden" checked>
             <label>공개</label>
           </div>
         </div>
         <div class="field">
           <div class="ui radio checkbox">
-            <input type="radio" name="published" tabindex="0" class="hidden">
+            <input type="radio" name="is_published" value="1" tabindex="1" class="hidden">
             <label>정답인 경우만 공개</label>
           </div>
         </div>
         <div class="field">
           <div class="ui radio checkbox">
-            <input type="radio" name="published" tabindex="0" class="hidden">
+            <input type="radio" name="is_published" value="2" tabindex="2" class="hidden">
             <label>비공개</label>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+@if (count($errors) > 0)
+
+  <div class="ui stackable grid">
+    <div class="two wide column field column-label">오류</div>
+    <div class="fourteen wide column field">
+      <div class="ui visible warning message">
+          <div class="header">
+              Sorry, please correct them below.
+          </div>
+          <ul class="ui list">
+          @foreach($errors->all() as $error)
+              <li>{{ $error }}</li>
+          @endforeach
+          </ul>
+      </div>
+    </div>
+  </div>
+
+@endif
 
   <div class="ui stackable grid">
     <div class="two wide column field column-label">소스 코드</div>
@@ -60,6 +76,7 @@
     </div>
   </div>
 
+  {!! Form::hidden('problem_id', $problem->id) !!}
   {!! Form::close() !!}
 
 @stop

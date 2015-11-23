@@ -25,7 +25,7 @@
       </div>
       <div class="field">
         <label for="result_id">결과</label>
-        <select class="ui fluid search selection dropdown" name="result_id">
+        <select class="ui fluid search selection dropdown" name="result_id" value="{{ $result_id }}">
           <option value="0">모든 결과</option>
           <option value="1">임시 항목 #1</option>
           <option value="2">임시 항목 #2</option>
