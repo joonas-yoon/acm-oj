@@ -29,7 +29,7 @@ class CreateSolutionsTable extends Migration
                   ->onUpdate('cascade')->onDelete('cascade');
         });
 
-        Schema::create('solution_codes', function (Blueprint $table) {
+        Schema::create('codes', function (Blueprint $table) {
             $table->integer('id')->unsigned();
             $table->foreign('id')->references('id')->on('solutions')
                   ->onUpdate('cascade')->onDelete('cascade');
@@ -74,7 +74,7 @@ class CreateSolutionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('solution_codes');
+        Schema::drop('codes');
         Schema::drop('solutions');
 
         Schema::drop('results');

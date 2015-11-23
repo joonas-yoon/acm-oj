@@ -62,12 +62,14 @@ class SolutionsController extends Controller
     {
         $request['user_id'] = \Auth::user()->id;
         $request['result_id'] = 1;
+        $request['size'] = strlen($request->code);
 
         $validator = \Validator::make($request->all(), [
             'problem_id' => 'required|numeric|min:0',
             'lang_id'    => 'required|numeric|min:0',
             'user_id'    => 'required',
-            'code'       => 'required|min:2'
+            'code'       => 'required|min:2',
+            'size'       => 'required|min:2'
         ]);
 
         if ($validator->fails()) {
@@ -77,6 +79,7 @@ class SolutionsController extends Controller
         }
 
         $solution = new Solution($request->all());
+        // code
         $solution->save();
 
         return redirect('/solutions/?problem_id=' . $request->problem_id
