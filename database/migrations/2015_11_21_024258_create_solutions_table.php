@@ -94,26 +94,6 @@ class CreateSolutionsTable extends Migration
             $table->string('remark'); /* 비고. ACC, WA 등이 들어감 */
         });
 
-        // 기본 설정 추가
-        $stuffs = [
-            ['desc' => '기본 값'    , 'rmk' => 'NUL', 'class_name' => ''],
-            ['desc' => '대기 중'    , 'rmk' => 'QUE', 'class_name' => ''],
-            ['desc' => '맞았습니다!', 'rmk' => 'ACC', 'class_name' => 'accept'],
-            ['desc' => '틀렸습니다' , 'rmk' => 'WA' , 'class_name' => 'wrong error'],
-            ['desc' => '컴파일 실패', 'rmk' => 'CLE', 'class_name' => 'compile error'],
-            ['desc' => '런타임 에러', 'rmk' => 'RTE', 'class_name' => 'runtime error'],
-            ['desc' => '관리자 문의', 'rmk' => 'ETC', 'class_name' => '']
-        ];
-        foreach($stuffs as $stuff){
-            DB::table('solution_results')->insert(
-                array (
-                    'description' => $stuff['desc'],
-                    'remark'      => $stuff['rmk'],
-                    'class_name'  => $stuff['class_name']
-                )
-            );
-        }
-
         Schema::table('solutions', function (Blueprint $table) {
             $table->integer('result_id')->unsigned()->after('id');
             $table->foreign('result_id')->references('id')->on('solution_results');

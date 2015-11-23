@@ -1,4 +1,4 @@
-@if ($errors->all())
+@if (count($errors) > 0)
     <div class="ui warning message">
         <i class="close icon"></i>
         <div class="header">

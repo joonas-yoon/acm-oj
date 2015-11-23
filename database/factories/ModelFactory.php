@@ -34,6 +34,7 @@ $factory->define(App\Problem::class, function ($faker) {
     ];
 });
 
+
 $factory->define(App\Solution::class, function ($faker) {
     return [
         //'lang_id'    => App\Language::all()->random()->id,
