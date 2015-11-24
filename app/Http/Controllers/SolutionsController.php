@@ -20,7 +20,7 @@ class SolutionsController extends Controller
      */
     public function index()
     {
-        $solutions = Solution::where('is_hidden', false)->orderBy('id', 'desc');
+        $solutions = Solution::latest('id')->where('is_hidden', false);
 
         $fromWhere = Input::get('from', null);
 

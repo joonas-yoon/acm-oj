@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
+use Input;
+
 class ProblemsController extends Controller
 {
     /**
@@ -43,7 +45,42 @@ class ProblemsController extends Controller
      */
     public function create()
     {
-        return view('problems.create');
+        return view('problems.maker.content');
+    }
+    public function createData(Request $request, $step)
+    {
+        //var_dump($request->all());
+
+        if( $step == 'preview' ){
+            // 주어진 리퀘스트에서 미리 보기
+            $problem = new Problem($request->all());
+
+            $problem->description = $problem->getMdDescription();
+            $problem->input       = $problem->getMdInput();
+            $problem->output      = $problem->getMdOutput();
+            $problem->hint        = $problem->getMdHint();
+
+            return view('problems.show', compact('problem'));
+        }
+        else if( $step == 'data' ){
+            // 데이터 등록과 함께 실제로 등록을 준비함
+
+            return view('problems.maker.data');
+        }
+        else if( $step == 'finish' ){
+            // 실제로 등록
+
+            return '등록 완료!';
+        }
+        else if( $step == 5 ){
+        }
+
+        return '잘못된 접근';
+    }
+
+    private static function makerStepClass($val, $lv){
+        if($val < $lv) return 'disabled';
+        return $val > $lv ? '':'active';
     }
 
     /**
@@ -55,9 +92,24 @@ class ProblemsController extends Controller
     public function store(Requests\CreateProblemRequest $request)
     {
         $problem = new Problem($request->all());
+        /*
         $problem->save();
 
         return redirect('/problems/' . $problem->id);
+        */
+
+        /*
+        입력파일 형식
+
+        테스트케이스 수(n)
+        시간제한(t) 메모리제한(m) 스페셜저지여부(0/1)
+        if(스페셜저지인 경우) spj 언어 (string)
+        테스트케이스1 입력파일(data/1000/input1.txt)
+        테스트케이스1 출력파일(data/1000/output1.txt)
+        */
+
+        $storedContext = [];
+
     }
 
     /**

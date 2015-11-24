@@ -19,6 +19,7 @@ Route::get('/about', 'PagesController@about');
 Route::resource('articles', 'ArticlesController');
 
 Route::get('/problems/new', 'ProblemsController@newProblems');
+Route::post('/problems/create/{step}', 'ProblemsController@createData');
 Route::resource('problems', 'ProblemsController');
 
 Route::get('/rank', 'RankController@index');
