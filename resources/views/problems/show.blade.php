@@ -2,13 +2,7 @@
 
 @section('content')
 
-  <div class="ui breadcrumb" style="padding-bottom:1em;">
-    <a class="section" href="/problems">Problems</a>
-    <i class="right chevron icon divider"></i>
-    <div class="active section">{{ $problem->id }}. {{ $problem->title }}</div>
-  </div>
-
-  <div class="ui pointing sticky menu" id="problemnav">
+  <div class="ui secondary menu" id="problemnav">
     <a class="item {{ App\Helpers::setActive('problems.show', Route::current()) }}" href="#">
       {{ $problem->id }}번: {{ $problem->title }}
     </a>
@@ -31,6 +25,16 @@
       </div>
     </div>
   </div>
+
+  @if ($problem->is_special)
+  <a class="ui red ribbon label">스페셜 저지</a>
+  @endif
+
+  <h2 class="ui header">
+    {{ $problem->title }}
+    <a class="ui red basic label">도전 중</a>
+    <a class="ui green basic label">해결</a>
+  </h2>
 
   <table class="ui celled padded single line table segment unstackable">
   <thead><tr>
@@ -61,12 +65,6 @@
   </table>
 
   <div id="problem">
-
-    @if ($problem->is_special)
-    <a class="ui red ribbon label">스페셜 저지</a>
-    @endif
-    <a class="ui red basic label">도전 중</a>
-    <a class="ui green basic label">해결</a>
 
     <div class="ui horizontal divider"><i class="pencil icon"></i>&nbsp;&nbsp;문제 설명</div>
     <div class="context">{!! $problem->description !!}</div>

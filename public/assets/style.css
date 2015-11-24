@@ -95,12 +95,13 @@ html, body {
     background-color: #F2F3F5;
 }
 
-#navigator .item.logo { padding: 0; }
-
 #navigator .ui.menu {
     margin: 0em;
     -webkit-transition: background .2s linear, border .2s linear;
     transition: background .2s linear, border .2s linear;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
 }
 #navigator .ui.text.menu {
     padding-top: 1rem;
@@ -126,6 +127,26 @@ html, body {
 }
 #navigator.light .ui.text.menu .index.item {
     color: #000;
+}
+#navigator .ui.secondary.menu .item {
+    padding-top: 1.725em;
+    padding-bottom: 1.725em;
+}
+#navigator .ui.secondary.menu .item.brand {
+    padding: 0.8em;
+    border-left: none;
+    font-family: fantasy;
+}
+
+#navigator .sign.item:before {
+    background: none;
+}
+#navigator .sign.item .ui.breadcrumb .section {
+    color: inherit;
+}
+#navigator .sign.item .ui.breadcrumb .divider {
+    color: inherit;
+    margin: 0 .5rem;
 }
 
 /**
@@ -173,6 +194,10 @@ html, body {
 .solution.runtime{color:#f2711c;}
 .solution.running{color:#FF9800;}
 .solution.unit{color:#db2828;padding-left: 3px;}
+
+.text-center{text-align: center !important;}
+.text-left{text-align: left !important;}
+.text-right{text-align: right !important;}
 
 /**
  *

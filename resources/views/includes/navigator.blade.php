@@ -77,11 +77,11 @@
 @else
   <!-- Index Page Navigator -->
 
-  <div class="ui secondary pointing menu">
+  <div class="ui blue secondary pointing menu">
     <div class="ui container">
       <a class="ui item brand" href="/">
-        <img src="/images/logo-light-min.png">&nbsp;
-        Orion Online Judge
+        <img src="/images/logo-with-text.png" style="width:9.8em;">&nbsp;
+        <!--Orion Online Judge-->
       </a>
       <a href="/problems" class="ui item {{ \App\Helpers::setActive('problems') }}">문제</a>
       <a href="#" class="ui item">대회</a>
