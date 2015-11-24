@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Problem;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class ProblemsController extends Controller
 {
@@ -18,6 +19,17 @@ class ProblemsController extends Controller
     public function index()
     {
         $problems = Problem::where('is_published', true)->paginate(20);
+
+        $resultAccCode = \App\Result::getAcceptCode();
+
+        return view('problems.index', compact('problems', 'resultAccCode'));
+    }
+
+    public function newProblems ()
+    {
+        $problems = Problem::latest('created_at')->latest('id')
+                    ->where('is_published', true)
+                    ->take(10)->get();
 
         $resultAccCode = \App\Result::getAcceptCode();
 
@@ -40,10 +52,12 @@ class ProblemsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Requests\CreateProblemRequest $request)
     {
-        var_dump("저장 페이지! 잇힝");
-        //
+        $problem = new Problem($request->all());
+        $problem->save();
+
+        return redirect('/problems/' . $problem->id);
     }
 
     /**
@@ -62,6 +76,18 @@ class ProblemsController extends Controller
         $problem->hint        = $problem->getMdHint();
 
         return view('problems.show', compact('problem'));
+    }
+
+    /**
+     *
+     * 틀만 잡아놓고 추후에 확인하는 작업을 추가하자.
+     *
+     */
+    public function preview(Requests\CreateProblemRequest $request)
+    {
+        //$problem = new Problem($request->all());
+
+        return view('problems.preview', compact('problem'));
     }
 
     /**

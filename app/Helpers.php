@@ -16,4 +16,14 @@ class Helpers extends Model
 
         return Request::is($path) || Request::is($path.'/*') ? $active : '';
     }
+
+    public static function setActiveStrict($path, $route = null, $active = 'active')
+    {
+        if( is_object($route) )
+        {
+            return $route->getName() == $path ? $active : '';
+        }
+
+        return Request::is($path) ? $active : '';
+    }
 }

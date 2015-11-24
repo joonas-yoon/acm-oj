@@ -1,4 +1,4 @@
-@if ($paginator->lastPage() > 1)
+@if ( method_exists( $paginator, 'lastPage' ) && $paginator->lastPage() > 1)
 <div class="ui four borderless item menu">
     <a class="item {{ ($paginator->currentPage() == 1) ? ' disabled' : '' }}"
        href="{{ $paginator->url(1) }}">

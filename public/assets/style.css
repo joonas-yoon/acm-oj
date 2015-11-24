@@ -37,6 +37,9 @@ html, body {
 .ui.comments .comment .avatar img, .ui.comments .comment img.avatar {
     height: auto;
 }
+.ui.progress .bar {
+    min-width: 0;
+}
 
 /**
  *
