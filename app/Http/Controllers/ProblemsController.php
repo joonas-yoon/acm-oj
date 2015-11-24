@@ -19,7 +19,9 @@ class ProblemsController extends Controller
     {
         $problems = Problem::where('is_published', true)->paginate(20);
 
-        return view('problems.index', compact('problems'));
+        $resultAccCode = \App\Result::getAcceptCode();
+
+        return view('problems.index', compact('problems', 'resultAccCode'));
     }
 
     /**

@@ -31,8 +31,12 @@
         <td>
           <a href="/user/{{ $user->id }}">{{ $user->email }}</a>
         </td>
-        <td>{{ $user->solutions_accept()->count() }}</td>
-        <td>{{ $user->getSubmitCount() }}</td>
+        <td>
+          <a href="/solutions/?user_id={{ $user->id }}&result_id={{ \App\Result::getAcceptCode() }}">{{ $user->getAcceptCount() }}</a>
+        </td>
+        <td>
+          <a href="/solutions/?user_id={{ $user->id }}">{{ $user->getSubmitCount() }}</a>
+        </td>
         <td>{{ number_format($user->getRate(), 2) }} %</td>
       </tr>
     @endforeach

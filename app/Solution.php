@@ -28,6 +28,8 @@ class Solution extends Model
         'created_at',
     ];
 
+    protected $guarded = [];
+
     public function problem() {
         return $this->belongsTo('App\Problem');
     }
@@ -45,8 +47,8 @@ class Solution extends Model
         return $this->result()->where('published', '!=', 0);
     }
 
-    public function isAccepted() {
-        return $this->result()->where('remark', '=', 'ACC');
+    public function accepted() {
+        return $this->result()->where('id', \App\Result::getAcceptCode())->first();
     }
 
     public function resultToHtml() {

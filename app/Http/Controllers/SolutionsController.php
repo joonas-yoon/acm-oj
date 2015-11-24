@@ -24,23 +24,33 @@ class SolutionsController extends Controller
 
         $fromWhere = Input::get('from', null);
 
-        if( ($problem_id = Input::get('problem_id', '')) > 0 ){
+        if( ($problem_id = Input::get('problem_id', 0)) > 0 ){
             $temp = $solutions->where('problem_id', $problem_id);
             if( $temp->count() > 0 ) $solutions = $temp;
         }
 
-        if( ($result_id = Input::get('result_id', '')) > 0 ){
+        if( ($user_id = Input::get('user_id', 0)) > 0 ){
+            $temp = $solutions->where('user_id', $user_id);
+            if( $temp->count() > 0 ) $solutions = $temp;
+        }
+
+        // 표시되지 않을 결과들
+        $beHidden = \App\Result::getHiddenCodes();
+        $resultRefs = \App\Result::whereNotIn('id', $beHidden)->get();
+
+        $result_id = Input::get('result_id', 0);
+
+        if( ! in_array( $result_id, $beHidden ) ){
             $temp = $solutions->where('result_id', $result_id);
             if( $temp->count() > 0 ) $solutions = $temp;
         }
 
         $solutions = $solutions->paginate(20);
 
-        $resultRefs = \App\Result::where('id', '>', 1)->get();
-
         return view('solutions.index', compact(
             'fromWhere', 'solutions',
             'problem_id',
+            'user_id',
             'result_id', 'resultRefs'
         ));
     }

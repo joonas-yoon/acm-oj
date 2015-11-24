@@ -51,21 +51,18 @@ class User extends Model implements AuthenticatableContract,
     public function solutions() {
         return $this->hasMany('App\Solution');
     }
-    public function solutions_accept() {
-        return $this->solutions->where('result_id', 2);
-    }
-
     public function contributeProblems() {
         return $this->hasMany('App\Problem');
     }
 
+    public function getAcceptCount() {
+        return $this->solutions->where('result_id', \App\Result::getAcceptCode())->count();
+    }
     public function getSubmitCount() {
         return $this->solutions->count();
     }
     public function getRate() {
         $submitCnt = $this->getSubmitCount();
-        return $submitCnt > 0 ?
-                100 * $this->solutions_accept()->count() / $this->getSubmitCount()
-                : 0;
+        return $submitCnt > 0 ? 100 * $this->getAcceptCount() / $submitCnt : 0;
     }
 }

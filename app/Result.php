@@ -27,4 +27,17 @@ class Result extends Model
     public function solution(){
         return $this->hasMany('App\Solution');
     }
+
+    public static function getTempCode() { return 1; }
+    public static function getWaitCode() { return 2; }
+    public static function getRunningCode() { return 3; }
+    public static function getAcceptCode() { return 4; }
+
+    public static function getHiddenCodes() {
+        return [
+            0,  // id가 0인 것은 없음
+            \App\Result::getTempCode(),
+            // \App\Result::getWaitCode()
+        ];
+    }
 }

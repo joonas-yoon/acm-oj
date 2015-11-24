@@ -65,7 +65,7 @@
         </td>
         <td>{!! $solution->resultToHtml() !!}</td>
         <td>{{ $solution->lang_id }}</td>
-        @if( $solution->isAccepted() )
+        @if( $solution->accepted() )
         <td>{{ $solution->time }} <span class="solution unit"> MS</span></td>
         <td>{{ $solution->memory }} <span class="solution unit"> KB</span></td>
         @else

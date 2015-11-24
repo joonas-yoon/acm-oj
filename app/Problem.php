@@ -54,7 +54,7 @@ class Problem extends Model
     }
 
     public function solutionsAccept() {
-        return $this->solutions()->where('result_id', 4);
+        return $this->solutions()->where('result_id', \App\Result::getAcceptCode());
     }
     public function getSubmitCount() {
         return $this->solutions->count();

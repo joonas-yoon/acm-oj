@@ -46,7 +46,7 @@
           <? } ?>
         </td>
         <td>
-          <a href="/solutions/?problem_id={{ $problem->id }}&result_id=2">
+          <a href="/solutions/?problem_id={{ $problem->id }}&result_id={{ $resultAccCode }}">
             {{ $problem->getAcceptCount() }}
           </a>
         </td>
