@@ -44,7 +44,7 @@ $factory->define(App\Solution::class, function ($faker) {
         'time'       => $faker->numberBetween(1, 249) * 4,
         'memory'     => $faker->numberBetween(0, 1024) * 4,
         'size'       => $faker->numberBetween(20, 1200),
-        'is_hidden'  => $faker->boolean(15),
-        'is_published' => $faker->boolean(45)
+        'is_hidden'  => $faker->boolean(20),
+        'is_published' => $faker->boolean(95)
     ];
 });

@@ -171,6 +171,7 @@ html, body {
 .solution.presentation{color:#db2828;}
 .solution.compile{color:#2185D0;}
 .solution.runtime{color:#f2711c;}
+.solution.running{color:#FF9800;}
 .solution.unit{color:#db2828;padding-left: 3px;}
 
 /**

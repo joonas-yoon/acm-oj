@@ -31,7 +31,7 @@ class ProblemsController extends Controller
      */
     public function create()
     {
-        //
+        return view('problems.create');
     }
 
     /**
@@ -42,6 +42,7 @@ class ProblemsController extends Controller
      */
     public function store(Request $request)
     {
+        var_dump("저장 페이지! 잇힝");
         //
     }
 
