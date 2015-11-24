@@ -99,6 +99,10 @@ class SolutionsController extends Controller
             [ 'id' => $solution->id, 'code' => $request->code ]
         );
 
+        // 코드가 들어가면 대기중으로 전환
+        $solution['result_id'] = \App\Result::getWaitCode();
+        $solution->save();
+
         return redirect('/solutions/?problem_id=' . $request->problem_id
             . '&user_id=' . $request->user_id );
     }
