@@ -44,9 +44,13 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|unique:users|max:255',
+            // rules
+            'name' => 'required|unique:users|max:255|regex:/[a-zA-Z0-9\._\-]/',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
+        ], [
+            // messages
+            'name.regex' => '사용할 수 없는 문자가 포함되어있습니다.'
         ]);
     }
 

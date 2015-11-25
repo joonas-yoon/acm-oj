@@ -15,7 +15,7 @@
       <tr>
         <th>순위</th>
         <th>이름</th>
-        <th>이메일</th>
+        <th>한마디</th>
         <th>해결 수</th>
         <th>제출 수</th>
         <th>비율</th>
@@ -26,10 +26,10 @@
       <tr>
         <td></td>
         <td>
-          <a href="/user/{{ $user->id }}">{{ $user->name }}</a>
+          <a href="/user/{{ $user->name }}">{{ $user->name }}</a>
         </td>
         <td>
-          <a href="/user/{{ $user->id }}">{{ $user->email }}</a>
+          {{-- $user->message --}}
         </td>
         <td>
           <a href="/solutions/?user_id={{ $user->id }}&result_id={{ \App\Result::getAcceptCode() }}">{{ $user->getAcceptCount() }}</a>

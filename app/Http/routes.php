@@ -22,6 +22,8 @@ Route::get('/problems/new', 'ProblemsController@newProblems');
 Route::post('/problems/create/{step}', 'ProblemsController@createData');
 Route::resource('problems', 'ProblemsController');
 
+Route::get('/user/{name}', 'UsersController@show');
+
 Route::get('/rank', 'RankController@index');
 
 Route::get('/solutions',  'SolutionsController@index');

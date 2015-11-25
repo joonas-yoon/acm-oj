@@ -24,7 +24,7 @@ class SolutionsController extends Controller
 
         $fromWhere = Input::get('from', null);
 
-        if( ($problem_id = Input::get('problem_id', 0)) > 0 ){
+        if( ($problem_id = Input::get('problem_id', '')) > 0 ){
             $temp = $solutions->where('problem_id', $problem_id);
             if( $temp->count() > 0 ) $solutions = $temp;
         }

@@ -58,7 +58,7 @@
       <tr>
         <td>{{ $solution->id }}</td>
         <td>
-          <a href="/user/{{ $solution->user->id }}">{{ $solution->user->name }}</a>
+          <a href="/user/{{ $solution->user->name }}">{{ $solution->user->name }}</a>
         </td>
         <td>
           <a class="popup title" href="/problems/{{ $solution->problem->id }}" data-content="{{ $solution->problem->title }}" data-variation="inverted">{{ $solution->problem->id }}</a>

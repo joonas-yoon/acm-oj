@@ -42,6 +42,37 @@ class User extends Model implements AuthenticatableContract,
     protected $hidden = ['password', 'remember_token'];
 
     /**
+     * Find by username, or throw an exception.
+     *
+     * @param string $username The username.
+     * @param mixed $columns The columns to return.
+     *
+     * @throws ModelNotFoundException if no matching User exists.
+     *
+     * @return User
+     */
+    public static function findByNameOrFail(
+        $name,
+        $columns = array('*')
+    ) {
+        if ( ! is_null($user = static::whereName($name)->first($columns))) {
+            return $user;
+        }
+
+        throw new ModelNotFoundException;
+    }
+    public static function findByNameOrEmailOrFail(
+        $nameOrEmail,
+        $columns = array('*')
+    ) {
+        if ( ! is_null($user = static::whereName($nameOrEmail)->orWhere('email', $nameOrEmail)->first($columns))) {
+            return $user;
+        }
+
+        throw new ModelNotFoundException;
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function articles() {
