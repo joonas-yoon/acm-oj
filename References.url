@@ -19,3 +19,11 @@ https://packagist.org/packages/wangaz/laravel-semantic-ui-css
 
 https://laracasts.com/discuss/channels/tips/testing-cloud9-ide-with-composer-laravel
 
+몽고 db
+https://docs.mongodb.org/getting-started/shell/
+
+라라벨 Connection? Collection? 에 대해 참고할만한 사이트 추가
+https://www.lesstif.com/pages/viewpage.action?pageId=27295778
+
+https://mattstauffer.co/blog/laravel-5.0-middleware-filter-style#running-middleware-on-specific-routes
+https://experiencehq.net/blog/laravel-quick-tip-find-by-username-or-fail
