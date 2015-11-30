@@ -16,13 +16,13 @@
 
 			<div class="field">
 				<div class="ui left icon input">
-					{!! Form::text('email', Input::old('email'), ['placeholder' => 'E-mail Address']) !!}
+					{!! Form::text('usernameOrEmail', Input::old('usernameOrEmail'), ['placeholder' => '아이디 또는 이메일']) !!}
 					<i class="user icon"></i>
 				</div>
 			</div>
 			<div class="field">
 				<div class="ui left icon input">
-					{!! Form::password('password', ['placeholder' => 'Password']) !!}
+					{!! Form::password('password', ['placeholder' => '비밀번호']) !!}
 					<i class="lock icon"></i>
 				</div>
 			</div>
@@ -30,7 +30,7 @@
 			<div class="inline field">
 				<div class="ui checkbox">
 					{!! Form::checkbox('remember', 0, null) !!}
-					{!! Form::label('remember', 'Remember Me') !!}
+					{!! Form::label('remember', '자동 로그인') !!}
 				</div>
 			</div>
 			@if (count($errors) > 0)
