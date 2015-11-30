@@ -27,16 +27,23 @@ class SolutionsController extends Controller
 
         $fromWhere = Input::get('from', null);
 
+        // Problem --------------------------------------------------
         if( ($problem_id = Input::get('problem_id', '')) > 0 ){
             $temp = $solutions->where('problem_id', $problem_id);
             if( $temp->count() > 0 ) $solutions = $temp;
         }
 
-        if( ($user_id = Input::get('user_id', '')) > 0 ){
-            $temp = $solutions->where('user_id', $user_id);
+        // User -----------------------------------------------------
+        if( ($user_id = Input::get('user', '')) != '' ){
+            $temp = $solutions->with('user')
+                ->whereHas('user', function($q) use ($user_id){
+                    $q->where('name', $user_id);
+                });
+
             if( $temp->count() > 0 ) $solutions = $temp;
         }
 
+        // Result ---------------------------------------------------
         // 표시되지 않을 결과들
         $beHidden = Result::getHiddenCodes();
         $resultRefs = Result::whereNotIn('id', $beHidden)->get();
@@ -48,6 +55,7 @@ class SolutionsController extends Controller
             if( $temp->count() > 0 ) $solutions = $temp;
         }
 
+        // Language -------------------------------------------------
         if( ($lang_id = Input::get('lang_id', '')) > 0 ){
             $temp = $solutions->where('lang_id', $lang_id);
             if( $temp->count() > 0 ) $solutions = $temp;

@@ -18,10 +18,14 @@
 
   <!-- search form -->
   <form method="GET" class="ui form">
-    <div class="four fields">
+    <div class="five fields">
       <div class="field">
         <label for="problem_id">문제 번호</label>
         <input type="text" name="problem_id" placeholder="문제 번호" value="{{ $problem_id }}" />
+      </div>
+      <div class="field">
+        <label for="user">아이디</label>
+        <input type="text" name="user" placeholder="아이디" value="{{ $user_id }}" />
       </div>
       <div class="field">
         <label for="lang_id">언어</label>
@@ -43,7 +47,7 @@
       </div>
       <div class="field">
         <label>&nbsp;</label>
-        <button type="submit" class="ui blue button"><i class="search icon"></i>&nbsp;검색</button>
+        <button type="submit" class="ui fluid blue button"><i class="search icon"></i>&nbsp;검색</button>
       </div>
     </div>
   </form>
