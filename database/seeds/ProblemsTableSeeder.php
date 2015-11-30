@@ -20,7 +20,7 @@ class ProblemsTableSeeder extends Seeder
         DB::table('problems')->insert([
             'id' => 999, 'title' => 'Dummy',
             'description' => "## IT IS HIDDEN",
-            'is_published' => 0
+            'status' => 0
         ]);
 
         factory('App\Problem', 30)->create();

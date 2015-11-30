@@ -18,14 +18,14 @@ class Problem extends Model
     protected $fillable = [
         'title',
         'description',
+        'time_limit',
+        'memory_limit',
         'input',
         'output',
         'sample_input',
         'sample_output',
         'hint',
-        'time_limit',
-        'memory_limit',
-        'is_published'
+        'status'
     ];
 
     public function getMdDescription(){

@@ -39,7 +39,8 @@ class SolutionsTableSeeder extends Seeder
                 array (
                     'description' => $stuff['desc'],
                     'remark'      => $stuff['rmk'],
-                    'class_name'  => $stuff['class_name']
+                    'class_name'  => $stuff['class_name'],
+                    'published'   => ($stuff['rmk']=='TMP' ? 0:1)
                 )
             );
         }

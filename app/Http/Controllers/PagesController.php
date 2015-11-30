@@ -10,8 +10,8 @@ use App\Http\Controllers\Controller;
 class PagesController extends Controller
 {
     function index() {
-        $problems = \App\Problem::where('is_published', true);
-        $addedProblems = $problems->limit(5)->get();
+        $problems = \App\Problem::where('status', true);
+        $addedProblems = $problems->limit(6)->get();
 
         return view('pages.index', compact('addedProblems'));
     }

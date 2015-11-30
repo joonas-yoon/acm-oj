@@ -30,7 +30,8 @@ $factory->define(App\Problem::class, function ($faker) {
         'sample_output' => join("\n", $faker->words($faker->numberBetween(1,10))),
         'time_limit'    => $faker->numberBetween(1, 5),
         'memory_limit'  => ($faker->numberBetween(1, 5) * 128),
-        'is_special'    => $faker->boolean(15)
+        'is_special'    => $faker->boolean(15),
+        'status'        => $faker->boolean(85)
     ];
 });
 
