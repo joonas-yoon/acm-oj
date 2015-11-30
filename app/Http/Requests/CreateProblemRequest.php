@@ -24,7 +24,12 @@ class CreateProblemRequest extends Request
     public function rules()
     {
         return [
-            'title' => 'required'
+            'title'       => 'required',
+            'description' => 'required|min:2',
+            'time_limit'  => 'required|numeric|min:1',
+            'memory_limit'=> 'required|numeric|min:64|max:512',
+            'input'       => 'required|min:2',
+            'output'      => 'required|min:2'
         ];
     }
 }

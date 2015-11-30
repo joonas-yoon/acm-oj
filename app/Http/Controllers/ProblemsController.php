@@ -43,39 +43,20 @@ class ProblemsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($step = 1)
     {
-        return view('problems.maker.content');
-    }
-    public function createData(Request $request, $step)
-    {
-        //var_dump($request->all());
-
-        if( $step == 'preview' ){
-            // 주어진 리퀘스트에서 미리 보기
-            $problem = new Problem($request->all());
-
-            $problem->description = $problem->getMdDescription();
-            $problem->input       = $problem->getMdInput();
-            $problem->output      = $problem->getMdOutput();
-            $problem->hint        = $problem->getMdHint();
-
-            return view('problems.show', compact('problem'));
-        }
+        if( $step == 1 );
         else if( $step == 'data' ){
-            // 데이터 등록과 함께 실제로 등록을 준비함
+            // 내용은 작성된 상태고, 데이터를 추가하는 폼
+            // 여러개를 고려해 get으로 설정
+            // TODO: 접근 권한도 추가해야한다.
+            $problem_id = Input::get('problem');
+            $problem_id = Problem::findOrFail($problem_id)->id;
 
             return view('problems.maker.data');
         }
-        else if( $step == 'finish' ){
-            // 실제로 등록
 
-            return '등록 완료!';
-        }
-        else if( $step == 5 ){
-        }
-
-        return '잘못된 접근';
+        return view('problems.maker.content');
     }
 
     private static function makerStepClass($val, $lv){
@@ -89,13 +70,33 @@ class ProblemsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Requests\CreateProblemRequest $request)
+    public function store(Requests\CreateProblemRequest $request, $step = 1)
     {
-        $problem = new Problem($request->all());
-        /*
-        $problem->save();
+        if( $step == 1 ){
+            $problem = new Problem($request->all());
+            $problem->save();
 
-        return redirect('/problems/' . $problem->id);
+            return redirect('/problems/create/data?problem='. $problem->id);
+        }
+        else if( $step == 'data' ){
+
+            return storeData($request);
+        }
+        return \App::abort(404);
+    }
+
+    public function storeData(Requests $request)
+    {
+        var_dump($request->all());
+        /*
+        // 참고할 샘플코드
+        $request->file('image')->move(
+            base_path() . '/public/images/catalog/', $imageName
+        );
+
+        return \Redirect::route('admin.products.edit',
+            array($product->id))->with('message', 'Product added!');
+
         */
 
         /*
@@ -135,11 +136,18 @@ class ProblemsController extends Controller
      * 틀만 잡아놓고 추후에 확인하는 작업을 추가하자.
      *
      */
-    public function preview(Requests\CreateProblemRequest $request)
+    public function preview($id = 0)
     {
-        //$problem = new Problem($request->all());
+        return "preview {$id}";
 
-        return view('problems.preview', compact('problem'));
+        $problem = Problem::where('status', false)->findOrFail($id);
+
+        $problem->description = $problem->getMdDescription();
+        $problem->input       = $problem->getMdInput();
+        $problem->output      = $problem->getMdOutput();
+        $problem->hint        = $problem->getMdHint();
+
+        return view('problems.show', compact('problem'));
     }
 
     /**

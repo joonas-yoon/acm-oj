@@ -8,6 +8,7 @@
       <a class="item {{ \App\Helpers::setActive('problems/new') }}" href="/problems/new">새로 추가된 문제</a>
       <a class="item">출처</a>
       <a class="item">태그</a>
+      <a class="item {{ \App\Helpers::setActive('problems/create') }}" href="/problems/create">만들기</a>
     </div>
 
     <i class="book icon"></i>

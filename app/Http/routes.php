@@ -18,9 +18,20 @@ Route::get('/about', 'PagesController@about');
 
 Route::resource('articles', 'ArticlesController');
 
+Route::get('/problems', [
+    'as' => 'problems.index',  'uses' => 'ProblemsController@index'
+]);
+Route::post('/problems/create/{step?}', [
+    'as' => 'problems.store',  'uses' => 'ProblemsController@store'
+]);
+Route::get('/problems/create/{step?}', [
+    'as' => 'problems.create', 'uses' => 'ProblemsController@create'
+]);
 Route::get('/problems/new', 'ProblemsController@newProblems');
-Route::post('/problems/create/{step}', 'ProblemsController@createData');
-Route::resource('problems', 'ProblemsController');
+Route::get('/problems/preview/{id?}', 'ProblemsController@preview');
+Route::get('/problems/{problem}', [
+    'as' => 'problems.show',   'uses' => 'ProblemsController@show'
+]);
 
 Route::get('/user/{name}', 'UsersController@show');
 

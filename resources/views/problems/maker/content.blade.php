@@ -7,7 +7,7 @@
 
   @include('errors.list')
 
-  {!! Form::open(['url' => '/problems/create/data', 'class' => 'ui form', 'id' => 'problem']) !!}
+  {!! Form::open(['url' => '/problems/create/', 'class' => 'ui form', 'id' => 'problem']) !!}
 
   <div class="ui centered grid">
     <div class="field ten wide column">
@@ -92,7 +92,6 @@
   <div class="ui divider hidden"></div>
 
   <div class="ui centered grid">
-    {!! Form::button('미리보기', ['class' => 'ui green button preview', 'action' => '/problems/create/preview']) !!}
     {!! Form::submit('다음 단계', ['class' => 'ui blue button']) !!}
   </div>
 
