@@ -7,7 +7,8 @@
 
   @include('errors.list')
 
-  {!! Form::open(array('url'=>'apply/upload', 'method'=>'POST', 'files'=>true, 'class'=>'ui form')) !!}
+  {!! Form::open(array('url'=>'/problems/create/data', 'method'=>'POST', 'files'=>true, 'class'=>'ui form')) !!}
+  {!! Form::hidden('problem', $problem_id) !!}
 
   <div class="segment">
     {!! Form::file('dataFiles[]', ['multiple', 'accept'=>'.in,.out'] ) !!}

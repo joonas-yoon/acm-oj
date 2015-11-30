@@ -21,8 +21,11 @@ Route::resource('articles', 'ArticlesController');
 Route::get('/problems', [
     'as' => 'problems.index',  'uses' => 'ProblemsController@index'
 ]);
-Route::post('/problems/create/{step?}', [
+Route::post('/problems/create', [
     'as' => 'problems.store',  'uses' => 'ProblemsController@store'
+]);
+Route::post('/problems/create/data', [
+    'as' => 'problems.store.data',  'uses' => 'ProblemsController@storeData'
 ]);
 Route::get('/problems/create/{step?}', [
     'as' => 'problems.create', 'uses' => 'ProblemsController@create'

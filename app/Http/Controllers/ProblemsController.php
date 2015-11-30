@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 use Input;
+use Storage;
 
 class ProblemsController extends Controller
 {
@@ -43,17 +44,19 @@ class ProblemsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($step = 1)
+    public function create($step = '')
     {
-        if( $step == 1 );
-        else if( $step == 'data' ){
+        if( $step == 'data' ){
             // 내용은 작성된 상태고, 데이터를 추가하는 폼
             // 여러개를 고려해 get으로 설정
             // TODO: 접근 권한도 추가해야한다.
             $problem_id = Input::get('problem');
             $problem_id = Problem::findOrFail($problem_id)->id;
 
-            return view('problems.maker.data');
+            return view('problems.maker.data', compact('problem_id'));
+        }
+        else if( $step == 'finish' ){
+            return view('problems.maker.finish');
         }
 
         return view('problems.maker.content');
@@ -70,34 +73,83 @@ class ProblemsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Requests\CreateProblemRequest $request, $step = 1)
+    public function store(Requests\CreateProblemRequest $request)
     {
-        if( $step == 1 ){
-            $problem = new Problem($request->all());
-            $problem->save();
+        $problem = new Problem($request->all());
+        $problem->save();
 
-            return redirect('/problems/create/data?problem='. $problem->id);
-        }
-        else if( $step == 'data' ){
-
-            return storeData($request);
-        }
-        return \App::abort(404);
+        return redirect('/problems/create/data?problem='. $problem->id);
     }
 
-    public function storeData(Requests $request)
+    public function storeData(Request $request)
     {
-        var_dump($request->all());
-        /*
-        // 참고할 샘플코드
-        $request->file('image')->move(
-            base_path() . '/public/images/catalog/', $imageName
-        );
+        // 권한 확인 필요
+        $problem_id = $request->get('problem');
+        $problem = Problem::findOrFail($problem_id);
 
-        return \Redirect::route('admin.products.edit',
-            array($product->id))->with('message', 'Product added!');
+        $files = $request->file('dataFiles');
+        $filesNumber = sizeof($files);
 
-        */
+        // 파일 갯수는 최대 100개 (50개의 테스트케이스 * 2개의 in/out)
+        if( 100 < $filesNumber ){
+            return Redirect::back()->withErrors([
+                "요청하신 파일의 갯수가 너무 많습니다."
+            ]);
+        }
+
+        // 파일 갯수는 항상 2 이상의 짝수 (in/out 1쌍)
+        if( $filesNumber < 2 || $filesNumber % 2 ){
+            return Redirect::back()->withErrors([
+                "올바른 파일 개수인지 확인하십시오"
+            ]);
+        }
+
+        $casesNumber = $filesNumber / 2;
+
+        // 이름순으로 정렬
+        sort($files);
+
+        for($case=0; $case < $casesNumber; ++$case){
+            $iFile = $files[$case*2];
+            $oFile = $files[$case*2+1];
+
+            $iFileName = pathinfo($iFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $oFileName = pathinfo($oFile->getClientOriginalName(), PATHINFO_FILENAME);
+
+            if($iFileName != $oFileName)
+                return Redirect::back()->withErrors([
+                    "같은 이름의 in/out 쌍을 찾을 수 없음"
+                ]);
+
+            if($iFile->getClientOriginalExtension() != 'in' &&
+               $oFile->getClientOriginalExtension() != 'out')
+                return Redirect::back()->withErrors([
+                    "파일 확장자를 확인하십시오"
+                ]);
+        }
+
+        $fileDirectory = "data/{$problem_id}";
+        $fileList = "";
+
+        for($case=0; $case < $casesNumber; ++$case){
+            $iFile = $files[$case*2];
+            $oFile = $files[$case*2+1];
+
+            $iFileName = pathinfo($iFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $oFileName = pathinfo($oFile->getClientOriginalName(), PATHINFO_FILENAME);
+
+            Storage::put(
+                "{$fileDirectory}/{$iFileName}.in",
+                file_get_contents($iFile->getRealPath())
+            );
+            Storage::put(
+                "{$fileDirectory}/{$oFileName}.out",
+                file_get_contents($oFile->getRealPath())
+            );
+
+            $fileList .= "{$fileDirectory}/{$iFileName}\n";
+            $fileList .= "{$fileDirectory}/{$oFileName}\n";
+        }
 
         /*
         입력파일 형식
@@ -109,8 +161,16 @@ class ProblemsController extends Controller
         테스트케이스1 출력파일(data/1000/output1.txt)
         */
 
-        $storedContext = [];
+        $metaInfoContext  = "{$casesNumber}\n";
+        $metaInfoContext .= "{$problem->time_limit} {$problem->memory_limit} {$problem->is_special}\n";
+        if($problem->is_special) $metaInfoContext .= "C++\n";
 
+        Storage::put(
+            "{$fileDirectory}/input.txt",
+            $metaInfoContext . $fileList
+        );
+
+        return redirect('/problems/create/finish');
     }
 
     /**
