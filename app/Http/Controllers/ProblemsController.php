@@ -138,13 +138,16 @@ class ProblemsController extends Controller
             $iFileName = pathinfo($iFile->getClientOriginalName(), PATHINFO_FILENAME);
             $oFileName = pathinfo($oFile->getClientOriginalName(), PATHINFO_FILENAME);
 
+            $iFileContents = str_replace(array("\r\n", "\r", "\n"), "\n", file_get_contents($iFile->getRealPath()));
+            $oFileContents = str_replace(array("\r\n", "\r", "\n"), "\n", file_get_contents($oFile->getRealPath()));
+
             Storage::put(
                 "{$fileDirectory}/{$iFileName}.in",
-                file_get_contents($iFile->getRealPath())
+                $iFileContents
             );
             Storage::put(
                 "{$fileDirectory}/{$oFileName}.out",
-                file_get_contents($oFile->getRealPath())
+                $oFileContents
             );
 
             $fileList .= "{$fileDirectory}/{$iFileName}.in\n";
