@@ -38,9 +38,6 @@ class Solution extends Model
     public function user() {
         return $this->belongsTo('App\User');
     }
-    public function filtByUser($username) {
-        return $this->belongsTo('App\User')->where('username', $username);
-    }
 
     public function language() {
         return $this->belongsTo('App\Language', 'lang_id' /* 이것과 연결 */);

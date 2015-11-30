@@ -24,6 +24,10 @@ class SolutionsController extends Controller
     public function index()
     {
         $solutions = Solution::latest('id')->where('is_hidden', false);
+        $solutions = $solutions->with('problem')
+                               ->whereHas('problem', function($q) {
+                                    $q->where('status', 1);
+                                });
 
         $fromWhere = Input::get('from', null);
 
