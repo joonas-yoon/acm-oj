@@ -15,25 +15,25 @@
 
 			<div class="ui field">
 				<div class="ui left icon input">
-				{!! Form::text('name', Input::old('name'), ['placeholder' => 'Username']) !!}
+				{!! Form::text('name', Input::old('name'), ['placeholder' => '아이디']) !!}
 				<i class="user icon"></i></div>
 			</div>
 
 			<div class="ui field">
 				<div class="ui left icon input">
-				{!! Form::text('email', Input::old('email'), ['placeholder' => 'E-mail Address']) !!}
+				{!! Form::text('email', Input::old('email'), ['placeholder' => '이메일 주소']) !!}
 				<i class="mail outline icon"></i></div>
 			</div>
 
 			<div class="ui field">
 				<div class="ui left icon input">
-				{!! Form::password('password', ['placeholder' => 'Your Password']) !!}
+				{!! Form::password('password', ['placeholder' => '비밀번호']) !!}
 				<i class="unlock alternate icon"></i></div>
 			</div>
 
 			<div class="ui field">
 				<div class="ui left icon input">
-				{!! Form::password('password_confirmation', ['placeholder' => 'Confirm Password']) !!}
+				{!! Form::password('password_confirmation', ['placeholder' => '비밀번호 확인']) !!}
 				<i class="lock icon"></i></div>
 			</div>
 

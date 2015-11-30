@@ -43,14 +43,17 @@ class AuthController extends Controller
      */
     protected function validator(array $data)
     {
+        $emailRegExp = "/^[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,125}[a-zA-Z]{2,63}$/";
         return Validator::make($data, [
             // rules
-            'name' => 'required|unique:users|max:255|regex:/[a-zA-Z0-9\._\-]/',
-            'email' => 'required|email|max:255|unique:users',
+            'name' => 'required|unique:users|min:3|max:255|regex:/^[a-zA-Z0-9\-_\.]+$/',
+            'email' => 'required|max:255|unique:users|regex:'.$emailRegExp,
             'password' => 'required|confirmed|min:6',
         ], [
             // messages
-            'name.regex' => '사용할 수 없는 문자가 포함되어있습니다.'
+            'name.regex' => '사용할 수 없는 아이디입니다.',
+            'name.min' => '아이디는 최소 :min자 이상이어야 합니다.',
+            'email.regex' => '올바르지 않은 이메일 주소입니다.'
         ]);
     }
 
