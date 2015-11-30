@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Result;
+use App\Language;
 use App\Solution;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -29,14 +32,14 @@ class SolutionsController extends Controller
             if( $temp->count() > 0 ) $solutions = $temp;
         }
 
-        if( ($user_id = Input::get('user_id', 0)) > 0 ){
+        if( ($user_id = Input::get('user_id', '')) > 0 ){
             $temp = $solutions->where('user_id', $user_id);
             if( $temp->count() > 0 ) $solutions = $temp;
         }
 
         // 표시되지 않을 결과들
-        $beHidden = \App\Result::getHiddenCodes();
-        $resultRefs = \App\Result::whereNotIn('id', $beHidden)->get();
+        $beHidden = Result::getHiddenCodes();
+        $resultRefs = Result::whereNotIn('id', $beHidden)->get();
 
         $result_id = Input::get('result_id', 0);
 
@@ -45,13 +48,21 @@ class SolutionsController extends Controller
             if( $temp->count() > 0 ) $solutions = $temp;
         }
 
+        if( ($lang_id = Input::get('lang_id', '')) > 0 ){
+            $temp = $solutions->where('lang_id', $lang_id);
+            if( $temp->count() > 0 ) $solutions = $temp;
+        }
+
+        $langRefs = Language::all();
+
         $solutions = $solutions->paginate(20);
 
         return view('solutions.index', compact(
             'fromWhere', 'solutions',
             'problem_id',
             'user_id',
-            'result_id', 'resultRefs'
+            'result_id', 'resultRefs',
+            'lang_id', 'langRefs'
         ));
     }
 
@@ -100,7 +111,7 @@ class SolutionsController extends Controller
         );
 
         // 코드가 들어가면 대기중으로 전환
-        $solution['result_id'] = \App\Result::getWaitCode();
+        $solution['result_id'] = Result::getWaitCode();
         $solution->save();
 
         return redirect('/solutions/?problem_id=' . $request->problem_id

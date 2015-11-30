@@ -23,6 +23,6 @@ class ProblemsTableSeeder extends Seeder
             'status' => 0
         ]);
 
-        factory('App\Problem', 30)->create();
+        factory('App\Problem', 1)->create();
     }
 }

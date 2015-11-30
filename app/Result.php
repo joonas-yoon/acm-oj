@@ -24,8 +24,8 @@ class Result extends Model
         'remark'
     ];
 
-    public function solution(){
-        return $this->hasMany('App\Solution');
+    public function solutions(){
+        return $this->hasMany('App\Solution', 'result_id');
     }
 
     public static function getTempCode() { return 1; }

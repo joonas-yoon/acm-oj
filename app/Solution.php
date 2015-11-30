@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Result;
+use App\Language;
 
 class Solution extends Model
 {
@@ -38,9 +39,12 @@ class Solution extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function language() {
+        return $this->belongsTo('App\Language', 'lang_id' /* 이것과 연결 */);
+    }
+
     public function result() {
-        return $this->belongsTo('App\Result')
-                    ->where('id', $this->result_id);
+        return $this->belongsTo('App\Result', 'result_id');
     }
 
     public function publishedResult() {
@@ -56,4 +60,5 @@ class Solution extends Model
 
         return "<span class=\"solution {$result->class_name}\">{$result->description}</span>";
     }
+
 }

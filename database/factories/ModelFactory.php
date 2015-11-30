@@ -38,7 +38,7 @@ $factory->define(App\Problem::class, function ($faker) {
 
 $factory->define(App\Solution::class, function ($faker) {
     return [
-        //'lang_id'    => App\Language::all()->random()->id,
+        'lang_id'    => App\Language::all()->random()->id,
         'problem_id' => App\Problem::all()->random()->id,
         'user_id'    => App\User::all()->random()->id,
         'result_id'  => App\Result::all()->random()->id,

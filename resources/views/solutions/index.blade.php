@@ -18,10 +18,19 @@
 
   <!-- search form -->
   <form method="GET" class="ui form">
-    <div class="three fields">
+    <div class="four fields">
       <div class="field">
         <label for="problem_id">문제 번호</label>
         <input type="text" name="problem_id" placeholder="문제 번호" value="{{ $problem_id }}" />
+      </div>
+      <div class="field">
+        <label for="lang_id">언어</label>
+        <select class="ui fluid search selection dropdown" name="lang_id" value="{{ $lang_id }}">
+          <option value="0">모든 언어</option>
+          @foreach($langRefs as $option)
+          <option value="{{ $option->id }}" {{ $option->id == $lang_id ? 'selected':'' }}>{{ $option->name }}</option>
+          @endforeach
+        </select>
       </div>
       <div class="field">
         <label for="result_id">결과</label>
@@ -72,13 +81,9 @@
         @endif
         <td>
           @if( $solution->result_id == \App\Result::getAcceptCode() )
-            @if( $solution->is_published )
-            <a href="/solutions/{{ $solution->id }}">{{ $solution->lang_id }}</a>
-            @else
-            {{ $solution->lang_id }}
-            @endif
+            <a href="/solutions/{{ $solution->id }}">{{ $solution->language->name }}</a>
           @else
-          {{ $solution->lang_id }}
+            {{ $solution->language->name }}
           @endif
         </td>
         <td>{{ $solution->size }} <span class="solution unit"> B</span></td>
