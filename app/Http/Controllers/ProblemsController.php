@@ -147,8 +147,8 @@ class ProblemsController extends Controller
                 file_get_contents($oFile->getRealPath())
             );
 
-            $fileList .= "{$fileDirectory}/{$iFileName}\n";
-            $fileList .= "{$fileDirectory}/{$oFileName}\n";
+            $fileList .= "{$fileDirectory}/{$iFileName}.in\n";
+            $fileList .= "{$fileDirectory}/{$oFileName}.out\n";
         }
 
         /*
