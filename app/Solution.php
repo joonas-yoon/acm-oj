@@ -32,6 +32,10 @@ class Solution extends Model
     protected $guarded = [];
 
     public function problem() {
+        return $this->belongsTo('App\Problem')->where('status', 1);
+    }
+
+    public function problemAll() {
         return $this->belongsTo('App\Problem');
     }
 

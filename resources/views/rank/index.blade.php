@@ -32,10 +32,10 @@
           {{-- $user->message --}}
         </td>
         <td>
-          <a href="/solutions/?user_id={{ $user->id }}&result_id={{ \App\Result::getAcceptCode() }}">{{ $user->getAcceptCount() }}</a>
+          <a href="/solutions/?user={{ $user->name }}&result_id={{ \App\Result::getAcceptCode() }}">{{ $user->getAcceptCount() }}</a>
         </td>
         <td>
-          <a href="/solutions/?user_id={{ $user->id }}">{{ $user->getSubmitCount() }}</a>
+          <a href="/solutions/?user={{ $user->name }}">{{ $user->getSubmitCount() }}</a>
         </td>
         <td>{{ number_format($user->getRate(), 2) }} %</td>
       </tr>

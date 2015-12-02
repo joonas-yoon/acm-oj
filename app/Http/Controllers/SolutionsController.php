@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Result;
 use App\Language;
 use App\Solution;
+use App\User;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -26,8 +27,8 @@ class SolutionsController extends Controller
         $solutions = Solution::latest('id')->where('is_hidden', false);
         $solutions = $solutions->with('problem')
                                ->whereHas('problem', function($q) {
-                                    $q->where('status', 1);
-                                });
+                                   $q->where('status', 1);
+                               });
 
         $fromWhere = Input::get('from', null);
 
@@ -39,6 +40,10 @@ class SolutionsController extends Controller
 
         // User -----------------------------------------------------
         if( ($user_id = Input::get('user', '')) != '' ){
+            //$user = User::latest('id')->where('name', $user_id);
+            //if($user->count() > 0)
+            //    $temp = $solutions->where('user_id', $user->first()->id);
+
             $temp = $solutions->with('user')
                 ->whereHas('user', function($q) use ($user_id){
                     $q->where('name', $user_id);
@@ -60,7 +65,7 @@ class SolutionsController extends Controller
         }
 
         // Language -------------------------------------------------
-        if( ($lang_id = Input::get('lang_id', '')) > 0 ){
+        if( ($lang_id = Input::get('lang_id', 0)) > 0 ){
             $temp = $solutions->where('lang_id', $lang_id);
             if( $temp->count() > 0 ) $solutions = $temp;
         }
