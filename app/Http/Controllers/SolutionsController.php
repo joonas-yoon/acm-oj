@@ -24,32 +24,42 @@ class SolutionsController extends Controller
      */
     public function index()
     {
-        $solutions = Solution::latest('id')->where('is_hidden', false);
-        $solutions = $solutions->with('problem')
-                               ->whereHas('problem', function($q) {
-                                   $q->where('status', 1);
-                               });
+        //$solutions = Solution::latest('id')->where('is_hidden', false);
+
+        $solutions = Solution::select('solutions.*')->latest('solutions.id')->where('is_hidden', false);
+
+        // $solutions = $solutions->with('problem')
+        //                       ->whereHas('problem', function($q) {
+        //                           $q->where('status', 1);
+        //                       });
+
+        $solutions->join('problems', function($join) {
+            $join->on('problems.id', '=', 'solutions.problem_id');
+        })->where('status',1);
 
         $fromWhere = Input::get('from', null);
 
         // Problem --------------------------------------------------
         if( ($problem_id = Input::get('problem_id', '')) > 0 ){
-            $temp = $solutions->where('problem_id', $problem_id);
-            if( $temp->count() > 0 ) $solutions = $temp;
+            $solutions->where('problem_id', $problem_id);
+            //$temp = $solutions->where('problem_id', $problem_id);
+            //if( $temp->count() > 0 ) $solutions = $temp;
         }
 
         // User -----------------------------------------------------
         if( ($user_id = Input::get('user', '')) != '' ){
-            //$user = User::latest('id')->where('name', $user_id);
-            //if($user->count() > 0)
-            //    $temp = $solutions->where('user_id', $user->first()->id);
 
-            $temp = $solutions->with('user')
-                ->whereHas('user', function($q) use ($user_id){
-                    $q->where('name', $user_id);
-                });
+            $solutions->join('users', function($join) {
+              $join->on('users.id', '=', 'solutions.user_id');
+            })->where('name', $user_id);
 
-            if( $temp->count() > 0 ) $solutions = $temp;
+            // $temp = $solutions->with('user')
+            //     ->whereHas('user', function($q) use ($user_id){
+            //         $q->where('name', $user_id);
+            //     });
+
+            // if( $temp->count() > 0 ) $solutions = $temp;
+
         }
 
         // Result ---------------------------------------------------
@@ -60,12 +70,14 @@ class SolutionsController extends Controller
         $result_id = Input::get('result_id', 0);
 
         if( ! in_array( $result_id, $beHidden ) ){
-            $temp = $solutions->where('result_id', $result_id);
-            if( $temp->count() > 0 ) $solutions = $temp;
+            $solutions->where('result_id', $result_id);
+            //$temp = $solutions->where('result_id', $result_id);
+            //if( $temp->count() > 0 ) $solutions = $temp;
         }
 
         // Language -------------------------------------------------
         if( ($lang_id = Input::get('lang_id', 0)) > 0 ){
+            //$solutions->where('lang_id', $lang_id);
             $temp = $solutions->where('lang_id', $lang_id);
             if( $temp->count() > 0 ) $solutions = $temp;
         }
