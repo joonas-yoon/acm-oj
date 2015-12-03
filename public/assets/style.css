@@ -204,6 +204,51 @@ html, body {
 
 /**
  *
+ * Paginator
+ *
+ */
+.ui.horizontal.list.paginator>.item:first-child,
+.ui.horizontal.list.paginator>.item:last-child,
+.ui.horizontal.list.paginator .item {
+    position: relative;
+    vertical-align: middle;
+    line-height: 1;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background: 0 0;
+    padding: .92857143em 1.14285714em !important;
+    text-transform: none;
+    color: rgba(0,0,0,.87);
+    font-weight: 400;
+    -webkit-transition: background .1s ease,box-shadow .1s ease,color .1s ease;
+    transition: background .1s ease,box-shadow .1s ease,color .1s ease;
+
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+.ui.horizontal.list.paginator .item:hover {
+    color: initial;
+    background-color: #eee;
+}
+.ui.horizontal.list.paginator .item.active,
+.ui.horizontal.list.paginator .item.active:hover {
+    color: #fff;
+    background-color: #1678c2;
+}
+.ui.horizontal.list.paginator>.item {
+    margin-left: 0;
+}
+
+/**
+ *
  * Responsive
  *
  */

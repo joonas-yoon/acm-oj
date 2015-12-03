@@ -1,5 +1,5 @@
 @if ( method_exists( $paginator, 'lastPage' ) && $paginator->lastPage() > 1)
-<div class="ui borderless stacked menu">
+<div class="ui horizontal paginator list">
     <a class="item {{ ($paginator->currentPage() == 1) ? ' disabled' : '' }}"
        href="{{ $paginator->url(1) }}">
         처음

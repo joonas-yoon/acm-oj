@@ -24,72 +24,37 @@ class SolutionsController extends Controller
      */
     public function index()
     {
-        //$solutions = Solution::latest('id')->where('is_hidden', false);
-
-        $solutions = Solution::select('solutions.*')->latest('solutions.id')->where('is_hidden', false);
-
-        // $solutions = $solutions->with('problem')
-        //                       ->whereHas('problem', function($q) {
-        //                           $q->where('status', 1);
-        //                       });
-
-        $solutions->join('problems', function($join) {
-            $join->on('problems.id', '=', 'solutions.problem_id');
-        })->where('status',1);
-
         $fromWhere = Input::get('from', null);
 
         // Problem --------------------------------------------------
-        if( ($problem_id = Input::get('problem_id', '')) > 0 ){
-            $solutions->where('problem_id', $problem_id);
-            //$temp = $solutions->where('problem_id', $problem_id);
-            //if( $temp->count() > 0 ) $solutions = $temp;
-        }
+        $problem_id = Input::get('problem_id', '');
 
         // User -----------------------------------------------------
-        if( ($user_id = Input::get('user', '')) != '' ){
-
-            $solutions->join('users', function($join) {
-              $join->on('users.id', '=', 'solutions.user_id');
-            })->where('name', $user_id);
-
-            // $temp = $solutions->with('user')
-            //     ->whereHas('user', function($q) use ($user_id){
-            //         $q->where('name', $user_id);
-            //     });
-
-            // if( $temp->count() > 0 ) $solutions = $temp;
-
-        }
+        $username = Input::get('user', '');
 
         // Result ---------------------------------------------------
-        // 표시되지 않을 결과들
-        $beHidden = Result::getHiddenCodes();
-        $resultRefs = Result::whereNotIn('id', $beHidden)->get();
-
+        $resultRefs = Result::all();
         $result_id = Input::get('result_id', 0);
 
-        if( ! in_array( $result_id, $beHidden ) ){
-            $solutions->where('result_id', $result_id);
-            //$temp = $solutions->where('result_id', $result_id);
-            //if( $temp->count() > 0 ) $solutions = $temp;
-        }
-
         // Language -------------------------------------------------
-        if( ($lang_id = Input::get('lang_id', 0)) > 0 ){
-            //$solutions->where('lang_id', $lang_id);
-            $temp = $solutions->where('lang_id', $lang_id);
-            if( $temp->count() > 0 ) $solutions = $temp;
-        }
+        $lang_id = Input::get('lang_id', 0);
 
         $langRefs = Language::all();
 
-        $solutions = $solutions->paginate(20);
+        $solutions = (new Solution)->getSolutionsByOption([
+            'problem_id' => $problem_id,
+            'username'   => $username,
+            'lang_id'    => $lang_id,
+            'result_id'  => $result_id
+        ]);
+
+        // $solutions = $solutions->paginateFrom(Input::get('top', ''), 20);
+        $solutions = $solutions->paginate(20, ['url' => \Request::url()]);
 
         return view('solutions.index', compact(
             'fromWhere', 'solutions',
             'problem_id',
-            'user_id',
+            'username',
             'result_id', 'resultRefs',
             'lang_id', 'langRefs'
         ));
@@ -143,8 +108,7 @@ class SolutionsController extends Controller
         $solution['result_id'] = Result::getWaitCode();
         $solution->save();
 
-        return redirect('/solutions/?problem_id=' . $request->problem_id
-            . '&user_id=' . $request->user_id );
+        return redirect('/solutions/?from=problem&problem_id=' . $request->problem_id );
     }
 
     /**

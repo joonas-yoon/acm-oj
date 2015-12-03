@@ -25,7 +25,7 @@
       </div>
       <div class="field">
         <label for="user">아이디</label>
-        <input type="text" name="user" placeholder="아이디" value="{{ $user_id }}" />
+        <input type="text" name="user" placeholder="아이디" value="{{ $username }}" />
       </div>
       <div class="field">
         <label for="lang_id">언어</label>
@@ -99,7 +99,7 @@
     </tbody>
   </table>
 
-  @include('pagination.byPivot', ['paginator' => $solutions])
+  @include('pagination.simple', ['paginator' => $solutions])
 
 @stop
 
