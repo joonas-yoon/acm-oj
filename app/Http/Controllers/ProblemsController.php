@@ -21,7 +21,7 @@ class ProblemsController extends Controller
      */
     public function index()
     {
-        $problems = Problem::where('status', true)->paginate(20);
+        $problems = Problem::getOpenProblems()->paginate(20);
 
         $resultAccCode = \App\Result::getAcceptCode();
 
@@ -30,9 +30,7 @@ class ProblemsController extends Controller
 
     public function newProblems ()
     {
-        $problems = Problem::latest('created_at')->latest('id')
-                    ->where('status', true)
-                    ->take(10)->get();
+        $problems = Problem::getNewestProblems(10);
 
         $resultAccCode = \App\Result::getAcceptCode();
 

@@ -66,4 +66,14 @@ class Problem extends Model
         $submitCnt = $this->getSubmitCount();
         return $submitCnt > 0 ? 100 * $this->getAcceptCount() / $submitCnt : 0;
     }
+
+    public static function getOpenProblems() {
+        return Problem::where('status', true);
+    }
+
+    public static function getNewestProblems($takes) {
+        return Problem::latest('created_at')->latest('id')
+                    ->where('status', true)
+                    ->take(10)->get();
+    }
 }
