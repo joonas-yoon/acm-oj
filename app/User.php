@@ -80,8 +80,7 @@ class User extends Model implements AuthenticatableContract,
     }
 
     public function solutions() {
-        return $this->hasMany('App\Solution')
-                    ->whereHas('problem', function($q){$q->where('status',1);});
+        return $this->hasMany('App\Solution')->has('problem');
     }
     public function contributeProblems() {
         return $this->hasMany('App\Problem');

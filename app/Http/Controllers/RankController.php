@@ -8,6 +8,9 @@ use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use Input;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 class RankController extends Controller
 {
     /**
@@ -17,13 +20,32 @@ class RankController extends Controller
      */
     public function index()
     {
+        $perPage = 20;
+        $currentPage = Input::get('page', 1);
+
         $users = User::all();
+        $users = $users->sortByDesc(function($item){
+            return [
+                $item->getAcceptCount(),
+                - $item->getSubmitCount()
+            ];
+        })
+        ->values();
 
+        $total = $users->count();
+        $users = $users->forPage($currentPage, $perPage);
 
+        $rankNumber = ($currentPage-1)*$perPage+1;
 
-        //$users = User::paginate(20);
+        $paginator = new LengthAwarePaginator(
+            $users, $total, $perPage, $currentPage,
+            [
+                'path'  => \Request::url(),
+                'query' => \Request::query(),
+            ]
+        );
 
-        return view('rank.index', compact('users'));
+        return view('rank.index', compact('users', 'rankNumber', 'paginator'));
     }
 
     /**

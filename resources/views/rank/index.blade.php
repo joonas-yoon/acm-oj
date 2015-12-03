@@ -24,7 +24,7 @@
     <tbody>
     @foreach($users as $user)
       <tr>
-        <td></td>
+        <td>{{ $rankNumber++ }}</td>
         <td>
           <a href="/user/{{ $user->name }}">{{ $user->name }}</a>
         </td>
@@ -43,7 +43,7 @@
     </tbody>
   </table>
 
-  @include('pagination.default', ['paginator' => $users])
+  @include('pagination.default', ['paginator' => $paginator])
 
 @stop
 

@@ -13,7 +13,7 @@
     @endfor
 
     <a class="item {{ ($paginator->currentPage() == $paginator->lastPage()) ? ' disabled' : '' }}"
-       href="{{ $paginator->url($paginator->currentPage()+1) }}" >
+       href="{{ $paginator->url($paginator->lastPage()) }}" >
         끝
     </a>
 </div>
