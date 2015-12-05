@@ -27,6 +27,11 @@ Route::post('/problems/create', [
     'uses' => 'ProblemsController@store',
     'middleware' => 'auth'
 ]);
+Route::get('/problems/create/list', [
+    'as'   => 'problems.index',
+    'uses' => 'ProblemsController@creatingProblemsList',
+    'middleware' => ['auth']
+]);
 Route::post('/problems/create/data', [
     'as'   => 'problems.store.data',
     'uses' => 'ProblemsController@storeData',
@@ -40,7 +45,8 @@ Route::get('/problems/create/{step?}', [
 Route::get('/problems/new', 'ProblemsController@newProblems')->middleware('auth');
 Route::get('/problems/preview/{id?}', 'ProblemsController@preview')->middleware('auth');
 Route::get('/problems/{problem}', [
-    'as' => 'problems.show',   'uses' => 'ProblemsController@show'
+    'as' => 'problems.show',
+    'uses' => 'ProblemsController@show'
 ]);
 
 Route::get('/user/{name}', 'UsersController@show');
@@ -48,7 +54,7 @@ Route::get('/user/{name}', 'UsersController@show');
 Route::get('/rank', 'RankController@index');
 
 Route::get('/solutions',  'SolutionsController@index');
-Route::post('/solutions', 'SolutionsController@store');
+Route::post('/solutions', 'SolutionsController@store')->middleware('auth');
 Route::get('/solutions/{id}', 'SolutionsController@show');
 Route::get('/submit/{id}','SolutionsController@create')->middleware('auth');
 
