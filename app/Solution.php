@@ -68,38 +68,37 @@ class Solution extends Model
         return "<span class=\"solution {$result->class_name}\">{$result->description}</span>";
     }
 
-    public function getSolutionsByOption(array $inputs) {
-
-        $temp = $this->select('solutions.*');
+    public function scopeGetSolutionsByOption($query, array $inputs) {
+        $query->select('solutions.*');
 
         // 채점번호의 역순, 공개된 제출만
-        $temp->latest('solutions.id')->where('is_hidden', false);
+        $query->latest('solutions.id')->where('is_hidden', false);
 
         // 채점하는 문제가 공개된 것일 경우만
-        $temp->join('problems', function($join) {
+        $query->join('problems', function($join) {
             $join->on('problems.id', '=', 'solutions.problem_id');
         })->where('status',1);
 
         // 문제번호로 검색
         if($inputs['problem_id'] > 0)
-            $temp->where('problem_id', $inputs['problem_id']);
+            $query->where('problem_id', $inputs['problem_id']);
 
         // 유저이름으로 검색
         if($inputs['username'] != '')
-            $temp->join('users', function($join) {
+            $query->join('users', function($join) {
               $join->on('users.id', '=', 'solutions.user_id');
             })->where('name', $inputs['username']);
 
 
         // 언어종류로 검색
         if($inputs['lang_id'] > 0)
-            $temp->where('lang_id', $inputs['lang_id']);
+            $query->where('lang_id', $inputs['lang_id']);
 
         // 결과종류로 검색
         if($inputs['result_id'] > 0)
-            $temp->where('result_id', $inputs['result_id']);
+            $query->where('result_id', $inputs['result_id']);
 
-        return $temp;
+        return $query;
     }
 
     public function paginateFrom($topItem, $perPage = 20)

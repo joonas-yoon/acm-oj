@@ -41,7 +41,7 @@ class SolutionsController extends Controller
 
         $langRefs = Language::all();
 
-        $solutions = (new Solution)->getSolutionsByOption([
+        $solutions = Solution::getSolutionsByOption([
             'problem_id' => $problem_id,
             'username'   => $username,
             'lang_id'    => $lang_id,

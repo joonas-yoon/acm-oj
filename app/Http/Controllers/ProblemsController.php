@@ -182,8 +182,7 @@ class ProblemsController extends Controller
      */
     public function show($id)
     {
-        $problem = Problem::where('status', true)->findOrFail($id);
-
+        $problem = Problem::getOpenProblemOrFail($id);
         $problem->description = $problem->getMdDescription();
         $problem->input       = $problem->getMdInput();
         $problem->output      = $problem->getMdOutput();
@@ -201,7 +200,7 @@ class ProblemsController extends Controller
     {
         return "preview {$id}";
 
-        $problem = Problem::where('status', false)->findOrFail($id);
+        $problem = Problem::getHiddenProblemOrFail($id);
 
         $problem->description = $problem->getMdDescription();
         $problem->input       = $problem->getMdInput();

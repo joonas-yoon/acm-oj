@@ -67,13 +67,25 @@ class Problem extends Model
         return $submitCnt > 0 ? 100 * $this->getAcceptCount() / $submitCnt : 0;
     }
 
-    public static function getOpenProblems() {
-        return Problem::where('status', true);
+    public function scopeGetOpenProblemOrFail($query, $id) {
+        return $query->where('status', true)->findOrFail($id);
     }
 
-    public static function getNewestProblems($takes) {
-        return Problem::latest('created_at')->latest('id')
+    public function scopeGetOpenProblems($query) {
+        return $query->select('id', 'title')->where('status', true);
+    }
+
+    public function scopeGetHiddenProblemOrFail($query, $id) {
+        return $query->where('status', false)->findOrFail($id);
+    }
+
+    public function scopeGetHiddenProblems($query) {
+        return $query->select('id', 'title')->where('status', false);
+    }
+
+    public function scopeGetNewestProblems($query, $takes) {
+        return $query->select('id', 'title')->latest('created_at')->latest('id')
                     ->where('status', true)
-                    ->take(10)->get();
+                    ->take($takes)->get();
     }
 }
