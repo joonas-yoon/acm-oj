@@ -129,8 +129,6 @@ class Problem extends Model
     }
 
     public function updateStatus($status) {
-        $this['status'] = $status;
-        $this->save();
-        return $this;
+        return $this->update(['status'=>$status]);
     }
 }

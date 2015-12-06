@@ -241,16 +241,14 @@ class ProblemsController extends Controller
         return view('problems.maker.edit', compact('problem'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Requests\CreateProblemRequest $request, $id)
     {
-        //
+        $problem = Problem::findOrFail($id);
+        $problem->update($request->all());
+        if( $problem->status == 1 )
+            return redirect( action('ProblemsController@index', $problem->id) );
+        else
+            return redirect('/problems/create/list');
     }
 
     public function updateStatus(Request $request, $id)

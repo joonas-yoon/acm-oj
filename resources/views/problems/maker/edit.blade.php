@@ -24,12 +24,5 @@
 @section('script')
   <script>
   $('.ui.dropdown').dropdown();
-  $('button.preview')
-    .on('click', function(){
-      var form = $('form').has($(this));
-      form.attr('action', $(this).attr('action'));
-      form.submit();
-    })
-  ;
   </script>
 @stop
