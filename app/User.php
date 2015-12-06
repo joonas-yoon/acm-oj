@@ -32,7 +32,7 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password', 'total_submit', 'total_clear'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -87,10 +87,10 @@ class User extends Model implements AuthenticatableContract,
     }
 
     public function getAcceptCount() {
-        return $this->solutions->where('result_id', \App\Result::getAcceptCode())->count();
+        return $this->total_clear;
     }
     public function getSubmitCount() {
-        return $this->solutions->count();
+        return $this->total_submit;
     }
     public function getRate() {
         $submitCnt = $this->getSubmitCount();

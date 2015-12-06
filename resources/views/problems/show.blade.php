@@ -32,8 +32,11 @@
 
   <h2 class="ui header">
     {{ $problem->title }}
-    <a class="ui red basic label">도전 중</a>
-    <a class="ui green basic label">해결</a>
+    <?php if($problem->isAccepted(\Auth::user()->id)){ ?>
+      <a class="ui green basic label">해결</a>
+    <?php } else if( $problem->isTried(\Auth::user()->id) ){ ?>
+      <a class="ui red basic label">도전 중</a>
+    <?php } ?>
   </h2>
 
   <table class="ui celled padded single line table segment unstackable">

@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\ProblemStatistics;
 use GrahamCampbell\Markdown\Facades\Markdown;
 
 class Problem extends Model
@@ -25,7 +25,8 @@ class Problem extends Model
         'sample_input',
         'sample_output',
         'hint',
-        'status'
+        'status',
+        'total_submit'
     ];
 
     public function getMdDescription(){
@@ -41,14 +42,6 @@ class Problem extends Model
         return Markdown::convertToHtml($this->hint);
     }
 
-    public function contributors() {
-        //return $this->belongsTo('App\
-    }
-
-    public function contributeProblems() {
-        return $this->hasMany('App\Problem');
-    }
-
     public function solutions() {
         return $this->hasMany('App\Solution')->where('is_hidden', 0);
     }
@@ -56,23 +49,51 @@ class Problem extends Model
     public function solutionsAccept() {
         return $this->solutions()->where('result_id', \App\Result::getAcceptCode());
     }
+
+    public function problemStatistics() {
+        return $this->hasMany('App\ProblemStatistics');
+    }
+
+    public function statistics() {
+        return $this->hasMany('App\Statistics');
+    }
+
+
     public function getSubmitCount() {
-        return $this->solutions->count();
+        return $this->total_submit;
     }
+
     public function getAcceptCount() {
-        return $this->solutionsAccept->count();
+        return Statistics::getCountOrZero($this->problemStatistics()->where('result_id', Result::getAcceptCode())->first());
     }
+
     public function getRate() {
         $submitCnt = $this->getSubmitCount();
         return $submitCnt > 0 ? 100 * $this->getAcceptCount() / $submitCnt : 0;
+    }
+
+    public function isAccepted() {
+        if( ! \Auth::check() ) return false;
+        return Statistics::getCountOrZero($this->statistics()
+            ->where('user_id', \Auth::user()->id)->where('result_id', Result::getAcceptCode())->first()) > 0;
+    }
+
+    public function isTried() {
+        if( ! \Auth::check() ) return false;
+        return ($this->statistics()->where('user_id', \Auth::user()->id)
+            ->where('result_id', '!=', Result::getAcceptCode())->count()) > 0;
     }
 
     public function scopeGetOpenProblemOrFail($query, $id) {
         return $query->where('status', true)->findOrFail($id);
     }
 
+    public function scopeList($query) {
+        return $query->select('id', 'title', 'total_submit');
+    }
+
     public function scopeGetOpenProblems($query) {
-        return $query->select('id', 'title')->where('status', true);
+        return $query->list()->where('status', true);
     }
 
     public function scopeGetHiddenProblemOrFail($query, $id) {
@@ -80,12 +101,29 @@ class Problem extends Model
     }
 
     public function scopeGetHiddenProblems($query) {
-        return $query->select('id', 'title')->where('status', false);
+        return $query->list()->where('status', false);
     }
 
     public function scopeGetNewestProblems($query, $takes) {
-        return $query->select('id', 'title')->latest('created_at')->latest('id')
+        return $query->list()->latest('created_at')->latest('id')
                     ->where('status', true)
                     ->take($takes)->get();
+    }
+
+    public function scopeGetProblemsCreateByUser($query, $user_id) {
+        return $query->list()->join('problem_thank', function($join) {
+            $join->on('problems.id', '=','problem_thank.problem_id');
+        })->where('thank_id', Thank::getAuthorId())->where('user_id', $user_id);
+    }
+
+    public static function createProblem(array $values, $user_id) {
+        $problem = new Problem($values);
+        $problem->save();
+
+        $thanks = new ProblemThank;
+        $thanks['problem_id'] = $problem->id;
+        $thanks['thank_id'] = Thank::getAuthorId();
+        $thanks['user_id'] = $user_id;
+        $thanks->save();
     }
 }

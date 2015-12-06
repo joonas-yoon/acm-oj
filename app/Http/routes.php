@@ -42,7 +42,7 @@ Route::get('/problems/create/{step?}', [
     'uses' => 'ProblemsController@create',
     'middleware' => 'auth'
 ]);
-Route::get('/problems/new', 'ProblemsController@newProblems')->middleware('auth');
+Route::get('/problems/new', 'ProblemsController@newProblems');
 Route::get('/problems/preview/{id?}', 'ProblemsController@preview')->middleware('auth');
 Route::get('/problems/{problem}', [
     'as' => 'problems.show',

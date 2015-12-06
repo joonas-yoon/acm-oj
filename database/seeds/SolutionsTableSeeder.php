@@ -55,6 +55,6 @@ class SolutionsTableSeeder extends Seeder
             );
         }
 
-        factory('App\Solution', 100)->create();
+        //factory('App\Solution', 100)->create();
     }
 }

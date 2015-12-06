@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\ProblemThank;
+use App\Thank;
 use App\Problem;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -37,6 +39,17 @@ class ProblemsController extends Controller
         return view('problems.index', compact('problems', 'resultAccCode'));
     }
 
+    public function creatingProblemsList ()
+    {
+        $problems = Problem::getHiddenProblems()
+                  ->getProblemsCreateByUser(\Auth::user()->id)
+                  ->paginate(20);
+
+        $resultAccCode = \App\Result::getAcceptCode();
+
+        return view('problems.index', compact('problems', 'resultAccCode'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -45,9 +58,6 @@ class ProblemsController extends Controller
     public function create($step = '')
     {
         if( $step == 'data' ){
-            // 내용은 작성된 상태고, 데이터를 추가하는 폼
-            // 여러개를 고려해 get으로 설정
-            // TODO: 접근 권한도 추가해야한다.
             $problem_id = Input::get('problem');
             $problem_id = Problem::findOrFail($problem_id)->id;
 
@@ -73,9 +83,7 @@ class ProblemsController extends Controller
      */
     public function store(Requests\CreateProblemRequest $request)
     {
-        $problem = new Problem($request->all());
-        $problem->save();
-
+        Problem::createProblem($request->all(), \Auth::user()->id);
         return redirect('/problems/create/data?problem='. $problem->id);
     }
 
@@ -244,3 +252,4 @@ class ProblemsController extends Controller
         //
     }
 }
+

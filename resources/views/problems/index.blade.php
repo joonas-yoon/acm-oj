@@ -8,7 +8,7 @@
       <a class="item {{ \App\Helpers::setActive('problems/new') }}" href="/problems/new">새로 추가된 문제</a>
       <a class="item">출처</a>
       <a class="item">태그</a>
-      <a class="item {{ \App\Helpers::setActive('problems/create') }}" href="/problems/create">만들기</a>
+      <a class="item {{ \App\Helpers::setActive('problems/create') }}" href="/problems/create/list">만들기</a>
     </div>
 
     <i class="book icon"></i>
@@ -41,11 +41,11 @@
             <a class="ui teal basic label">스페셜 저지</a>
           @endif
 
-          <?php if( rand(0,10)==2 ){ ?>
-            <a class="ui red basic label">도전 중</a>
-          <?php } else if( rand(0,10) < 1 ){ ?>
+          @if( $problem->isAccepted() )
             <a class="ui green basic label">해결</a>
-          <?php } ?>
+          @elseif( $problem->isTried() )
+            <a class="ui red basic label">도전 중</a>
+          @endif
         </td>
         <td>
           <a href="/solutions/?problem_id={{ $problem->id }}&result_id={{ $resultAccCode }}">

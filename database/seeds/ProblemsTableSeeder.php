@@ -17,12 +17,12 @@ class ProblemsTableSeeder extends Seeder
          */
         App\Problem::truncate();
 
-        DB::table('problems')->insert([
+        App\Problem::insert([
             'id' => 999, 'title' => 'Dummy',
             'description' => "## IT IS HIDDEN",
             'status' => 0
         ]);
 
-        factory('App\Problem', 1)->create();
+        factory('App\Problem', 300)->create();
     }
 }
