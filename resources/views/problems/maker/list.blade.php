@@ -18,7 +18,7 @@
     </div>
   </h2>
 
-  <table class="ui padded striped text-center table unstackable">
+  <table class="ui striped text-center table unstackable">
     <thead>
       <tr>
         <th class="one wide">번호</th>

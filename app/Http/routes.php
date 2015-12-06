@@ -18,7 +18,6 @@ Route::get('/about', 'PagesController@about');
 
 Route::resource('articles', 'ArticlesController');
 
-Route::resource('problems', 'ProblemsController');
 Route::post('/problems/create', [
     'as'   => 'problems.store',
     'uses' => 'ProblemsController@store'
@@ -35,12 +34,9 @@ Route::get('/problems/create/{step?}', [
     'as'   => 'problems.create',
     'uses' => 'ProblemsController@create'
 ]);
-Route::get('/problems/edit/{problem}', [
-    'as'   => 'problems.edit',
-    'uses' => 'ProblemsController@edit'
-]);
 Route::get('/problems/new', 'ProblemsController@newProblems');
 Route::get('/problems/preview/{id?}', 'ProblemsController@preview');
+Route::resource('problems', 'ProblemsController');
 
 Route::get('/user/{name}', 'UsersController@show');
 
