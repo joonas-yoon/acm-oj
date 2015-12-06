@@ -103,17 +103,7 @@ class SolutionsController extends Controller
                     ->withInput();
         }
 
-        $solution = new Solution($request->all());
-        $solution->save();
-        // 일단 코드를 수정으로 삽입했음
-        \DB::table('codes')->insert(
-            [ 'id' => $solution->id, 'code' => $request->code ]
-        );
-
-        // 코드가 들어가면 대기중으로 전환
-        $solution['result_id'] = Result::getWaitCode();
-        $solution->save();
-
+        Solution::createSolution($request->all());
         return redirect('/solutions/?from=problem&problem_id=' . $request->problem_id );
     }
 

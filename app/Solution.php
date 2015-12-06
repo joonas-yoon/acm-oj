@@ -50,6 +50,10 @@ class Solution extends Model
         return $this->belongsTo('App\Language', 'lang_id' /* 이것과 연결 */);
     }
 
+    public function code() {
+        return $this->hasOne('App\Code', 'id');
+    }
+
     public function result() {
         return $this->belongsTo('App\Result', 'result_id');
     }
@@ -125,5 +129,14 @@ class Solution extends Model
         // return $original;
     }
 
-    //public function paginator
+    public static function createSolution(array $request) {
+        $code = new Code(['code' => $request['code']]);
+        $solution = Solution::create($request);
+        $solution->code()->save($code);
+
+        // 코드가 들어가면 대기중으로 전환
+        $user = User::find($request['user_id']);
+        $user->addSubmit($request['problem_id']);
+        return $solution->update(['result_id'=>Result::getWaitCode()]);
+    }
 }

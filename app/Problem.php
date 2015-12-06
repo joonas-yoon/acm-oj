@@ -58,6 +58,10 @@ class Problem extends Model
         return $this->hasMany('App\Statistics');
     }
 
+    public function problemThank() {
+        return $this->hasMany('App\ProblemThank', 'problem_id');
+    }
+
 
     public function getSubmitCount() {
         return $this->total_submit;
@@ -89,7 +93,7 @@ class Problem extends Model
     }
 
     public function scopeList($query) {
-        return $query->select('id', 'title', 'total_submit', 'status');
+        return $query->select('problems.id', 'title', 'total_submit', 'status');
     }
 
     public function scopeGetOpenProblems($query) {
@@ -117,14 +121,12 @@ class Problem extends Model
     }
 
     public static function createProblem(array $values, $user_id) {
-        $problem = new Problem($values);
-        $problem->save();
-
         $thanks = new ProblemThank;
-        $thanks['problem_id'] = $problem->id;
         $thanks['thank_id'] = Thank::getAuthorId();
         $thanks['user_id'] = $user_id;
-        $thanks->save();
+
+        $problem = Problem::create($values);
+        $problem->problemThank()->save($thanks);
         return $problem;
     }
 

@@ -13,6 +13,7 @@ class CreateStatisticsTable extends Migration
     public function up()
     {
         Schema::create('statistics', function (Blueprint $table) {
+           $table->increments('id');
            $table->integer('problem_id')->unsigned();
            $table->foreign('problem_id')->references('id')->on('problems');
            $table->integer('user_id')->unsigned();
@@ -20,25 +21,27 @@ class CreateStatisticsTable extends Migration
            $table->integer('result_id')->unsigned();
            $table->foreign('result_id')->references('id')->on('results');
            $table->integer('count')->unsigned()->default(0);
-           $table->primary(['problem_id', 'user_id', 'result_id']);
+           $table->unique(['problem_id', 'user_id', 'result_id']);
         });
 
         Schema::create('problem_statistics', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('problem_id')->unsigned();
             $table->foreign('problem_id')->references('id')->on('problems');
             $table->integer('result_id')->unsigned();
             $table->foreign('result_id')->references('id')->on('results');
             $table->integer('count')->unsigned()->default(0);
-            $table->primary(['problem_id', 'result_id']);
+            $table->unique(['problem_id', 'result_id']);
         });
 
         Schema::create('user_statistics', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('result_id')->unsigned();
             $table->foreign('result_id')->references('id')->on('results');
             $table->integer('count')->unsigned()->default(0);
-            $table->primary(['user_id', 'result_id']);
+            $table->unique(['user_id', 'result_id']);
         });
 
 

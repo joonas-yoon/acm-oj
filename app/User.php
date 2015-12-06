@@ -92,6 +92,12 @@ class User extends Model implements AuthenticatableContract,
     public function getSubmitCount() {
         return $this->total_submit;
     }
+
+    public function addSubmit($problem_id) {
+        $this->increment('total_submit');
+        Problem::find($problem_id)->increment('total_submit');
+    }
+
     public function getRate() {
         $submitCnt = $this->getSubmitCount();
         return $submitCnt > 0 ? 100 * $this->getAcceptCount() / $submitCnt : 0;

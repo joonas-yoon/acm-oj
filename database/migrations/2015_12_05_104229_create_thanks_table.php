@@ -19,12 +19,14 @@ class CreateThanksTable extends Migration
         });
 
         Schema::create('problem_thank', function (Blueprint $table) {
+           $table->increments('id');
            $table->integer('problem_id')->unsigned();
            $table->foreign('problem_id')->references('id')->on('problems');
            $table->integer('thank_id')->unsigned();
            $table->foreign('thank_id')->references('id')->on('thanks');
            $table->integer('user_id')->unsigned();
            $table->foreign('user_id')->references('id')->on('users');
+           $table->unique(['problem_id', 'thank_id', 'user_id']);
         });
     }
 

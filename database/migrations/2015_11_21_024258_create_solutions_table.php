@@ -35,6 +35,7 @@ class CreateSolutionsTable extends Migration
                   ->onUpdate('cascade')->onDelete('cascade');
 
             $table->text('code');
+            $table->primary('id');
         });
 
         // ----------------------------------------------------------
