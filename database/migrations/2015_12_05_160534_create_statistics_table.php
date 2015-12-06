@@ -20,6 +20,7 @@ class CreateStatisticsTable extends Migration
            $table->integer('result_id')->unsigned();
            $table->foreign('result_id')->references('id')->on('results');
            $table->integer('count')->unsigned()->default(0);
+           $table->primary(['problem_id', 'user_id', 'result_id']);
         });
 
         Schema::create('problem_statistics', function (Blueprint $table) {
@@ -28,6 +29,7 @@ class CreateStatisticsTable extends Migration
             $table->integer('result_id')->unsigned();
             $table->foreign('result_id')->references('id')->on('results');
             $table->integer('count')->unsigned()->default(0);
+            $table->primary(['problem_id', 'result_id']);
         });
 
         Schema::create('user_statistics', function (Blueprint $table) {
@@ -36,6 +38,7 @@ class CreateStatisticsTable extends Migration
             $table->integer('result_id')->unsigned();
             $table->foreign('result_id')->references('id')->on('results');
             $table->integer('count')->unsigned()->default(0);
+            $table->primary(['user_id', 'result_id']);
         });
 
 
