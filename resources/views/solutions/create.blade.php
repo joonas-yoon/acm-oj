@@ -17,7 +17,7 @@
   <div class="ui stackable grid">
     <div class="two wide column field column-label">언어</div>
     <div class="fourteen wide column field">
-      {!! Form::select('lang_id', ['선택하세요', 'C', 'C++'], Input::old('lang_id'), ['class' => 'ui search selection dropdown']) !!}
+      {!! Form::select('lang_id', ['선택하세요', 'C', 'C++'], Input::old('lang_id') ? Input::old('lang_id') : 2, ['class' => 'ui search selection dropdown']) !!}
     </div>
   </div>
 
@@ -27,19 +27,19 @@
       <div class="inline fields">
         <div class="field">
           <div class="ui radio checkbox">
-            <input type="radio" name="is_published" value="0" tabindex="0" class="hidden" checked>
+            {!! Form::radio('is_published', 0, 0 == Input::old('is_published'), ['class'=>'hidden']) !!}
             <label>공개</label>
           </div>
         </div>
         <div class="field">
           <div class="ui radio checkbox">
-            <input type="radio" name="is_published" value="1" tabindex="1" class="hidden">
+            {!! Form::radio('is_published', 1, 1 == Input::old('is_published'), ['class'=>'hidden']) !!}
             <label>정답인 경우만 공개</label>
           </div>
         </div>
         <div class="field">
           <div class="ui radio checkbox">
-            <input type="radio" name="is_published" value="2" tabindex="2" class="hidden">
+            {!! Form::radio('is_published', 2, 2 == Input::old('is_published'), ['class'=>'hidden']) !!}
             <label>비공개</label>
           </div>
         </div>

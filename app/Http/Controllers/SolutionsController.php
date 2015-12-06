@@ -84,11 +84,17 @@ class SolutionsController extends Controller
         $request['size'] = strlen($request->code);
 
         $validator = \Validator::make($request->all(), [
-            'problem_id' => 'required|numeric|min:0',
-            'lang_id'    => 'required|numeric|min:0',
+            'problem_id' => 'required|numeric|min:1',
+            'lang_id'    => 'required|numeric|min:1',
+            'code'       => 'required|min:1',
             'user_id'    => 'required',
-            'code'       => 'required',
             'size'       => 'required'
+        ], [
+            'problem_id.required' => '문제의 상태를 확인해주세요.',
+            'lang_id.required'    => '언어를 선택하세요.',
+            'lang_id.min'         => '언어를 선택하세요.',
+            'code.required'       => '소스 코드가 너무 짧습니다.',
+            'code.min'            => '소스 코드가 너무 짧습니다.'
         ]);
 
         if ($validator->fails()) {
