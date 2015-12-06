@@ -13,6 +13,8 @@ class ProblemThank extends Model
      */
     protected $table = 'problem_thank';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'problem_id',
         'thank_id',

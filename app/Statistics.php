@@ -8,6 +8,8 @@ class Statistics extends Model
 {
     protected $table = 'statistics';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'problem_id',
         'user_id',
