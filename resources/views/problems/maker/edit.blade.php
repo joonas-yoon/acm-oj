@@ -7,14 +7,14 @@
 
   @include('errors.list')
 
-  {!! Form::open(['url' => '/problems/create/', 'class' => 'ui form', 'id' => 'problem']) !!}
+  {!! Form::model($problem, ['method' => 'PATCH', 'url' => '/problems/'. $problem->id, 'class' => 'ui form', 'id' => 'problem']) !!}
 
   @include('problems.maker.form')
 
   <div class="ui divider hidden"></div>
 
   <div class="ui centered grid">
-    {!! Form::submit('다음 단계', ['class' => 'ui blue button']) !!}
+    {!! Form::submit('수정', ['class' => 'ui blue button']) !!}
   </div>
 
   {!! Form::close() !!}

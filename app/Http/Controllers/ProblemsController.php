@@ -55,9 +55,7 @@ class ProblemsController extends Controller
 
     public function creatingProblemsList ()
     {
-        $problems = Problem::getHiddenProblems()
-                  ->getProblemsCreateByUser(\Auth::user()->id)
-                  ->paginate(20);
+        $problems = Problem::getProblemsCreateByUser(\Auth::user()->id)->paginate(20);
 
         return view('problems.maker.list', compact('problems'));
     }
@@ -233,12 +231,14 @@ class ProblemsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $problem_id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($problem_id)
     {
-        //
+        $problem = Problem::findOrFail($problem_id);
+
+        return view('problems.maker.edit', compact('problem'));
     }
 
     /**
@@ -251,6 +251,32 @@ class ProblemsController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        if($request->from == 'confirm'){
+            // 문제 검토 요청
+            $request->merge(array('status' => 3)); // 문제 제작 완료
+        }
+
+        $validator = \Validator::make(
+            $request->only('problem_id', 'status'),
+            [
+                'problem_id' => 'required|numeric',
+                'status'     => 'required|numeric'
+            ]
+        );
+
+        if( $validator->fails() ){
+            return Redirect::back()->withErrors($validator);
+        }
+
+        $problem = Problem::find($id);
+
+        if($problem) $problem->updateStatus($request->status);
+
+        return Redirect::back();
     }
 
     /**

@@ -89,7 +89,7 @@ class Problem extends Model
     }
 
     public function scopeList($query) {
-        return $query->select('id', 'title', 'total_submit');
+        return $query->select('id', 'title', 'total_submit', 'status');
     }
 
     public function scopeGetOpenProblems($query) {
@@ -97,16 +97,16 @@ class Problem extends Model
     }
 
     public function scopeGetHiddenProblemOrFail($query, $id) {
-        return $query->where('status', false)->findOrFail($id);
+        return $query->where('status', 0)->findOrFail($id);
     }
 
     public function scopeGetHiddenProblems($query) {
-        return $query->list()->where('status', false);
+        return $query->list()->where('status', 0);
     }
 
     public function scopeGetNewestProblems($query, $takes) {
         return $query->list()->latest('created_at')->latest('id')
-                    ->where('status', true)
+                    ->where('status', 1)
                     ->take($takes)->get();
     }
 
@@ -126,5 +126,11 @@ class Problem extends Model
         $thanks['user_id'] = $user_id;
         $thanks->save();
         return $problem;
+    }
+
+    public function updateStatus($status) {
+        $this['status'] = $status;
+        $this->save();
+        return $this;
     }
 }

@@ -36,6 +36,7 @@ Route::get('/problems/create/{step?}', [
 ]);
 Route::get('/problems/new', 'ProblemsController@newProblems');
 Route::get('/problems/preview/{id?}', 'ProblemsController@preview');
+Route::post('/problems/{problems}/status', 'ProblemsController@updateStatus');
 Route::resource('problems', 'ProblemsController');
 
 Route::get('/user/{name}', 'UsersController@show');
