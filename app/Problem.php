@@ -125,5 +125,6 @@ class Problem extends Model
         $thanks['thank_id'] = Thank::getAuthorId();
         $thanks['user_id'] = $user_id;
         $thanks->save();
+        return $problem;
     }
 }

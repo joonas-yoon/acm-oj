@@ -18,36 +18,29 @@ Route::get('/about', 'PagesController@about');
 
 Route::resource('articles', 'ArticlesController');
 
-Route::get('/problems', [
-    'as'   => 'problems.index',
-    'uses' => 'ProblemsController@index'
-]);
+Route::resource('problems', 'ProblemsController');
 Route::post('/problems/create', [
     'as'   => 'problems.store',
-    'uses' => 'ProblemsController@store',
-    'middleware' => 'auth'
+    'uses' => 'ProblemsController@store'
 ]);
 Route::get('/problems/create/list', [
-    'as'   => 'problems.index',
-    'uses' => 'ProblemsController@creatingProblemsList',
-    'middleware' => ['auth']
+    'as'   => 'problems.create.index',
+    'uses' => 'ProblemsController@creatingProblemsList'
 ]);
 Route::post('/problems/create/data', [
     'as'   => 'problems.store.data',
-    'uses' => 'ProblemsController@storeData',
-    'middleware' => 'auth'
+    'uses' => 'ProblemsController@storeData'
 ]);
 Route::get('/problems/create/{step?}', [
     'as'   => 'problems.create',
-    'uses' => 'ProblemsController@create',
-    'middleware' => 'auth'
+    'uses' => 'ProblemsController@create'
+]);
+Route::get('/problems/edit/{problem}', [
+    'as'   => 'problems.edit',
+    'uses' => 'ProblemsController@edit'
 ]);
 Route::get('/problems/new', 'ProblemsController@newProblems');
-Route::get('/problems/preview/{id?}', 'ProblemsController@preview')->middleware('auth');
-Route::get('/problems/{problem}', [
-    'as' => 'problems.show',
-    'uses' => 'ProblemsController@show'
-]);
+Route::get('/problems/preview/{id?}', 'ProblemsController@preview');
 
 Route::get('/user/{name}', 'UsersController@show');
 

@@ -17,6 +17,20 @@ use Storage;
 class ProblemsController extends Controller
 {
     /**
+     * Instantiate a new UserController instance.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', [
+            'except' => [
+                'index', 'newProblems', 'show'
+            ]
+        ]);
+
+        //$this->middleware('log', ['only' => ['fooAction', 'barAction']]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -45,9 +59,7 @@ class ProblemsController extends Controller
                   ->getProblemsCreateByUser(\Auth::user()->id)
                   ->paginate(20);
 
-        $resultAccCode = \App\Result::getAcceptCode();
-
-        return view('problems.index', compact('problems', 'resultAccCode'));
+        return view('problems.maker.list', compact('problems'));
     }
 
     /**
@@ -83,7 +95,7 @@ class ProblemsController extends Controller
      */
     public function store(Requests\CreateProblemRequest $request)
     {
-        Problem::createProblem($request->all(), \Auth::user()->id);
+        $problem = Problem::createProblem($request->all(), \Auth::user()->id);
         return redirect('/problems/create/data?problem='. $problem->id);
     }
 
