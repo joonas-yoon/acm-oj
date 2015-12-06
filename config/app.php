@@ -153,8 +153,12 @@ return [
         SUI\SUIServiceProvider::class,
 
         Laracasts\Flash\FlashServiceProvider::class,
-        Bican\Roles\RolesServiceProvider::class,
         GrahamCampbell\Markdown\MarkdownServiceProvider::class,
+
+        /*
+         * Catalyst Sentinel Service Provider
+         */
+        //'Cartalyst\Sentinel\Laravel\SentinelServiceProvider',
 
     ],
 
@@ -209,6 +213,14 @@ return [
         'Html'      => Illuminate\Html\HtmlFacade::class,
         'Flash'     => Laracasts\Flash\Flash::class,
         'Markdown'  => GrahamCampbell\Markdown\Facades\Markdown::class,
+
+        /**
+         *  Third-Party by Catalyst Sentinel
+         *//*
+        'Activation' => 'Cartalyst\Sentinel\Laravel\Facades\Activation',
+        'Reminder'   => 'Cartalyst\Sentinel\Laravel\Facades\Reminder',
+        'Sentinel'   => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel',*/
+
     ],
 
 ];
