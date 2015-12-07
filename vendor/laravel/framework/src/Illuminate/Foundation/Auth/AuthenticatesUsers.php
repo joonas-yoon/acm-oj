@@ -33,7 +33,7 @@ trait AuthenticatesUsers
     public function postLogin(Request $request)
     {
         $this->validate($request, [
-            'usernameOrEmail' => 'required', 'password' => 'required',
+            $this->loginUsername() => 'required', 'password' => 'required',
         ]);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
@@ -45,13 +45,7 @@ trait AuthenticatesUsers
             return $this->sendLockoutResponse($request);
         }
 
-        $usernameOrEmail = $request->usernameOrEmail;
-        $usernameOrEmailField = filter_var($usernameOrEmail, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
-
-        $credentials = [
-            $usernameOrEmailField => $usernameOrEmail,
-            'password' => $request->password
-        ];
+        $credentials = $this->getCredentials($request);
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
             return $this->handleUserWasAuthenticated($request, $throttles);
@@ -65,9 +59,9 @@ trait AuthenticatesUsers
         }
 
         return redirect($this->loginPath())
-            ->withInput($request->only('usernameOrEmail', 'remember'))
+            ->withInput($request->only($this->loginUsername(), 'remember'))
             ->withErrors([
-                'usernameOrEmail' => $this->getFailedLoginMessage()
+                $this->loginUsername() => $this->getFailedLoginMessage(),
             ]);
     }
 
@@ -109,10 +103,9 @@ trait AuthenticatesUsers
      */
     protected function getFailedLoginMessage()
     {
-        //return Lang::has('auth.failed')
-        //        ? Lang::get('auth.failed')
-        //        : 'These credentials do not match our records.';
-        return '로그인에 실패했습니다. 아이디 혹은 비밀번호를 확인해주세요.';
+        return Lang::has('auth.failed')
+                ? Lang::get('auth.failed')
+                : 'These credentials do not match our records.';
     }
 
     /**
