@@ -158,7 +158,7 @@ return [
         /*
          * Catalyst Sentinel Service Provider
          */
-        //'Cartalyst\Sentinel\Laravel\SentinelServiceProvider',
+        Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
 
     ],
 
@@ -216,10 +216,10 @@ return [
 
         /**
          *  Third-Party by Catalyst Sentinel
-         *//*
-        'Activation' => 'Cartalyst\Sentinel\Laravel\Facades\Activation',
-        'Reminder'   => 'Cartalyst\Sentinel\Laravel\Facades\Reminder',
-        'Sentinel'   => 'Cartalyst\Sentinel\Laravel\Facades\Sentinel',*/
+         */
+        'Activation' => Cartalyst\Sentinel\Laravel\Facades\Activation::class,
+        'Reminder'   => Cartalyst\Sentinel\Laravel\Facades\Reminder::class,
+        'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
 
     ],
 
