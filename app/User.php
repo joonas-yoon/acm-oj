@@ -113,7 +113,7 @@ class User extends SentinelUser implements AuthenticatableContract,
         Problem::find($problem_id)->increment('total_submit');
     }
 
-    public function getRate() {
+    public function getTotalRate() {
         $submitCnt = $this->getSubmitCount();
         return $submitCnt > 0 ? 100 * $this->getAcceptCount() / $submitCnt : 0;
     }

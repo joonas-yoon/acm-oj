@@ -38,7 +38,7 @@
         <td>
           <a href="/solutions/?user={{ $user->name }}">{{ $user->getSubmitCount() }}</a>
         </td>
-        <td>{{ number_format($user->getRate(), 2) }} %</td>
+        <td>{{ number_format($user->getTotalRate(), 2) }} %</td>
       </tr>
     @endforeach
     </tbody>

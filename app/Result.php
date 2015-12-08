@@ -27,6 +27,10 @@ class Result extends Model
     public function solutions(){
         return $this->hasMany('App\Solution', 'result_id');
     }
+    
+    public function scopeGetOpenResults(){
+        return $this->whereNotIn('id', $this->getHiddenCodes());
+    }
 
     public static function getTempCode() { return 1; }
     public static function getWaitCode() { return 2; }

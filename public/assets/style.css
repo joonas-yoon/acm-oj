@@ -205,6 +205,14 @@ html, body {
 .solution.running{color:#FF9800;}
 .solution.unit{color:#db2828;padding-left: 3px;}
 
+.ui.divided.selection.list.result>.item>.label.accept{background-color: rgba(31,140,56,1)!important;border-color: #1F8C38!important;color: #FFF!important;}
+.ui.divided.selection.list.result>.item>.label.wrong,
+.ui.divided.selection.list.result>.item>.label.limit,
+.ui.divided.selection.list.result>.item>.label.presentation{background-color: rgba(219,40,40,0.8)!important;border-color: #db2828!important;color: #FFF!important;}
+.ui.divided.selection.list.result>.item>.label.compile{background-color: #2185D0!important;border-color: #2185D0!important;color: #FFF!important;}
+.ui.divided.selection.list.result>.item>.label.runtime{background-color: #f2711c!important;border-color: #f2711c!important;color: #FFF!important;}
+.ui.divided.selection.list.result>.item {color:#666;}
+
 .text-center{text-align: center !important;}
 .text-left{text-align: left !important;}
 .text-right{text-align: right !important;}
