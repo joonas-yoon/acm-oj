@@ -8,7 +8,8 @@ use App\Result;
 use App\Language;
 use App\Problem;
 use App\User;
-use Auth;
+use DB;
+use Sentinel;
 
 class Solution extends Model
 {
@@ -131,12 +132,20 @@ class Solution extends Model
 
     public static function createSolution(array $request) {
         $code = new Code(['code' => $request['code']]);
-        $solution = Solution::create($request);
-        $solution->code()->save($code);
+        
+        DB::beginTransaction();
+        try {
+            $solution = Solution::create($request);
+            $solution->code()->save($code);
 
-        // 코드가 들어가면 대기중으로 전환
-        $user = User::find($request['user_id']);
-        $user->addSubmit($request['problem_id']);
-        return $solution->update(['result_id'=>Result::getWaitCode()]);
+            // 코드가 들어가면 대기중으로 전환
+            $user = User::find($request['user_id']);
+            $user->addSubmit($request['problem_id']);
+            $solution->update(['result_id'=>Result::getWaitCode()]);
+        } catch(\Exception $e) {
+            DB::rollback();
+        }
+        DB::commit();
+        return $solution;
     }
 }

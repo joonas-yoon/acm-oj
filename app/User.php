@@ -1,21 +1,20 @@
 <?php
-
 namespace App;
 
+use Cartalyst\Sentinel\Users\EloquentUser as SentinelUser;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements AuthenticatableContract,
-                                    /*AuthorizableContract,*/
-                                    CanResetPasswordContract
-{
-    use Authenticatable, /*Authorizable,*/ CanResetPassword;
+use Sentinel;
 
+class User extends SentinelUser implements AuthenticatableContract,
+                                        CanResetPasswordContract
+{
+    use Authenticatable, CanResetPassword;
+    
     /**
      * The database table used by the model.
      *
@@ -28,7 +27,16 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password', 'total_submit', 'total_clear'];
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'permissions',
+        'total_submit',
+        'total_clear'
+    ];
+    
+    protected $loginNames = ['name', 'email'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -36,6 +44,7 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+    
 
     /**
      * Find by username, or throw an exception.
@@ -78,6 +87,11 @@ class User extends Model implements AuthenticatableContract,
     public function solutions() {
         return $this->hasMany('App\Solution')->has('problem');
     }
+    
+    public function statistics() {
+        return $this->hasMany('App\Statistics');
+    }
+    
     public function contributeProblems() {
         return $this->hasMany('App\Problem');
     }
@@ -90,6 +104,11 @@ class User extends Model implements AuthenticatableContract,
     }
 
     public function addSubmit($problem_id) {
+        Statistics::firstOrCreate([
+            'user_id' => $this->id,
+            'problem_id' => $problem_id,
+            'result_id' => Result::getAcceptCode()
+        ]);
         $this->increment('total_submit');
         Problem::find($problem_id)->increment('total_submit');
     }
@@ -97,5 +116,21 @@ class User extends Model implements AuthenticatableContract,
     public function getRate() {
         $submitCnt = $this->getSubmitCount();
         return $submitCnt > 0 ? 100 * $this->getAcceptCount() / $submitCnt : 0;
+    }
+    
+    public function getAcceptProblems() {
+        return $this->statistics()->where('result_id', Result::getAcceptCode())
+            ->where('count', '>', 0)->orderBy('problem_id')
+            ->with(['problems' => function($query) {
+                $query->select('id', 'title');
+            }]);
+    }
+    
+    public function getTriedProblems() {
+        return $this->statistics()->where('result_id', Result::getAcceptCode())
+            ->where('count', 0)->orderBy('problem_id')
+            ->with(['problems' => function($query) {
+                $query->select('id', 'title');
+            }]);
     }
 }

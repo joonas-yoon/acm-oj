@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 use Input;
+use Sentinel;
+use Carbon\Carbon;
 
 class SolutionsController extends Controller
 {
@@ -27,6 +29,8 @@ class SolutionsController extends Controller
                 'index'
             ]
         ]);
+        
+        Carbon::setLocale('ko');
     }
     
     /**

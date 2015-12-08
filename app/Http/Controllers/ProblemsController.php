@@ -37,7 +37,7 @@ class ProblemsController extends Controller
      */
     public function index()
     {
-        $problems = Problem::getOpenProblems()->paginate(20)->items();
+        $problems = Problem::getOpenProblems()->paginate(20);
 
         $resultAccCode = \App\Result::getAcceptCode();
 

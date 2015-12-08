@@ -17,6 +17,10 @@ class Statistics extends Model
         'count'
     ];
 
+    public function problems() {
+        return $this->belongsTo('App\Problem', 'problem_id');
+    }
+
     public static function getCountOrZero($query) {
         if($query)
             return $query->count;

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\ProblemStatistics;
 use GrahamCampbell\Markdown\Facades\Markdown;
 
+use Sentinel;
+
 class Problem extends Model
 {
     /**
@@ -29,6 +31,9 @@ class Problem extends Model
         'total_submit'
     ];
 
+
+    // markdown
+
     public function getMdDescription(){
         return Markdown::convertToHtml($this->description);
     }
@@ -41,6 +46,8 @@ class Problem extends Model
     public function getMdHint(){
         return Markdown::convertToHtml($this->hint);
     }
+    
+    // solutions
 
     public function solutions() {
         return $this->hasMany('App\Solution')->where('is_hidden', 0);
@@ -49,20 +56,14 @@ class Problem extends Model
     public function solutionsAccept() {
         return $this->solutions()->where('result_id', \App\Result::getAcceptCode());
     }
+    
+    
+    // statistics
 
     public function problemStatistics() {
         return $this->hasMany('App\ProblemStatistics');
     }
-
-    public function statistics() {
-        return $this->hasMany('App\Statistics');
-    }
-
-    public function problemThank() {
-        return $this->hasMany('App\ProblemThank', 'problem_id');
-    }
-
-
+    
     public function getSubmitCount() {
         return $this->total_submit;
     }
@@ -71,22 +72,40 @@ class Problem extends Model
         return Statistics::getCountOrZero($this->problemStatistics()->where('result_id', Result::getAcceptCode())->first());
     }
 
+    public function statistics() {
+        return $this->hasMany('App\Statistics');
+    }
+    
     public function getRate() {
         $submitCnt = $this->getSubmitCount();
         return $submitCnt > 0 ? 100 * $this->getAcceptCount() / $submitCnt : 0;
     }
 
     public function isAccepted() {
-        if( ! \Auth::check() ) return false;
+        if( ! Sentinel::check() ) return false;
         return Statistics::getCountOrZero($this->statistics()
-            ->where('user_id', \Auth::user()->id)->where('result_id', Result::getAcceptCode())->first()) > 0;
+            ->where('user_id', Sentinel::getUser()->id)->where('result_id', Result::getAcceptCode())->first()) > 0;
     }
 
     public function isTried() {
-        if( ! \Auth::check() ) return false;
-        return ($this->statistics()->where('user_id', \Auth::user()->id)
-            ->where('result_id', '!=', Result::getAcceptCode())->count()) > 0;
+        if( ! Sentinel::check() ) return false;
+        return ($this->statistics()->where('user_id', Sentinel::getUser()->id)
+            ->where('result_id', '!=', Result::getAcceptCode())->max('count')) > 0;
     }
+
+    // thanks
+
+    public function problemThank() {
+        return $this->hasMany('App\ProblemThank', 'problem_id');
+    }
+
+    public function scopeGetProblemsCreateByUser($query, $user_id) {
+        return $query->list()->join('problem_thank', function($join) {
+            $join->on('problems.id', '=','problem_thank.problem_id');
+        })->where('thank_id', Thank::getAuthorId())->where('user_id', $user_id);
+    }
+
+    // list
 
     public function scopeGetOpenProblemOrFail($query, $id) {
         return $query->where('status', true)->findOrFail($id);
@@ -114,11 +133,24 @@ class Problem extends Model
                     ->take($takes)->get();
     }
 
-    public function scopeGetProblemsCreateByUser($query, $user_id) {
-        return $query->list()->join('problem_thank', function($join) {
-            $join->on('problems.id', '=','problem_thank.problem_id');
-        })->where('thank_id', Thank::getAuthorId())->where('user_id', $user_id);
+
+    // tag
+    
+    public function problemTag() {
+        return $this->hasMany('App\ProblemTag');
     }
+    
+    public function getPopularTags() {
+        return $this->problemTag()->orderBy('count', 'desc')->take(3);
+    }
+
+    public function scopeGetProblemsByTag($query, $tag_id) {
+        return $query->join('problem_tag', function($join) {
+            $join->on('problems.id', '=', 'problem_tag.problem_id');
+        })->getOpenProblems()->where('tag_id', $tag_id)->orderBy('count', 'desc');
+    }
+
+    // create, update
 
     public static function createProblem(array $values, $user_id) {
         $thanks = new ProblemThank;
