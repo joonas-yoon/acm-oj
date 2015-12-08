@@ -85,23 +85,27 @@ class Solution extends Model
         })->where('status',1);
 
         // 문제번호로 검색
-        if($inputs['problem_id'] > 0)
-            $query->where('problem_id', $inputs['problem_id']);
+        $problem_id = array_get($inputs, 'problem_id', 0);
+        if($problem_id > 0)
+            $query->where('problem_id', $problem_id);
 
         // 유저이름으로 검색
-        if($inputs['username'] != '')
+        $username = array_get($inputs, 'username', '');
+        if($username != '')
             $query->join('users', function($join) {
               $join->on('users.id', '=', 'solutions.user_id');
-            })->where('name', $inputs['username']);
+            })->where('name', $username);
 
 
         // 언어종류로 검색
-        if($inputs['lang_id'] > 0)
-            $query->where('lang_id', $inputs['lang_id']);
+        $lang_id = array_get($inputs, 'lang_id', 0);
+        if($lang_id > 0)
+            $query->where('lang_id', $lang_id);
 
         // 결과종류로 검색
-        if($inputs['result_id'] > 0)
-            $query->where('result_id', $inputs['result_id']);
+        $result_id = array_get($inputs, 'result_id', 0);
+        if($result_id > 0)
+            $query->where('result_id', $result_id);
 
         return $query;
     }
