@@ -146,6 +146,8 @@ class ProblemsController extends Controller
 
         $fileDirectory = "data/{$problem_id}";
         $fileList = "";
+        
+        Storage::deleteDirectory($fileDirectory);
 
         for($case=0; $case < $casesNumber; ++$case){
             $iFile = $files[$case*2];
