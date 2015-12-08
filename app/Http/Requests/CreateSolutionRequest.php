@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Auth;
+use Sentinel;
 use App\Http\Requests\Request;
 
 class CreateSolutionRequest extends Request
@@ -14,7 +14,7 @@ class CreateSolutionRequest extends Request
      */
     public function authorize()
     {
-        return Auth::check();
+        return Sentinel::check();
     }
 
     /**

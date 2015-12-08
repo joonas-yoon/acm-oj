@@ -13,38 +13,62 @@
 
 //DB::listen(function($sql, $bindings, $time){var_dump($sql);});
 
+// Disable checkpoints (throttling, activation) for demo purposes
+Sentinel::disableCheckpoints();
+
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 
+# Admin Routes
+Route::group(['before' => 'auth|admin'], function()
+{
+    //Route::get('/admin', ['as' => 'admin.dashboard', 'uses' => 'AdminController@getHome']);
+    //Route::resource('admin/profiles', 'AdminUsersController', ['only' => ['index', 'show', 'edit', 'update', 'destroy']]);
+});
+
 Route::resource('articles', 'ArticlesController');
 
-Route::post('/problems/create', [
-    'as'   => 'problems.store',
-    'uses' => 'ProblemsController@store'
-]);
-Route::get('/problems/create/list', [
-    'as'   => 'problems.create.index',
-    'uses' => 'ProblemsController@creatingProblemsList'
-]);
-Route::post('/problems/create/data', [
-    'as'   => 'problems.store.data',
-    'uses' => 'ProblemsController@storeData'
-]);
-Route::get('/problems/create/{step?}', [
-    'as'   => 'problems.create',
-    'uses' => 'ProblemsController@create'
-]);
-Route::get('/problems/new', 'ProblemsController@newProblems');
-Route::get('/problems/preview/{id?}', 'ProblemsController@preview');
-Route::post('/problems/{problems}/status', 'ProblemsController@updateStatus');
-Route::resource('problems', 'ProblemsController');
+Route::get ('login', 'Auth\AuthController@getLogin');
+Route::post('login', 'Auth\AuthController@postLogin');
+Route::get ('logout', function(){
+    Sentinel::logout();
+    return Redirect::back();
+});
+Route::get ('register', 'Auth\AuthController@getRegister');
+Route::post('register', 'Auth\AuthController@PostRegister');
 
-Route::get('/user/{name}', 'UsersController@show');
+Route::group(['prefix' => 'problems'], function()
+{
+    Route::group(['prefix' => 'create'], function()
+    {
+        Route::post('/', [
+            'as'   => 'problems.store',
+            'uses' => 'ProblemsController@store'
+        ]);
+        Route::get('list', [
+            'as'   => 'problems.create.index',
+            'uses' => 'ProblemsController@creatingProblemsList'
+        ]);
+        Route::post('data', [
+            'as'   => 'problems.store.data',
+            'uses' => 'ProblemsController@storeData'
+        ]);
+        Route::get('{step?}', [
+            'as'   => 'problems.create',
+            'uses' => 'ProblemsController@create'
+        ]);
+    });
+    Route::get('new', 'ProblemsController@newProblems');
+    Route::get('preview/{id?}', 'ProblemsController@preview');
+    Route::post('{problems}/status', 'ProblemsController@updateStatus');
+});
+
+Route::resource('problems', 'ProblemsController');
 
 Route::get('/rank', 'RankController@index');
 
 Route::get('/solutions',  'SolutionsController@index');
-Route::post('/solutions', 'SolutionsController@store')->middleware('auth');
+Route::post('/solutions', 'SolutionsController@store');
 Route::get('/solutions/{id}', 'SolutionsController@show');
-Route::get('/submit/{id}','SolutionsController@create')->middleware('auth');
+Route::get('/submit/{id}','SolutionsController@create');
 

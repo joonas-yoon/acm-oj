@@ -31,7 +31,7 @@ class ArticlesController extends Controller
 
     public function store(Requests\CreateArticleRequest $request) {
         $article = new Article($request->all());
-        Auth::user()->articles()->save($article);
+        Sentinel::getUser()->articles()->save($article);
         return redirect('/articles');
     }
 

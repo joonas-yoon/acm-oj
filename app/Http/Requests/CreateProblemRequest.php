@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
+use Sentinel;
+
 class CreateProblemRequest extends Request
 {
     /**
@@ -13,7 +15,7 @@ class CreateProblemRequest extends Request
      */
     public function authorize()
     {
-        return \Auth::check();
+        return Sentinel::check();
     }
 
     /**

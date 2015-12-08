@@ -18,6 +18,18 @@ use Input;
 class SolutionsController extends Controller
 {
     /**
+     * Instantiate a new SolutionsController instance.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', [
+            'except' => [
+                'index'
+            ]
+        ]);
+    }
+    
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -79,7 +91,7 @@ class SolutionsController extends Controller
      */
     public function store(Requests\CreateSolutionRequest $request)
     {
-        $request['user_id'] = \Auth::user()->id;
+        $request['user_id'] = Sentinel::getUser()->id;
         $request['result_id'] = 1;
         $request['size'] = strlen($request->code);
 

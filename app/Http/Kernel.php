@@ -26,14 +26,14 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \App\Http\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        /**
-         * Other middleware registrations ...
-         * 나중에 Route에서 'middleware' => 'role:admin' 또는
-         * 컨트롤러에서 $this->middleware('role:admin') 처럼 사용할 수 있다.
-         */
-        'role' => \Bican\Roles\Middleware\VerifyRole::class,
+        //'auth'  => \App\Http\Middleware\Authenticate::class,
+        //'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'auth'           => \App\Http\Middleware\SentinelAuthenticate::class,
+        'auth.basic'     => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'guest'          => \App\Http\Middleware\SentinelRedirectIfAuthenticated::class,
+        'standardUser'   => \App\Http\Middleware\SentinelStandardUser::class,
+        'admin'          => \App\Http\Middleware\SentinelAdminUser::class,
+        'notCurrentUser' => \App\Http\Middleware\SentinelNotCurrentUser::class,
+        'redirectAdmin'  => \App\Http\Middleware\SentinelRedirectAdmin::class,
     ];
 }

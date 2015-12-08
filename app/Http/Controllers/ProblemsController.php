@@ -8,11 +8,11 @@ use App\Problem;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 use Input;
 use Storage;
+use Sentinel;
 
 class ProblemsController extends Controller
 {
@@ -37,7 +37,7 @@ class ProblemsController extends Controller
      */
     public function index()
     {
-        $problems = Problem::getOpenProblems()->paginate(20);
+        $problems = Problem::getOpenProblems()->paginate(20)->items();
 
         $resultAccCode = \App\Result::getAcceptCode();
 
@@ -55,7 +55,7 @@ class ProblemsController extends Controller
 
     public function creatingProblemsList ()
     {
-        $problems = Problem::getProblemsCreateByUser(\Auth::user()->id)->paginate(20);
+        $problems = Problem::getProblemsCreateByUser(Sentinel::getUser()->id)->paginate(20);
 
         return view('problems.maker.list', compact('problems'));
     }
@@ -93,7 +93,7 @@ class ProblemsController extends Controller
      */
     public function store(Requests\CreateProblemRequest $request)
     {
-        $problem = Problem::createProblem($request->all(), \Auth::user()->id);
+        $problem = Problem::createProblem($request->all(), Sentinel::getUser()->id);
         return redirect('/problems/create/data?problem='. $problem->id);
     }
 

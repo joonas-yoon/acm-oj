@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
+
 use App\User;
 use Validator;
-use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Input;
+use Redirect;
+use Sentinel;
+
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -21,10 +25,8 @@ class AuthController extends Controller
     |
     */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-
-    //protected $redirectTo = '/articles';
-
+    protected $redirectTo = '/';
+    
     /**
      * Create a new authentication controller instance.
      *
@@ -43,17 +45,30 @@ class AuthController extends Controller
      */
     protected function validator(array $data)
     {
-        $emailRegExp = "/^[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,125}[a-zA-Z]{2,63}$/";
-        return Validator::make($data, [
-            // rules
-            'name' => 'required|unique:users|min:3|max:255|regex:/^[a-zA-Z0-9\-_\.]+$/',
-            'email' => 'required|max:255|unique:users|regex:'.$emailRegExp,
-            'password' => 'required|confirmed|min:6',
-        ], [
+        /***
+         * 
+         *  2015-12-07 23:57
+         *  https://ide.c9.io/godakes/temp#AuthController.php 와 동반하여 확인
+         */
+        
+        $field = array_has($data, 'email') ? 'email' : 'name';
+        $fieldRule = 'required|min:3|max:255';
+        if( $field == 'email' ) {
+            $regExp = $this->getEmailRegexp();
+        } else {
+            $regExp = '/^[a-zA-Z0-9\-_\.]+$/';
+        }
+        $fieldRule = $fieldRule . '|regex:'.$regExp;
+        
+        $rules = [
+            $field => $fieldRule,
+            'password' => 'required|min:6',
+        ];
+        
+        return Validator::make($data, $rules, [
             // messages
-            'name.regex' => '사용할 수 없는 아이디입니다.',
-            'name.min' => '아이디는 최소 :min자 이상이어야 합니다.',
-            'email.regex' => '올바르지 않은 이메일 주소입니다.'
+            'required'  => ':attribute 를 확인하세요.',
+            'regex'     => '아이디 또는 이메일을 다시 확인하세요.',
         ]);
     }
 
@@ -65,10 +80,150 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        return Sentinel::register([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+    
+    
+    /**
+     * Show the form for logging the user in.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function getLogin()
+    {
+        if( Sentinel::check() ) return redirect( $this->redirectTo );
+        return view('auth.login');
+    }
+    
+    /**
+     * Handle posting of the form for logging the user in.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postLogin(Request $request)
+    {
+        try
+        {
+            $input = $this->getCredentials($request->all());
+            
+            $validator = $this->validator($input);
+
+            if ($validator->fails())
+            {
+                return Redirect::back()
+                    ->withInput()
+                    ->withErrors($validator);
+            }
+
+            if (Sentinel::authenticate($input, $request->has('remember')))
+            {
+                return redirect( $this->redirectTo );
+            }
+
+            $errors = 'Invalid login or password.';
+        }
+        catch (NotActivatedException $e)
+        {
+            $errors = 'Account is not activated!';
+
+            return Redirect::to('reactivate')->with('user', $e->getUser());
+        }
+        catch (ThrottlingException $e)
+        {
+            $delay = $e->getDelay();
+
+            $errors = "Your account is blocked for {$delay} second(s).";
+        }
+
+        return Redirect::back()
+            ->withInput()
+            ->withErrors($errors);
+    }
+    
+    private function getCredentials(array $data)
+    {
+        $fieldData = $data['username'];
+        $fieldName = $this->getUsernameType($fieldData);
+        array_set($data, $fieldName, $fieldData);
+        array_forget($data, 'username');
+        return $data;
+    }
+    
+    private static function getEmailRegexp(){
+        return "/^[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,125}[a-zA-Z]{2,63}$/";
+    }
+    
+    private function getUsernameType($username)
+    {
+        return filter_var($username, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+    }
+    
+    public function getRegister()
+    {
+        return view('auth.register');
+    }
+    
+    public function postRegister(Request $request)
+    {
+        $input = Input::all();
+
+        $rules = [
+            'name'     => 'required|min:3|max:50|unique:users',
+            'email'    => 'required|unique:users|regex:'.$this->getEmailRegexp(),
+            'password' => 'required|min:4|confirmed'
+        ];
+        
+        $messages = [
+            'unique' => '사용할 수 없는 아이디 또는 이메일입니다',
+            
+            'name.required' => '아이디를 입력하세요.',
+            'name.regex'    => '잘못된 아이디 형식입니다.',
+            
+            'email.required' => '이메일을 입력하세요.',
+            'email.regex'    => '잘못된 이메일 형식입니다.',
+            
+            'password.required' => '비밀번호를 입력하세요.',
+            'password.confirmed' => '비밀번호가 일치하지 않습니다.',
+        ];
+
+        $validator = Validator::make($input, $rules, $messages);
+
+        if ($validator->fails())
+        {
+            return Redirect::back()
+                ->withInput()
+                ->withErrors($validator);
+        }
+
+        if ($user = Sentinel::register($input))
+        {
+            // $activation = Activation::create($user);
+
+            // $code = $activation->code;
+
+            // $sent = Mail::send('sentinel.emails.activate', compact('user', 'code'), function($m) use ($user)
+            // {
+            //     $m->to($user->email)->subject('Orion Online Judge 사이트 회원가입을 감사합니다.');
+            // });
+
+            // if ($sent === 0)
+            // {
+            //     return Redirect::to('register')
+            //         ->withErrors('인증 메일 발송에 실패했습니다.');
+            // }
+            
+            $request->session()->flash('success', '회원가입이 성공적으로 완료되었습니다.');
+
+            return Redirect::to('login')
+                ->with('userId', $user->getUserId());
+        }
+
+        return Redirect::to('register')
+            ->withInput()
+            ->withErrors('계정 생성에 실패하였습니다.');
     }
 }
