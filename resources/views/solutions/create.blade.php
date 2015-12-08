@@ -1,11 +1,12 @@
 @extends('master')
 
 @section('content')
+<div class="ui container">
 
   <div class="ui breadcrumb" style="padding-bottom:1em;">
-    <a class="section" href="/problems">Problems</a>
+    <a class="section" href="/problems">문제 목록</a>
     <i class="right chevron icon divider"></i>
-    <a class="section" href="/problems/{{ $problem->id }}">{{ $problem->id }}. {{ $problem->title }}</a>
+    <a class="section" href="/problems/{{ $problem->id }}">{{ $problem->id }}번</a>
     <i class="right chevron icon divider"></i>
     <div class="active section">Submit</div>
   </div>
@@ -47,25 +48,25 @@
     </div>
   </div>
 
-@if (count($errors) > 0)
-
-  <div class="ui stackable grid">
-    <div class="two wide column field column-label">오류</div>
-    <div class="fourteen wide column field">
-      <div class="ui visible warning message">
-          <div class="header">
-              Sorry, please correct them below.
-          </div>
-          <ul class="ui list">
-          @foreach($errors->all() as $error)
-              <li>{{ $error }}</li>
-          @endforeach
-          </ul>
+  @if (count($errors) > 0)
+  
+    <div class="ui stackable grid">
+      <div class="two wide column field column-label">오류</div>
+      <div class="fourteen wide column field">
+        <div class="ui visible warning message">
+            <div class="header">
+                Sorry, please correct them below.
+            </div>
+            <ul class="ui list">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            </ul>
+        </div>
       </div>
     </div>
-  </div>
-
-@endif
+  
+  @endif
 
   <div class="ui stackable grid">
     <div class="two wide column field column-label">소스 코드</div>
@@ -79,6 +80,7 @@
   {!! Form::hidden('problem_id', $problem->id) !!}
   {!! Form::close() !!}
 
+</div>
 @stop
 
 @section('script')

@@ -5,7 +5,7 @@
 </head>
 <body>
     @include('includes.header')
-    <div class="ui main container">
+    <div class="main content">
         @yield('content')
     </div>
     @include('includes.footer')

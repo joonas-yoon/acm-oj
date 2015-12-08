@@ -1,7 +1,7 @@
 @extends('master')
  
 @section('content')
-
+<div class="ui container">
     <div class="ui piled segment">
         <h1 class="ui header">Wrtie a New Article</h1>
         
@@ -13,5 +13,5 @@
             @include('articles.form', ['submitButtonText' => 'Add a Article'])
         {!! Form::close() !!}
     </div>
- 
+</div>
 @stop

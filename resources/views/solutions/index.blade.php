@@ -1,6 +1,7 @@
 @extends('master')
 
 @section('content')
+<div class="ui container">
 
   <h2 class="ui header">
     <i class="flag icon"></i>
@@ -101,6 +102,7 @@
 
   @include('pagination.simple', ['paginator' => $solutions])
 
+</div>
 @stop
 
 @section('script')

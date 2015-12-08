@@ -1,7 +1,9 @@
 @extends('master')
 
 @section('content')
-
+  
+<div class="ui container">
+  
   <div class="ui secondary menu" id="problemnav">
     <a class="item {{ App\Helpers::setActive('problems.show', Route::current()) }}" href="#">
       {{ $problem->id }}번: {{ $problem->title }}
@@ -25,6 +27,7 @@
       </div>
     </div>
   </div>
+  
 
   @if ($problem->is_special)
   <a class="ui red ribbon label">스페셜 저지</a>
@@ -200,7 +203,7 @@
     </div>
   </form>
   </div>
-
+</div>
 @stop
 
 @section('script')

@@ -1,6 +1,7 @@
 @extends('master')
 
 @section('content')
+<div class="ui container">
 
   @include('problems.maker.step',
     ['step1' => 'active', 'step2' => 'disabled', 'step3' => 'disabled' ])
@@ -19,6 +20,7 @@
 
   {!! Form::close() !!}
 
+</div>
 @stop
 
 @section('script')

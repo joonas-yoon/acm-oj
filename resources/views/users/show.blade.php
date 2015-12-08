@@ -1,7 +1,9 @@
 @extends('master')
 
 @section('content')
-    {{ var_dump($user) }}
+<div class="ui grid stackable relaxed page">
+  
+</div>
 @stop
 
 @section('script')

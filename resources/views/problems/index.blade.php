@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('content')
-
+<div class="ui container">
   <h2 class="ui header">
     <div class="ui secondary menu right floated">
       <a class="item {{ \App\Helpers::setActiveStrict('problems') }}" href="/problems">문제</a>
@@ -69,7 +69,7 @@
   </table>
 
   @include('pagination.default', ['paginator' => $problems])
-
+</div>
 @stop
 
 @section('script')

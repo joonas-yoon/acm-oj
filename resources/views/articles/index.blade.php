@@ -1,6 +1,7 @@
 @extends('master')
 
 @section('content')
+<div class="ui container">
     <h1 class="ui header">Articles Page</h1>
     <p>This example shows how to fetch data on database by laravel.</p>
 
@@ -30,4 +31,5 @@
     @else
     <p>No Items.</p>
     @endif
+</div>
 @stop

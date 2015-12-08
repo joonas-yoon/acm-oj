@@ -1,6 +1,7 @@
 @extends('master')
 
 @section('content')
+<div class="ui container">
 
   <h2 class="ui header">
     <i class="trophy icon"></i>
@@ -45,6 +46,7 @@
 
   @include('pagination.default', ['paginator' => $paginator])
 
+</div>
 @stop
 
 @section('script')

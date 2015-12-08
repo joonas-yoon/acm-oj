@@ -1,6 +1,7 @@
 @extends('master')
 
 @section('content')
+<div class="ui container">
 
   <h2 class="ui header">
     <div class="ui secondary menu right floated">
@@ -92,6 +93,7 @@
     </form>
   </div>
 
+</div>
 @stop
 
 @section('script')

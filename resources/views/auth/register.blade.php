@@ -2,9 +2,10 @@
 
 @section('content')
 
-    <div class="ui one column stackable center aligned page grid">
-    <div class="column twelve wide">
-        {!! Form::open(['url' => url('/register'), 'class' => 'ui form segment raised', 'style' => 'padding: 2rem 4rem;']) !!}
+<div class="ui middle aligned center aligned grid page">
+  <div class="column" style="max-width:450px;">
+      
+        {!! Form::open(['url' => url('/register'), 'class' => 'ui form stacked segment']) !!}
             {!! csrf_field() !!}
 
             <h2 class="ui icon header">
