@@ -18,6 +18,7 @@ Sentinel::disableCheckpoints();
 
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
+Route::get('/example', function(){return view('example');});
 
 # Admin Routes
 Route::group(['before' => 'auth|admin'], function()
@@ -72,3 +73,12 @@ Route::post('/solutions', 'SolutionsController@store');
 Route::get('/solutions/{id}', 'SolutionsController@show');
 Route::get('/submit/{id}','SolutionsController@create');
 
+Route::group(['prefix' => 'user'], function()
+{
+    Route::get('/', function(){
+        //return redirect('user/settings');
+    });
+    
+    Route::get('{username}', 'UsersController@show')
+    ->where('username', '[A-Za-z0-9.-_]+');
+});
