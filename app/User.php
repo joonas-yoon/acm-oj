@@ -133,4 +133,12 @@ class User extends SentinelUser implements AuthenticatableContract,
                 $query->select('id', 'title');
             }]);
     }
+    
+    public function userStatistics() {
+        return $this->hasMany('App\UserStatistics');
+    }
+    
+    public function getResultCount($result_id) {
+        return Statistics::getCountOrZero($this->userStatistics()->where('result_id', $result_id)->first());
+    }
 }

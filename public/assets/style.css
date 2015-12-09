@@ -40,6 +40,29 @@ html, body {
 .ui.progress .bar {
     min-width: 0;
 }
+.ui.card .image.crop {
+  position: relative;
+  width: 45px;
+  height: 45px;
+  overflow: hidden;
+}
+.ui.card .image.crop img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
+}
+.ui.card .image.crop img.portrait {
+  width: 100%;
+  height: auto;
+}
+.image.rounded.rectangle {
+    border-radius: .314rem;
+}
 
 /**
  *
