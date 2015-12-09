@@ -8,8 +8,10 @@
     <div class="ui fluid card">
       <div class="content">
         <div class="image crop right floated">
-          <img class="avatar-image rounded rectangle portrait" alt="User Profile Photo" src="
-        @if( rand()%2 == 1 )
+          <img class="avatar-image rounded rectangle portrait photo" alt="User Profile Photo" src="
+        @if( $user->name == 'yukariko' )
+          https://files.slack.com/files-pri/T0EJZPLJ2-F0G7GV2UW/pasted_image_at_2015_12_09_05_26_pm.png
+        @elseif( rand()%2 == 1 )
           https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/p40x40/11889666_933856966670876_899689170782757543_n.jpg?oh=e9c1b7ce8df50bacc32bda54c477893d&oe=56E92B1D&__gda__=1456929032_be7569ff3468ce54d95ed4e4b3d9f6a5
         @else
           http://people.imbc.com/images/thumbnail/A1105009727.jpg
@@ -49,26 +51,53 @@
   <div class="sixteen wide mobile eleven wide tablet eleven wide computer column">
     <div class="ui segments">
       <h5 class="ui top attached header">해결한 문제들</h5>
-      <div class="ui attached stacked blue segment">
-        @foreach( $user->getAcceptProblems()->get() as $problem )
-          <span>{{ $problem->id }}</span>
+      <div class="ui attached blue segment">
+        <div class="ui light grey labels">
+        @foreach( $user->getAcceptProblems() as $stastics )
+          <a class="ui label" href="/problems/{{ $stastics->problems->id }}">
+            {{ $stastics->problems->id }}
+            <span class="detail">{{ $stastics->problems->title }}</span>
+          </a>
         @endforeach
+        </div>
+      </div>
+      <div class="ui bottom attached blue progress" data-percent="{{ $user->getTotalRate() }}">
+        <div class="bar"></div>
       </div>
     </div>
     <div class="ui hidden divider"></div>
     <div class="ui segments">
       <h5 class="ui top attached header">도전 중인 문제들</h5>
-      <div class="ui attached stacked blue segment">
-        @foreach( $user->getTriedProblems()->get() as $problem )
-          <span>{{ $problem->id }}</span>
+      <div class="ui attached blue segment">
+        <div class="ui light grey labels">
+        @foreach( $user->getTriedProblems() as $stastics )
+          <a class="ui label" href="/problems/{{ $stastics->problems->id }}">
+            {{ $stastics->problems->id }}
+            <span class="detail">{{ $stastics->problems->title }}</span>
+          </a>
         @endforeach
+        </div>
+      </div>
+      <div class="ui bottom attached progress" data-percent="{{ $userTriedProblemRate }}">
+        <div class="bar"></div>
       </div>
     </div>
+  </div>
+  
+  
+  <div class="ui basic modal photo">
+    <img class="ui centered medium image" src="http://people.imbc.com/images/thumbnail/A1105009727.jpg">
   </div>
   
 </div>
 @stop
 
 @section('script')
-
+  <script>
+  $('.ui.progress').progress();
+  $('.ui.modal.photo')
+    .modal('setting', 'transition', 'fade up')
+    .modal('attach events', '.ui.card .image .photo', 'show')
+  ;
+  </script>
 @stop

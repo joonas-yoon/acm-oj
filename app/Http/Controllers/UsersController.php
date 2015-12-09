@@ -14,6 +14,10 @@ class UsersController extends Controller
 {
     public function show($name){
         $user = User::findByNameOrFail($name);
-        return view('users.show', compact('user'));
+        $userTriedProblemCount  = $user->getTriedProblems()->count();
+        $userAcceptProblemCount = $user->getAcceptProblems()->count();
+        $userTotalProblemCount = $userTriedProblemCount + $userAcceptProblemCount;
+        $userTriedProblemRate = $userTotalProblemCount > 0 ? ($userTriedProblemCount / $userTotalProblemCount) * 100 : 0;
+        return view('users.show', compact('user', 'userTriedProblemRate'));
     }
 }

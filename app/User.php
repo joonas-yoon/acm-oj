@@ -123,7 +123,7 @@ class User extends SentinelUser implements AuthenticatableContract,
             ->where('count', '>', 0)->orderBy('problem_id')
             ->with(['problems' => function($query) {
                 $query->select('id', 'title');
-            }]);
+            }])->get();
     }
     
     public function getTriedProblems() {
@@ -131,7 +131,7 @@ class User extends SentinelUser implements AuthenticatableContract,
             ->where('count', 0)->orderBy('problem_id')
             ->with(['problems' => function($query) {
                 $query->select('id', 'title');
-            }]);
+            }])->get();
     }
     
     public function userStatistics() {
