@@ -30,10 +30,15 @@ class User extends SentinelUser implements AuthenticatableContract,
     protected $fillable = [
         'name',
         'email',
+        'email_open',
         'password',
         'permissions',
         'total_submit',
-        'total_clear'
+        'total_clear',
+        'via',
+        'first_name',
+        'last_name',
+        'organization'
     ];
     
     protected $loginNames = ['name', 'email'];

@@ -7,23 +7,17 @@
     
     <div class="ui fluid card">
       <div class="content">
-        <div class="image crop right floated">
-          <img class="avatar-image rounded rectangle portrait photo" alt="User Profile Photo" src="
-        @if( $user->name == 'yukariko' )
-          https://files.slack.com/files-pri/T0EJZPLJ2-F0G7GV2UW/pasted_image_at_2015_12_09_05_26_pm.png
-        @elseif( rand()%2 == 1 )
-          https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/p40x40/11889666_933856966670876_899689170782757543_n.jpg?oh=e9c1b7ce8df50bacc32bda54c477893d&oe=56E92B1D&__gda__=1456929032_be7569ff3468ce54d95ed4e4b3d9f6a5
-        @else
-          http://people.imbc.com/images/thumbnail/A1105009727.jpg
-        @endif
-        ">
+        <div class="image rounded rectangle crop right floated">
+          <img class="avatar-image rounded rectangle portrait photo" alt="User Profile Photo" src="{{ $testImage }}">
         </div>
         <div class="header">{{ $user->name }}</div>
         <div class="meta">
-          <a class="group">{{ $user->email }} <br/>또는 소속</a>
+          <a class="group">
+            {{ $user->email_open ? $user->email : '' }} <br/>
+            {{ $user->organization }}</a>
         </div>
-        <div class="description">
-          이 쯤에 한마디가 들어와주면 아주 적당한 위치가 됩니다. 근데 한마디가 짧으면 좀 없어보이니까 길게 적어야 할거에요.
+        <div class="description" style="padding-top:0.5rem;">
+          {{ $user->via ? $user->via : '인사말이 없습니다.' }}
         </div>
       </div>
       <div class="extra content">
@@ -86,7 +80,7 @@
   
   
   <div class="ui basic modal photo">
-    <img class="ui centered medium image" src="http://people.imbc.com/images/thumbnail/A1105009727.jpg">
+    <img class="ui centered large image" src="{{ $testImage }}">
   </div>
   
 </div>

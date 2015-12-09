@@ -73,12 +73,25 @@ Route::post('/solutions', 'SolutionsController@store');
 Route::get('/solutions/{id}', 'SolutionsController@show');
 Route::get('/submit/{id}','SolutionsController@create');
 
-Route::group(['prefix' => 'user'], function()
+Route::group(['prefix' => 'user', 'as' => 'user'], function()
 {
     Route::get('/', function(){
-        //return redirect('user/settings');
+        return redirect( action('RankController@index') );
+    });
+    Route::get('{username}', 'UsersController@show');
+});
+
+Route::group(['prefix' => 'settings', 'as' => 'settings'], function()
+{
+    Route::group(['middleware' => 'auth'], function()
+    {
+        Route::get ('/', 'UsersController@settings');
+        Route::post('/', 'UsersController@postSettings');
     });
     
-    Route::get('{username}', 'UsersController@show')
-    ->where('username', '[A-Za-z0-9.-_]+');
+    Route::group(['middleware' => 'admin'], function()
+    {
+        // Route::get ('/', 'UsersController@settings');
+        // Route::post('/', 'UsersController@postSettings');
+    });
 });
