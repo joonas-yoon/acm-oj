@@ -152,4 +152,18 @@ class Solution extends Model
         DB::commit();
         return $solution;
     }
+    
+    public function statistics() {
+        return $this->hasMany('App\Statistics', 'user_id');
+    }
+    
+    public static function changeResult($result_id) {
+        $statistics = Statistics::firstOrCreate([
+            'user_id' => $this->user_id, 
+            'problem_id' => $this->problem_id,
+            'result_id' => $result_id
+        ]);
+        $statistics->increment('count');
+        return $this->update(['result_id' => $result_id]);
+    }
 }
