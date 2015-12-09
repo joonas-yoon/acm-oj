@@ -31,7 +31,10 @@ class UserTag extends Model
         foreach($userTags as $userTag) {
             DB::beginTransaction();
             try {
-                ProblemTag::first(['problem_id' => $userTag->problem_id, 'tag_id' => $userTag->tag_id])->subTag();
+                ProblemTag::first([
+                    'problem_id' => $userTag->problem_id,
+                    'tag_id' => $userTag->tag_id]
+                )->subTag();
                 $userTag->delete();
             } catch(\Exception $e) {
                 DB::rollback();

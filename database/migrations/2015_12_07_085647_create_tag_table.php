@@ -40,14 +40,6 @@ class CreateTagTable extends Migration
            $table->unique(['user_id', 'problem_id', 'tag_id']);
         });
 
-        Schema::create('selected_tag', function(Blueprint $table) {
-           $table->integer('problem_tag_id')->unsigned();
-           $table->foreign('problem_tag_id')->references('id')->on('problem_tag');
-           $table->integer('problem_id')->unsigned();
-           $table->foreign('problem_id')->references('id')->on('problems');
-           $table->timestamps();
-           $table->primary('problem_tag_id');
-        });
     }
 
     /**
@@ -57,7 +49,6 @@ class CreateTagTable extends Migration
      */
     public function down()
     {
-        Schema::drop('selected_tag');
         Schema::drop('user_tag');
         Schema::drop('problem_tag');
         Schema::drop('tags');
