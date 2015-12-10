@@ -13,7 +13,8 @@
         "guzzlehttp/guzzle": "~5.0",
         "fzaninotto/faker": "^1.5",
         "graham-campbell/markdown": "^5.3",
-        "cartalyst/sentinel": "2.0.*"
+        "cartalyst/sentinel": "2.0.*",
+        "intervention/image": "^2.3"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",

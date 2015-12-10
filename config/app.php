@@ -158,6 +158,8 @@ return [
          * Catalyst Sentinel Service Provider
          */
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
+        
+        Intervention\Image\ImageServiceProvider::class,
 
     ],
 
@@ -214,11 +216,11 @@ return [
         'Markdown'  => GrahamCampbell\Markdown\Facades\Markdown::class,
 
         /**
-         *  Third-Party by Catalyst Sentinel
+         *  Third-Party Classes
          */
         'Activation' => Cartalyst\Sentinel\Laravel\Facades\Activation::class,
         'Reminder'   => Cartalyst\Sentinel\Laravel\Facades\Reminder::class,
         'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
-
+        'Image'      => Intervention\Image\Facades\Image::class,
     ],
 ];
