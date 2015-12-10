@@ -137,50 +137,34 @@ html, body {
     box-shadow: none;
     border-radius: 0;
 }
-#navigator .ui.text.menu {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-}
 #navigator .nav.trigger { display:block;height:3.5rem; }
-#navigator .ui.text.menu,
 #navigator .nav.trigger {
     background: #2C3141;
 }
-#navigator .ui.text.menu .index.item {
+#navigator .ui.fixed.menu .item {
     color: #fff;
     -webkit-transition: color .2s linear;
     transition: color .2s linear;
 }
-#navigator.light .ui.text.menu,
-#navigator.light .nav.trigger {
+#navigator .ui.light.fixed.menu .item {
+    color: #333;
+}
+#navigator .ui.secondary.fixed.menu a.item:hover {
+    background: rgba(255,255,255,.05);
+}
+#navigator .ui.secondary.light.fixed.menu a.item:hover {
+    background: rgba(0,0,0,.05);
+}
+#navigator .ui.light.fixed.menu,
+#navigator .nav.trigger+.ui.light.fixed.menu {
     background: rgba(255,255,255,.9) !important;
 }
-#navigator.light .ui.text.menu {
+#navigator .ui.light.fixed.menu {
     border-bottom: 1px solid #DDDDDD;
     box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.04);
 }
-#navigator.light .ui.text.menu .index.item {
-    color: #000;
-}
-#navigator .ui.secondary.menu .item {
-    padding-top: 1.725em;
-    padding-bottom: 1.725em;
-}
-#navigator .ui.secondary.menu .item.brand {
-    padding: 0.8em;
-    border-left: none;
-    font-family: fantasy;
-}
-
-#navigator .sign.item:before {
-    background: none;
-}
-#navigator .sign.item .ui.breadcrumb .section {
-    color: inherit;
-}
-#navigator .sign.item .ui.breadcrumb .divider {
-    color: inherit;
-    margin: 0 .5rem;
+#navigator .ui.secondary.pointing.menu a.item:not(.brand) {
+    padding-bottom: 1.414rem;
 }
 
 /**
