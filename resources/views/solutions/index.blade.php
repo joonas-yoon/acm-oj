@@ -1,5 +1,9 @@
 @extends('master')
 
+@section('title')
+채점 현황 - {{ $solutions->currentPage() }} 페이지
+@stop
+
 @section('content')
 <div class="ui container">
 

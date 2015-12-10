@@ -1,5 +1,6 @@
 @extends('master')
 
+@section('title'){{ isset($title) ? $title : '' }}@stop
 @section('content')
 <div class="ui container">
 

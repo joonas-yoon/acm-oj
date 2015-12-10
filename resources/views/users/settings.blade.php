@@ -1,5 +1,9 @@
 @extends('master')
 
+@section('title')
+{{ $title }}
+@stop
+
 @section('content')
 <div class="ui grid stackable relaxed page">
   <div class="sixteen wide mobile four wide tablet four wide computer column">

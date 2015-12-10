@@ -1,5 +1,9 @@
 @extends('master')
 
+@section('title')
+로그인
+@stop
+
 @section('content')
 
 <div class="ui middle aligned center aligned grid page">

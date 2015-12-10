@@ -51,8 +51,10 @@ class UsersController extends Controller
             $viewContext = 'users.settings.language';
         else
             $viewContext = 'users.settings.profile';
+            
+        $title = '설정';
         
-        return view('users.settings', compact('user', 'viewContext'));
+        return view('users.settings', compact('user', 'viewContext', 'title'));
     }
     public function postUpdateProfile(Request $request)
     {

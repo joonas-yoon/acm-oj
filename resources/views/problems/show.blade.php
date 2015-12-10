@@ -1,5 +1,9 @@
 @extends('master')
 
+@section('title')
+{{ $problem->id }}번 - {{ $problem->title }}
+@stop
+
 @section('content')
   
 <div class="ui container">

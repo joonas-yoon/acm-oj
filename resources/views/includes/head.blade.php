@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <title>{{ $site_title }}</title>
+    <title>Orion Online Judge</title>
 
     <link rel="stylesheet" type="text/css" href="/assets/semantic-ui/css/semantic.min.css" />
     <link rel="stylesheet" type="text/css" href="/assets/style.css" />

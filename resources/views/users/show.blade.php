@@ -1,5 +1,9 @@
 @extends('master')
 
+@section('title')
+유저 정보 - {{ $user->name }}
+@stop
+
 @section('content')
 <div class="ui grid stackable relaxed page">
   

@@ -1,5 +1,9 @@
 @extends('master')
 
+@section('title')
+{{ $problem->id }}번 제출
+@stop
+
 @section('content')
 <div class="ui container">
 

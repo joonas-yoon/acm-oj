@@ -1,5 +1,9 @@
 @extends('master')
 
+@section('title')
+{{ $code->id }}번 소스 코드
+@stop
+
 @section('content')
 <div class="ui container">
     <div class="ui dividing header">디버그 코드</div>

@@ -10,9 +10,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 #use Request;
+use Sentinel;
 
 class ArticlesController extends Controller
 {
+    /**
+     * Instantiate a new ArticlesController instance.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', [
+            'except' => [
+                'index', 'show'
+            ]
+        ]);
+
+        //$this->middleware('log', ['only' => ['fooAction', 'barAction']]);
+    }
+    
     public function index() {
         $articles = Article::latest('published_at')->published()->get();
 

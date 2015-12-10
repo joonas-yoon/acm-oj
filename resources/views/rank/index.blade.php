@@ -1,5 +1,6 @@
 @extends('master')
 
+@section('title')랭킹 - {{ $paginator->currentPage() }} 페이지@stop
 @section('content')
 <div class="ui container">
 

@@ -17,7 +17,7 @@ use Sentinel;
 class ProblemsController extends Controller
 {
     /**
-     * Instantiate a new UserController instance.
+     * Instantiate a new ProblemsController instance.
      */
     public function __construct()
     {
@@ -39,25 +39,28 @@ class ProblemsController extends Controller
     {
         $problems = Problem::getOpenProblems()->paginate(20);
 
+        $title = '문제 목록 - '.$problems->currentPage().' 페이지';
         $resultAccCode = \App\Result::getAcceptCode();
 
-        return view('problems.index', compact('problems', 'resultAccCode'));
+        return view('problems.index', compact('problems', 'title', 'resultAccCode'));
     }
 
     public function newProblems ()
     {
-        $problems = Problem::getNewestProblems(10);
+        $problems = Problem::getNewestProblems(15);
 
+        $title = '새로 추가된 문제 목록';
         $resultAccCode = \App\Result::getAcceptCode();
 
-        return view('problems.index', compact('problems', 'resultAccCode'));
+        return view('problems.index', compact('problems', 'title', 'resultAccCode'));
     }
 
     public function creatingProblemsList ()
     {
         $problems = Problem::getProblemsCreateByUser(Sentinel::getUser()->id)->paginate(20);
 
-        return view('problems.maker.list', compact('problems'));
+        $title = '문제 제작 - '.$problems->currentPage().' 페이지';
+        return view('problems.maker.list', compact('problems', 'title'));
     }
 
     /**
