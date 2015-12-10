@@ -9,7 +9,7 @@
   </div>
   @else
   <div class="ui right index dropdown item">
-    <img class="ui avatar image" src="/images/no-image.png">&nbsp;&nbsp;
+    <img class="ui avatar image" src="{{ Sentinel::getUser()->photo_link }}">&nbsp;&nbsp;
     {{ Sentinel::getUser()->name }}
     <i class="dropdown icon"></i>
     <div class="menu">

@@ -98,6 +98,17 @@ Route::group(['prefix' => 'settings', 'as' => 'settings'], function()
     });
 });
 
+Route::group(['prefix' => 'images'], function()
+{
+    Route::get('profile/{filename}', function ($filename)
+    {
+        if(!File::exists( $filename = storage_path("app/images/profile/{$filename}") )) abort(404);
+        return Image::make($filename)->response();
+    });
+});
+
+Route::post('upload/photo', 'UsersController@uploadPhoto');
+
 Route::group(['prefix' => 'password', 'as' => 'password'], function()
 {
     Route::get('/', function(){ return redirect('/password/reset'); });

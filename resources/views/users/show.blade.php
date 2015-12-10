@@ -8,7 +8,7 @@
     <div class="ui fluid card">
       <div class="content">
         <div class="image rounded rectangle crop right floated">
-          <img class="avatar-image rounded rectangle portrait photo" alt="User Profile Photo" src="{{ $testImage }}">
+          <img class="avatar-image rounded rectangle portrait photo" alt="User Profile Photo" src="{{ $user->photo_link }}">
         </div>
         <div class="header">{{ $user->name }}</div>
         <div class="meta">
@@ -80,7 +80,7 @@
   
   
   <div class="ui basic modal photo">
-    <img class="ui centered large image" src="{{ $testImage }}">
+    <img class="ui centered image" src="{{ $user->photo_link }}">
   </div>
   
 </div>

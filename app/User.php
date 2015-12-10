@@ -154,4 +154,14 @@ class User extends SentinelUser implements AuthenticatableContract,
         $profiles = array_only($profiles, $this->profiles);
         return $this->update($profiles);
     }
+    
+    public function getPhotoPathAttribute($photo_path) {
+        $fileName = explode('/', $photo_path);
+        $fileName = end($fileName);
+        
+        return $fileName ? "/images/profile/{$fileName}" : '';
+    }
+    public function getPhotoLinkAttribute() {
+        return $this->photo_path ? url($this->photo_path) : url('/images/no-image.png');
+    }
 }

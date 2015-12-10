@@ -27,7 +27,7 @@
       <tr>
         <td>{{ $rankNumber++ }}</td>
         <td>
-          <a href="/user/{{ $user->name }}">{{ $user->name }}</a>
+          <a href="/user/{{ $user->name }}"><img class="ui avatar image" src="{{ $user->photo_link }}">&nbsp;{{ $user->name }}</a>
         </td>
         <td>
           {{ $user->via }}

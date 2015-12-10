@@ -8,7 +8,7 @@
             </div>
           </div>
         </div>
-        <img alt="User Profile Photo" src="/images/no-image.png">
+        <img alt="User Profile Photo" src="{{ $user->photo_link }}">
       </div>
       <div class="ui attached add profile button" style="display:none;">
         <i class="photo icon"></i>
@@ -35,7 +35,7 @@
       <a href="/settings/privacy" class="item {{ \App\Helpers::setActive('settings/privacy') }}">공개 범위 설정</a>
     </div>
     
-    {!! Form::open(array('url'=>'#', 'files'=>true, 'style'=>'display:none;')) !!}
+    {!! Form::open(array('name'=>'fPhoto', 'url'=>'/upload/photo', 'files'=>true, 'style'=>'display:none;')) !!}
       {!! Form::file('image', ['name'=>'user_photo', 'accept'=>'image/*']) !!}
     {!! Form::close() !!}
     
@@ -44,7 +44,15 @@
       .dimmer({on: 'hover'})
       .on('click', function(){
         $('input[name=user_photo]').click();
-        $('.add.profile.button').transition('show');
+        $('.add.profile.button')
+          .on('click', function(){
+            $('.user.image .content').html('<div class="ui indeterminate text loader">업로드 중..</div>');
+            $('.user.image').dimmer('show');
+            $(this).addClass('disabled');
+            $('form[name=fPhoto]').submit();
+          })
+          .transition('show')
+        ;
       })
     ;
     </script>

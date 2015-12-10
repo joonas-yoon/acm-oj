@@ -35,14 +35,7 @@ class UsersController extends Controller
         $userTotalProblemCount = $userTriedProblemCount + $userAcceptProblemCount;
         $userTriedProblemRate = $userTotalProblemCount > 0 ? ($userTriedProblemCount / $userTotalProblemCount) * 100 : 0;
         
-        
-        $testImage = "http://people.imbc.com/images/thumbnail/A1105009727.jpg";
-        if( $user->name == 'yukariko' )
-          $testImage = "https://files.slack.com/files-pri/T0EJZPLJ2-F0G7GV2UW/pasted_image_at_2015_12_09_05_26_pm.png";
-        elseif( rand()%2 == 1 )
-          $testImage = "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/p40x40/11889666_933856966670876_899689170782757543_n.jpg?oh=e9c1b7ce8df50bacc32bda54c477893d&oe=56E92B1D&__gda__=1456929032_be7569ff3468ce54d95ed4e4b3d9f6a5";
-        
-        return view('users.show', compact('user', 'userTriedProblemRate', 'testImage'));
+        return view('users.show', compact('user', 'userTriedProblemRate'));
     }
     
     public function showSettings($template = null)
@@ -122,5 +115,22 @@ class UsersController extends Controller
     {
         //
         return var_dump($request);
+    }
+    
+    public function uploadPhoto(Request $request)
+    {
+        $user = Sentinel::getUser();
+        $file = $request->only(['user_photo']);
+        
+        if( ! array_has($file, 'user_photo') )
+            return Redirect::back();
+        
+        $filePath = \App\Helpers::uploadPhoto($file['user_photo'], $user->name);
+        
+        if( $filePath && $user->updateProfile(['photo_path' => $filePath]) ) {
+            return Redirect::back();
+        }
+            
+        return abort(404);
     }
 }
