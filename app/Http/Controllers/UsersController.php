@@ -63,7 +63,21 @@ class UsersController extends Controller
     }
     public function postUpdateProfile(Request $request)
     {
-        $inputs = $request->only(['via', 'password']);
+        $inputs = $request->only([
+            'via', 'first_name', 'last_name', 'organization', 'email_open', 'password'
+        ]);
+        
+        $inputs['email_open'] = $inputs['email_open'] != null;
+        
+        $user = Sentinel::getUser();
+        $credentials = array('password' => $inputs['password']);
+        if( ! Sentinel::validateCredentials($user, $credentials) ) {
+            return Redirect::back()->with('error', '비밀번호가 일치하지 않습니다.');
+        }
+        
+        if( ! $user->updateProfile($inputs) ) {
+            return Redirect::back()->with('error', '정보 수정을 실패했습니다.');
+        }
         
         $request->session()->flash('success', '정보가 수정되었습니다.');
             

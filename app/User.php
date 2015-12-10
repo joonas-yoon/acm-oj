@@ -38,10 +38,13 @@ class User extends SentinelUser implements AuthenticatableContract,
         'via',
         'first_name',
         'last_name',
-        'organization'
+        'organization',
+        'photo_path'
     ];
     
     protected $loginNames = ['name', 'email'];
+    
+    protected $profiles = ['via', 'first_name', 'last_name', 'email_open', 'organization', 'photo_path'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -145,5 +148,10 @@ class User extends SentinelUser implements AuthenticatableContract,
     
     public function getResultCount($result_id) {
         return Statistics::getCountOrZero($this->userStatistics()->where('result_id', $result_id)->first());
+    }
+    
+    public function updateProfile(array $profiles) {
+        $profiles = array_only($profiles, $this->profiles);
+        return $this->update($profiles);
     }
 }

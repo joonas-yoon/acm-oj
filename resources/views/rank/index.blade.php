@@ -30,7 +30,7 @@
           <a href="/user/{{ $user->name }}">{{ $user->name }}</a>
         </td>
         <td>
-          {{-- $user->message --}}
+          {{ $user->via }}
         </td>
         <td>
           <a href="/solutions/?user={{ $user->name }}&result_id={{ \App\Result::getAcceptCode() }}">{{ $user->getAcceptCount() }}</a>
