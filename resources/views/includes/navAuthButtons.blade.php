@@ -13,7 +13,7 @@
     {{ Sentinel::getUser()->name }}
     <i class="dropdown icon"></i>
     <div class="menu">
-      <a class="item" href="#">설정</a>
+      <a class="item" href="/settings">설정</a>
       <a class="item" href="/logout">로그 아웃</a>
     </div>
   </div>

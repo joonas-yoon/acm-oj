@@ -7,10 +7,10 @@
     @include('users.menu', compact('user'))
     
   </div>
-  <div class="sixteen wide mobile eleven wide tablet eleven wide computer column">
-    <div class="ui fluid segment">
-      안녕하세요
-    </div>
+  <div class="sixteen wide mobile twelve wide tablet twelve wide computer column">
+    
+    @include($viewContext, compact('user'))
+    
   </div>
 </div>
 @stop

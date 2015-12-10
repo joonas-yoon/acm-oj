@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\User;
 use Sentinel;
+use Redirect;
 
 class UsersController extends Controller
 {
@@ -44,11 +45,68 @@ class UsersController extends Controller
         return view('users.show', compact('user', 'userTriedProblemRate', 'testImage'));
     }
     
-    public function settings()
+    public function showSettings($template = null)
     {
         $userId = Sentinel::getUser()->id;
         $user = User::find($userId);
         
-        return view('users.settings', compact('user'));
+        if($template == 'password')
+            $viewContext = 'users.settings.password';
+        if($template == 'privacy')
+            $viewContext = 'users.settings.privacy';
+        if($template == 'language')
+            $viewContext = 'users.settings.language';
+        else
+            $viewContext = 'users.settings.profile';
+        
+        return view('users.settings', compact('user', 'viewContext'));
+    }
+    public function postUpdateProfile(Request $request)
+    {
+        $inputs = $request->only(['via', 'password']);
+        
+        $request->session()->flash('success', '정보가 수정되었습니다.');
+            
+        return Redirect::back()->withInput();
+    }
+    
+    public function showChangePassword()
+    {
+        return $this->showSettings('password');
+    }
+    public function postChangePassword(Request $request)
+    {
+        //
+        return var_dump($request);
+    }
+    
+    public function showResetPassword()
+    {
+        return view('auth.password');
+    }
+    public function postResetPassword(Request $request)
+    {
+        //
+        return var_dump($request);
+    }
+    
+    public function showPrivacy()
+    {
+        return $this->showSettings('privacy');
+    }
+    public function postPrivacy(Request $request)
+    {
+        //
+        return var_dump($request);
+    }
+    
+    public function showDefaultLanguage()
+    {
+        return $this->showSettings('language');
+    }
+    public function postDefaultLanguage(Request $request)
+    {
+        //
+        return var_dump($request);
     }
 }

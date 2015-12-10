@@ -83,15 +83,27 @@ Route::group(['prefix' => 'user', 'as' => 'user'], function()
 
 Route::group(['prefix' => 'settings', 'as' => 'settings'], function()
 {
-    Route::group(['middleware' => 'auth'], function()
-    {
-        Route::get ('/', 'UsersController@settings');
-        Route::post('/', 'UsersController@postSettings');
-    });
+    Route::get  ('/', 'UsersController@showSettings');
+    Route::patch('/', 'UsersController@postUpdateProfile');
+    
+    Route::get ('language', 'UsersController@showDefaultLanguage');
+    Route::post('language', 'UsersController@postDefaultLanguage');
+    
+    Route::get ('privacy', 'UsersController@showPrivacy');
+    Route::post('privacy', 'UsersController@postPrivacy');
     
     Route::group(['middleware' => 'admin'], function()
     {
         // Route::get ('/', 'UsersController@settings');
-        // Route::post('/', 'UsersController@postSettings');
     });
+});
+
+Route::group(['prefix' => 'password', 'as' => 'password'], function()
+{
+    Route::get('/', function(){ return redirect('/password/reset'); });
+    
+    Route::get ('change', 'UsersController@showChangePassword');
+    Route::post('change', 'UsersController@postChangePassword');
+    Route::get ('reset', 'UsersController@showResetPassword');
+    Route::post('reset/{key}', 'UsersController@postResetPassword');
 });
