@@ -22,7 +22,7 @@
   <div class="ui stackable grid">
     <div class="two wide column field column-label">언어</div>
     <div class="fourteen wide column field">
-      {!! Form::select('lang_id', ['선택하세요', 'C', 'C++'], Input::old('lang_id') ? Input::old('lang_id') : 2, ['class' => 'ui search selection dropdown']) !!}
+      {!! Form::select('lang_id', $languages, old('lang_id', 2), ['class' => 'ui search selection dropdown']) !!}
     </div>
   </div>
 
@@ -71,16 +71,25 @@
     </div>
   
   @endif
+  <style>
+  #editor {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 500px;
+  }
+  </style>
 
   <div class="ui stackable grid">
     <div class="two wide column field column-label">소스 코드</div>
     <div class="fourteen wide column field inline">
-      {!! Form::textarea('code') !!}
+      <div id="editor">{{ old('code') }}</div>
       <div class="ui divider hidden"></div>
       {!! Form::submit('제출', ['class' => 'ui blue button']) !!}
     </div>
   </div>
 
+  {!! Form::textarea('code', '', ['style'=>'display:none;']) !!}
   {!! Form::hidden('problem_id', $problem->id) !!}
   {!! Form::close() !!}
 
@@ -95,11 +104,24 @@
       maxRating: 5
     })
   ;
-  $('.ui.radio.checkbox')
-    .checkbox()
-  ;
-  $('select.dropdown')
-    .dropdown()
-  ;
+  $('.ui.radio.checkbox').checkbox();
+  $('select.dropdown').dropdown();
+  </script>
+  
+  <script src="/assets/editor/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/assets/editor.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+  $(function(){
+    var langSel = $('select[name=lang_id]');
+    var editor = ace.edit('editor');
+    initEditor(editor, getLanguageClass('c++'), '');
+    langSel.on('change', function(){
+      var selected = $(this).val();
+      editor.session.setMode( 'ace/mode/' + getLanguageClass( $(this).find('option')[selected].text ) );
+    });
+    $('form.submit').on('submit', function(){
+      $('textarea[name=code]').val(editor.getValue());
+    });
+  })
   </script>
 @stop

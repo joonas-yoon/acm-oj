@@ -84,7 +84,12 @@ class SolutionsController extends Controller
     public function create($id)
     {
         $problem = \App\Problem::findOrFail($id);
-        return view('solutions.create', compact('problem'));
+        $languages = Language::all()->toArray();
+        array_unshift($languages, [
+            'id' => 0, 'name' => '선택하세요'
+        ]);
+        $languages = array_pluck($languages, 'name', 'id');
+        return view('solutions.create', compact('problem', 'languages'));
     }
 
     /**

@@ -24,8 +24,10 @@
                 </p>
 
                 <div class="ui hidden divider"></div>
-                <a href="/problems" class="ui inverted download button">Explore</a>
-                <a href="/auth/login" class="ui inverted basic button">Sign In</a>
+                <a href="/problems" class="ui inverted download button">문제 목록</a>
+                @if( ! Sentinel::check() )
+                    <a href="/login" class="ui inverted basic button">시작하기</a>
+                @endif
             </div>
         </div>
     </div>
