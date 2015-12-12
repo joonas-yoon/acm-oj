@@ -22,7 +22,7 @@
   <div class="ui stackable grid">
     <div class="two wide column field column-label">언어</div>
     <div class="fourteen wide column field">
-      {!! Form::select('lang_id', $languages, old('lang_id', 2), ['class' => 'ui search selection dropdown']) !!}
+      {!! Form::select('lang_id', $languages, old('lang_id', $defaults['language'] ? $defaults['language'] : 2), ['class' => 'ui search selection dropdown']) !!}
     </div>
   </div>
 
@@ -83,7 +83,7 @@
   <div class="ui stackable grid">
     <div class="two wide column field column-label">소스 코드</div>
     <div class="fourteen wide column field inline">
-      <div id="editor">{{ old('code') }}</div>
+      <div id="editor" data-theme="{{ $defaults['code_theme'] }}">{{ old('code') }}</div>
       <div class="ui divider hidden"></div>
       {!! Form::submit('제출', ['class' => 'ui blue button']) !!}
     </div>
@@ -113,11 +113,11 @@
   <script>
   $(function(){
     var langSel = $('select[name=lang_id]');
+    var selected = function(sel){ return sel.find('option')[sel.val()].text; };
     var editor = ace.edit('editor');
-    initEditor(editor, getLanguageClass('c++'), '');
+    initEditor(editor, getLanguageClass(selected(langSel)), $('#editor').attr('data-theme'));
     langSel.on('change', function(){
-      var selected = $(this).val();
-      editor.session.setMode( 'ace/mode/' + getLanguageClass( $(this).find('option')[selected].text ) );
+      editor.session.setMode( 'ace/mode/' + getLanguageClass(selected(langSel)) );
     });
     $('form.submit').on('submit', function(){
       $('textarea[name=code]').val(editor.getValue());

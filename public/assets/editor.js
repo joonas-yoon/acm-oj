@@ -19,8 +19,8 @@ function initEditor(editor, language, theme, callback) {
         fontFamily: "consolas, tahoma",
         fontSize: "10pt"
     });
-    editor.setTheme("ace/theme/"+(theme != undefined || theme != '' ? theme : 'chrome'));
-    editor.session.setMode("ace/mode/"+(language != undefined || language != '' ? language : 'plain_text'));
+    editor.setTheme("ace/theme/"+(theme != undefined && String(theme).length > 0 ? theme : 'chrome'));
+    editor.session.setMode("ace/mode/"+(language != undefined && String(language).length > 0 ? language : 'plain_text'));
     editor.commands.addCommand({
         name: 'fullscreen',
         bindKey: {win: 'Alt-Return',  mac: 'Command-Return'},
