@@ -35,16 +35,27 @@ class User extends SentinelUser implements AuthenticatableContract,
         'permissions',
         'total_submit',
         'total_clear',
+        
         'via',
         'first_name',
         'last_name',
         'organization',
-        'photo_path'
+        'photo_path',
+        'default_language',
+        'default_code_theme'
     ];
     
     protected $loginNames = ['name', 'email'];
     
-    protected $profiles = ['via', 'first_name', 'last_name', 'email_open', 'organization', 'photo_path'];
+    protected $editable = [
+        'via',
+        'first_name', 'last_name',
+        'email_open',
+        'organization',
+        'photo_path',
+        'default_language',
+        'default_code_theme'
+    ];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -151,7 +162,7 @@ class User extends SentinelUser implements AuthenticatableContract,
     }
     
     public function updateProfile(array $profiles) {
-        $profiles = array_only($profiles, $this->profiles);
+        $profiles = array_only($profiles, $this->editable);
         return $this->update($profiles);
     }
     
