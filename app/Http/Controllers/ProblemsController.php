@@ -117,7 +117,14 @@ class ProblemsController extends Controller
     public function createSolution($id)
     {
         $problem = $this->problemService->getProblem($id);
-        if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+        
+        if( $problem->status != 1 ) {
+            // 공개문제(1) 가 아니면 로그인 해야함
+            if( ! Sentinel::check() ) return redirect()->guest('login');
+            
+            // 자신이 작성한 문제만 접근
+            if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+        }
         
         $languages = Language::all()->toArray();
         array_unshift($languages, [

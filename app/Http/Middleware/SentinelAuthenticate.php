@@ -20,7 +20,7 @@ class SentinelAuthenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->guest('login/?return='.$request->path());
+                return redirect()->guest('login');
             }
         }
 
