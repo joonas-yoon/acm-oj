@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\User;
+use App\Language;
 use Sentinel;
 use Redirect;
 
@@ -38,23 +39,16 @@ class UsersController extends Controller
         return view('users.show', compact('user', 'userTriedProblemRate'));
     }
     
-    public function showSettings($template = null)
+    public function showSettings($template = null, $compacts = [])
     {
         $userId = Sentinel::getUser()->id;
         $user = User::find($userId);
         
-        if($template == 'password')
-            $viewContext = 'users.settings.password';
-        if($template == 'privacy')
-            $viewContext = 'users.settings.privacy';
-        if($template == 'language')
-            $viewContext = 'users.settings.language';
-        else
-            $viewContext = 'users.settings.profile';
+        $viewContext = 'users.settings.' . ($template ? $template : 'profile');
             
         $title = '설정';
         
-        return view('users.settings', compact('user', 'viewContext', 'title'));
+        return view('users.settings', compact('user', 'viewContext', 'title') + $compacts);
     }
     public function postUpdateProfile(Request $request)
     {
@@ -111,12 +105,61 @@ class UsersController extends Controller
     
     public function showDefaultLanguage()
     {
-        return $this->showSettings('language');
+        $defaults = [
+            'language'   => Sentinel::getUser()->default_language,
+            'code_theme' => Sentinel::getUser()->default_code_theme,
+        ];
+        
+        $langs  = Language::all();
+        $themes = [
+          ['value' => 'chrome', 'name' => 'Chrome'], 
+          ['value' => 'clouds', 'name' => 'Clouds'], 
+          ['value' => 'crimson_editor', 'name' => 'Crimson Editor'], 
+          ['value' => 'dawn', 'name' => 'Dawn'], 
+          ['value' => 'dreamweaver', 'name' => 'Dreamweaver'], 
+          ['value' => 'eclipse', 'name' => 'Eclipse'], 
+          ['value' => 'github', 'name' => 'GitHub'], 
+          ['value' => 'iplastic', 'name' => 'IPlastic'], 
+          ['value' => 'solarized_light', 'name' => 'Solarized Light'], 
+          ['value' => 'textmate', 'name' => 'TextMate'], 
+          ['value' => 'tomorrow', 'name' => 'Tomorrow'], 
+          ['value' => 'xcode', 'name' => 'XCode'], 
+          ['value' => 'kuroir', 'name' => 'Kuroir'], 
+          ['value' => 'katzenmilch', 'name' => 'KatzenMilch'], 
+          ['value' => 'sqlserver', 'name' => 'SQL Server'], 
+          ['value' => 'ambiance', 'name' => 'Ambiance'], 
+          ['value' => 'chaos', 'name' => 'Chaos'], 
+          ['value' => 'clouds_midnight', 'name' => 'Clouds Midnight'], 
+          ['value' => 'cobalt', 'name' => 'Cobalt'], 
+          ['value' => 'idle_fingers', 'name' => 'idle Fingers'], 
+          ['value' => 'kr_theme', 'name' => 'krTheme'], 
+          ['value' => 'merbivore', 'name' => 'Merbivore'], 
+          ['value' => 'merbivore_soft', 'name' => 'Merbivore Soft'], 
+          ['value' => 'mono_industrial', 'name' => 'Mono Industrial'], 
+          ['value' => 'monokai', 'name' => 'Monokai'], 
+          ['value' => 'pastel_on_dark', 'name' => 'Pastel on dark'], 
+          ['value' => 'solarized_dark', 'name' => 'Solarized Dark'], 
+          ['value' => 'terminal', 'name' => 'Terminal'], 
+          ['value' => 'tomorrow_night', 'name' => 'Tomorrow Night'], 
+          ['value' => 'tomorrow_night_blue', 'name' => 'Tomorrow Night Blue'], 
+          ['value' => 'tomorrow_night_bright', 'name' => 'Tomorrow Night Bright'], 
+          ['value' => 'tomorrow_night_eighties', 'name' => 'Tomorrow Night 80s'], 
+          ['value' => 'twilight', 'name' => 'Twilight'], 
+          ['value' => 'vibrant_ink', 'name' => 'Vibrant Ink'], 
+        ];
+        
+        return $this->showSettings('language', compact('defaults', 'langs', 'themes'));
     }
     public function postDefaultLanguage(Request $request)
     {
-        //
-        return var_dump($request);
+        $inputs = $request->only(['default_language', 'default_code_theme']);
+        
+        if( ! Sentinel::getUser()->updateProfile($inputs) ) {
+            return Redirect::back()->with('error', '변경에 실패했습니다.');
+        }
+        
+        $request->session()->flash('success', '변경 사항이 적용되었습니다.');
+        return Redirect::back();
     }
     
     public function uploadPhoto(Request $request)

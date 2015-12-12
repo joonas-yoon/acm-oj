@@ -14,11 +14,9 @@
     <i class="dropdown icon"></i>
     <div class="menu">
       <a class="item" href="/user/{{ Sentinel::getUser()->name }}">내 정보</a>
+      <a class="item" href="/settings">설정</a>
+      <div class="ui divider">`</div>
       <a class="item" href="/logout">로그 아웃</a>
-      <a class="item" href="/settings">
-        <i class="icon setting"></i>
-        설정
-      </a>
     </div>
   </div>
   @endif

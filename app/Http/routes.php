@@ -86,8 +86,8 @@ Route::group(['prefix' => 'settings', 'as' => 'settings'], function()
     Route::get  ('/', 'UsersController@showSettings');
     Route::patch('/', 'UsersController@postUpdateProfile');
     
-    Route::get ('language', 'UsersController@showDefaultLanguage');
-    Route::post('language', 'UsersController@postDefaultLanguage');
+    Route::get  ('language', 'UsersController@showDefaultLanguage');
+    Route::patch('language', 'UsersController@postDefaultLanguage');
     
     Route::get ('privacy', 'UsersController@showPrivacy');
     Route::post('privacy', 'UsersController@postPrivacy');

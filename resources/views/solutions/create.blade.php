@@ -71,19 +71,11 @@
     </div>
   
   @endif
-  <style>
-  #editor {
-    display: block;
-    position: relative;
-    width: 100%;
-    height: 500px;
-  }
-  </style>
-
+  
   <div class="ui stackable grid">
     <div class="two wide column field column-label">소스 코드</div>
     <div class="fourteen wide column field inline">
-      <div id="editor" data-theme="{{ $defaults['code_theme'] }}">{{ old('code') }}</div>
+      <div id="editor" class="code" data-theme="{{ $defaults['code_theme'] }}">{{ old('code') }}</div>
       <div class="ui divider hidden"></div>
       {!! Form::submit('제출', ['class' => 'ui blue button']) !!}
     </div>

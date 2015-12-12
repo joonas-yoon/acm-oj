@@ -1,5 +1,6 @@
 
   {!! Form::model($user, ['method' => 'PATCH', 'class' => 'ui form']) !!}
+  {!! csrf_field() !!}
   
     <h3 class="ui dividing header" style="margin-top:0;">정보 수정</h3>
     
