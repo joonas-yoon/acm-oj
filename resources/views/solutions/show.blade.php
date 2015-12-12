@@ -46,6 +46,11 @@
     
     <div class="ui hidden divider"></div>
     
+    <div class="ui dividing header">{{ $code->id }}번 소스 코드</div>
+    <div id="editor" class="code" data-lang="{{ $solution->language->name }}" data-theme="{{ Sentinel::getUser()->default_code_theme }}">{{ $code->code }}</div>
+    
+    <div class="ui hidden divider"></div>
+    
     <div class="ui form">
       <div class="inline fields">
         <label>소스 코드 공개 여부</label>
@@ -60,11 +65,6 @@
       </div>
     </div>
     
-    <div class="ui hidden divider"></div>
-    
-    <div class="ui dividing header">{{ $code->id }}번 소스 코드</div>
-    <div id="editor" class="code" data-lang="{{ $solution->language->name }}" data-theme="{{ Sentinel::getUser()->default_code_theme }}">{{ $code->code }}</div>
-    
 </div>
 @stop
 
@@ -72,8 +72,6 @@
   <script>
     $('.popup').popup();
   </script>
-  <script src="/assets/editor/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-  <script src="/assets/editor.js" type="text/javascript" charset="utf-8"></script>
   <script>
   $(function(){
     var lang = $('#editor').attr('data-lang');

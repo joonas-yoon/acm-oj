@@ -251,7 +251,7 @@ html, body {
  *
  */
 #editor.code {
-    display: block;
+    display: none; /* show when loading completed by javascript */
     position: relative;
     width: 100%;
     height: 500px;

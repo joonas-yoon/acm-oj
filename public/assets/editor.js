@@ -32,6 +32,7 @@ function initEditor(editor, language, theme, callback) {
     });
     editor.getSession().setTabSize(4);
     editor.getSession().setUseSoftTabs(true);
+    document.getElementById('editor').style.display = 'block';
 }
 
 function getLanguageClass(language) {
