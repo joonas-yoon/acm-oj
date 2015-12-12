@@ -11,6 +11,7 @@
 
         {!! Form::open(['url' => action('Auth\AuthController@postLogin'), 'class' => 'ui form stacked segment']) !!}
             {!! csrf_field() !!}
+            {!! Form::hidden('url', Input::get('url')) !!}
 
             <h2 class="ui icon header">
                 <i class="lock icon"></i><div class="clear"></div>

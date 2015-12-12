@@ -95,7 +95,9 @@ class AuthController extends Controller
      */
     public function getLogin()
     {
-        if( Sentinel::check() ) return redirect( $this->redirectTo );
+        $return_path = Input::get('url');
+        if( ! $return_path ) $return_path = \URL::previous();
+        if( Sentinel::check() ) return redirect( $return_path ? $return_path : $this->redirectTo );
         return view('auth.login');
     }
     
@@ -110,6 +112,8 @@ class AuthController extends Controller
         {
             $input = $this->getCredentials($request->all());
             
+            $return_path = $input['url'];
+            
             $validator = $this->validator($input);
 
             if ($validator->fails())
@@ -121,7 +125,7 @@ class AuthController extends Controller
 
             if (Sentinel::authenticate($input, $request->has('remember')))
             {
-                return redirect( $this->redirectTo );
+                return redirect( $return_path ? $return_path : $this->redirectTo );
             }
 
             $errors = 'Invalid login or password.';

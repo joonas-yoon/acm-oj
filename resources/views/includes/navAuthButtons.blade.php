@@ -2,7 +2,7 @@
   @if ( ! Sentinel::check() )
   <div class="ui right index item">
     <div class="ui breadcrumb">
-      <a class="section" href="/login">로그인</a>
+      <a class="section" href="/login/?url=/{{ \Request::path() }}">로그인</a>
       <span class="divider">/</span>
       <a class="section" href="/register">회원가입</a>
     </div>
@@ -15,7 +15,7 @@
     <div class="menu">
       <a class="item" href="/user/{{ Sentinel::getUser()->name }}">내 정보</a>
       <a class="item" href="/settings">설정</a>
-      <div class="ui divider">`</div>
+      <div class="ui divider"></div>
       <a class="item" href="/logout">로그 아웃</a>
     </div>
   </div>
