@@ -10,6 +10,8 @@ use App\Repositories\SolutionRepository,
     
 use App\Services\StatisticsService;
 
+use App\Models\Result;
+
 use DB;
 
 class SolutionService
@@ -79,10 +81,11 @@ class SolutionService
                  ->addSubmit($request['user_id'], $request['problem_id']);
             
             // I think this approach is bad. but using for performance.
-            $solution->update(['result_id'=>Result::getWaitCode()]);
+            $solution->update(['result_id'=>Result::waitCode]);
 
         } catch(\Exception $e) {
             DB::rollback();
+            abort(404);
         }
         DB::commit();
         return $solution;

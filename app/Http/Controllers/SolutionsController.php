@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Result;
+use App\Models\Result;
+
 use App\Language;
 use App\Solution;
 use App\User;
@@ -13,17 +14,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
+use App\Services\SolutionService,
+    App\Services\ProblemService;
+
 use Input;
 use Sentinel;
 use Carbon\Carbon;
 
 class SolutionsController extends Controller
 {
+    public $problemService;
+    public $solutionService;
+    
     /**
      * Instantiate a new SolutionsController instance.
      */
-    public function __construct()
+    public function __construct
+    (
+        SolutionService $solutionService,
+        ProblemService $problemService
+    )
     {
+        $this->solutionService = $solutionService;
+        $this->problemService = $problemService;
+        
         $this->middleware('auth', [
             'except' => [
                 'index'
@@ -56,8 +70,10 @@ class SolutionsController extends Controller
         $lang_id = Input::get('lang_id', 0);
 
         $langRefs = Language::all();
+        
+        $acceptCode = Result::acceptCode;
 
-        $solutions = Solution::getSolutionsByOption([
+        $solutions = $this->solutionService->getSolutionsByOption([
             'problem_id' => $problem_id,
             'username'   => $username,
             'lang_id'    => $lang_id,
@@ -65,14 +81,15 @@ class SolutionsController extends Controller
         ]);
 
         // $solutions = $solutions->paginateFrom(Input::get('top', ''), 20);
-        $solutions = $solutions->paginate(20, ['url' => \Request::url()]);
+        //$solutions = $solutions->paginate(20, ['url' => \Request::url()]);
 
         return view('solutions.index', compact(
             'fromWhere', 'solutions',
             'problem_id',
             'username',
             'result_id', 'resultRefs',
-            'lang_id', 'langRefs'
+            'lang_id', 'langRefs',
+            'acceptCode'
         ));
     }
 
@@ -83,7 +100,7 @@ class SolutionsController extends Controller
      */
     public function create($id)
     {
-        $problem = \App\Problem::findOrFail($id);
+        $problem = $this->problemService->getProblem($id);
         $languages = Language::all()->toArray();
         array_unshift($languages, [
             'id' => 0, 'name' => '선택하세요'
@@ -93,6 +110,7 @@ class SolutionsController extends Controller
             'language'   => Sentinel::getUser()->default_language,
             'code_theme' => Sentinel::getUser()->default_code_theme,
         ];
+        
         return view('solutions.create', compact('problem', 'languages', 'defaults'));
     }
 
@@ -105,7 +123,7 @@ class SolutionsController extends Controller
     public function store(Requests\CreateSolutionRequest $request)
     {
         $request['user_id'] = Sentinel::getUser()->id;
-        $request['result_id'] = 1;
+        $request['result_id'] = Result::tempCode;
         $request['size'] = strlen($request->code);
 
         $validator = \Validator::make($request->all(), [
@@ -128,7 +146,7 @@ class SolutionsController extends Controller
                     ->withInput();
         }
 
-        Solution::createSolution($request->all());
+        $this->solutionService->createSolution($request->all());
         return redirect('/solutions/?from=problem&problem_id=' . $request->problem_id );
     }
 
@@ -140,9 +158,26 @@ class SolutionsController extends Controller
      */
     public function show($id)
     {
-        $code = \DB::table('codes')->where('id', $id)->first();
+        $solution = $this->solutionService->getSolution($id);
+        $code = $solution->code;
 
-        return view('solutions.show', compact('code'));
+        if( $solution->is_hidden )
+            return abort(404);
+                
+        if( Sentinel::getUser()->id != $solution->user_id ) {
+            
+            if( $solution->is_published == 0 /* 공개 */ );
+            else if( $solution->is_published == 1 /* 맞으면 공개 */
+                  && $solution->result_id != Result::acceptCode )
+                return abort(404);
+            else
+                return abort(404);
+        }
+        
+        $codeIsPublished = ['공개', '맞았을 때만 공개', '비공개'];
+        $acceptCode = Result::acceptCode;
+        
+        return view('solutions.show', compact('code', 'solution', 'codeIsPublished', 'acceptCode'));
     }
 
     /**

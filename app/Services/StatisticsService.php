@@ -128,7 +128,7 @@ class StatisticsService
         $this->statisticsRepository->firstOrCreate([
             'user_id' => $user_id,
             'problem_id' => $problem_id,
-            'result_id' => Result::getAcceptCode()
+            'result_id' => Result::acceptCode
         ]);
         
         $this->userRepository->get($user_id)->increment('total_submit');
