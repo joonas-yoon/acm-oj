@@ -72,6 +72,8 @@
   <script>
     $('.popup').popup();
   </script>
+  <script src="/assets/editor/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/assets/editor.js" type="text/javascript" charset="utf-8"></script>
   <script>
   $(function(){
     var lang = $('#editor').attr('data-lang');

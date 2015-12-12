@@ -15,6 +15,7 @@ function loadScript(url, callback) {
 }
 
 function initEditor(editor, language, theme, callback) {
+    document.getElementById('editor').style.display = 'none';
     editor.setOptions({
         fontFamily: "consolas, tahoma",
         fontSize: "10pt"
