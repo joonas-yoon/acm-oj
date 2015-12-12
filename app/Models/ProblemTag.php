@@ -17,11 +17,6 @@ class ProblemTag extends Model
         'count'
     ];
 
-    public function problems()
-    {
-        return $this->belongsTo('App\Problem', 'problem_id');
-    }
-
     public function subTag() {
         return $this->decrement('count');
     }

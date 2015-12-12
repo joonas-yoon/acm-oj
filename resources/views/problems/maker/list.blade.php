@@ -57,7 +57,7 @@
     </tbody>
   </table>
 
-  @include('pagination.default', ['paginator' => $problems])
+  @include('pagination.default', ['paginator' => $paginations])
 
   <a class="ui button" href="{{ action('ProblemsController@create') }}">문제 만들기</a>
 

@@ -25,6 +25,8 @@
 
 @section('script')
   <script>
-  $('.ui.dropdown').dropdown();
+  $('.ui.dropdown').dropdown({
+    allowAdditions: true
+  });
   </script>
 @stop

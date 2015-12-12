@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\ProblemThank;
-use App\Thank;
-use App\Problem;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+
+use App\Models\Result;
+
+use App\Services\ProblemService,
+    App\Services\StatisticsService;
+
+use GrahamCampbell\Markdown\Facades\Markdown;
 
 use Input;
 use Storage;
@@ -19,15 +23,24 @@ class ProblemsController extends Controller
     /**
      * Instantiate a new ProblemsController instance.
      */
-    public function __construct()
+    
+    public $problemService;
+    public $statisticsService; 
+    
+    public function __construct
+    (
+        ProblemService      $problemService,
+        StatisticsService   $statisticsService
+    )
     {
         $this->middleware('auth', [
             'except' => [
                 'index', 'newProblems', 'show'
             ]
         ]);
-
-        //$this->middleware('log', ['only' => ['fooAction', 'barAction']]);
+        
+        $this->problemService = $problemService;
+        $this->statisticsService = $statisticsService;
     }
 
     /**
@@ -37,30 +50,40 @@ class ProblemsController extends Controller
      */
     public function index()
     {
-        $problems = Problem::getOpenProblems()->paginate(20);
+        $problems = $this->problemService->getOpenProblems();
+        $statisticsService = $this->statisticsService;
 
         $title = '문제 목록 - '.$problems->currentPage().' 페이지';
-        $resultAccCode = \App\Result::getAcceptCode();
+        $resultAccCode = Result::acceptCode;
 
-        return view('problems.index', compact('problems', 'title', 'resultAccCode'));
+        return view('problems.index', compact(
+            'problems', 'statisticsService', 'title', 'resultAccCode'
+        ));
     }
 
     public function newProblems ()
     {
-        $problems = Problem::getNewestProblems(15);
+        $problems = $this->problemService->getNewestProblems(15);
+        $statisticsService = $this->statisticsService;
 
         $title = '새로 추가된 문제 목록';
-        $resultAccCode = \App\Result::getAcceptCode();
+        $resultAccCode = Result::acceptCode;
 
-        return view('problems.index', compact('problems', 'title', 'resultAccCode'));
+        return view('problems.index', compact(
+            'problems', 'statisticsService', 'title', 'resultAccCode'
+        ));
     }
 
-    public function creatingProblemsList ()
+    public function creatingProblemsList()
     {
-        $problems = Problem::getProblemsCreateByUser(Sentinel::getUser()->id)->paginate(20);
+        $paginations = $this->problemService->getAuthorsWithProblem(Sentinel::getUser()->id);
 
-        $title = '문제 제작 - '.$problems->currentPage().' 페이지';
-        return view('problems.maker.list', compact('problems', 'title'));
+        $problems = [];
+        foreach($paginations as $author)
+            array_push($problems, $author->problems);
+
+        $title = '문제 제작 - '.$paginations->currentPage().' 페이지';
+        return view('problems.maker.list', compact('problems', 'title', 'paginations'));
     }
 
     /**
@@ -72,8 +95,10 @@ class ProblemsController extends Controller
     {
         if( $step == 'data' ){
             $problem_id = Input::get('problem');
-            $problem_id = Problem::findOrFail($problem_id)->id;
-
+            $author_id = $this->problemService->getAuthorOfProblem($problem_id);
+            
+            if( Sentinel::getUser()->id != $author_id ) return abort(404);
+            
             return view('problems.maker.data', compact('problem_id'));
         }
         else if( $step == 'finish' ){
@@ -96,7 +121,8 @@ class ProblemsController extends Controller
      */
     public function store(Requests\CreateProblemRequest $request)
     {
-        $problem = Problem::createProblem($request->all(), Sentinel::getUser()->id);
+        $problem = $this->problemService
+                        ->createProblem($request->all(), Sentinel::getUser()->id);
         return redirect('/problems/create/data?problem='. $problem->id);
     }
 
@@ -104,7 +130,7 @@ class ProblemsController extends Controller
     {
         // 권한 확인 필요
         $problem_id = $request->get('problem');
-        $problem = Problem::findOrFail($problem_id);
+        $problem = $this->problemService->getProblem($problem_id);
 
         $files = $request->file('dataFiles');
         $filesNumber = sizeof($files);
@@ -205,13 +231,15 @@ class ProblemsController extends Controller
      */
     public function show($id)
     {
-        $problem = Problem::getOpenProblemOrFail($id);
-        $problem->description = $problem->getMdDescription();
-        $problem->input       = $problem->getMdInput();
-        $problem->output      = $problem->getMdOutput();
-        $problem->hint        = $problem->getMdHint();
+        $problem = $this->problemService->getProblem($id);
+        $problem->description = Markdown::convertToHtml($problem->description);
+        $problem->input       = Markdown::convertToHtml($problem->input);
+        $problem->output      = Markdown::convertToHtml($problem->output);
+        $problem->hint        = Markdown::convertToHtml($problem->hint);
 
-        return view('problems.show', compact('problem'));
+        $statisticsService = $this->statisticsService;
+
+        return view('problems.show', compact('problem', 'statisticsService'));
     }
 
     /**
@@ -223,12 +251,12 @@ class ProblemsController extends Controller
     {
         return "preview {$id}";
 
-        $problem = Problem::getHiddenProblemOrFail($id);
+        $problem = $this->problemService->getProblem($id);
 
-        $problem->description = $problem->getMdDescription();
-        $problem->input       = $problem->getMdInput();
-        $problem->output      = $problem->getMdOutput();
-        $problem->hint        = $problem->getMdHint();
+        $problem->description = Markdown::convertToHtml($problem->description);
+        $problem->input       = Markdown::convertToHtml($problem->input);
+        $problem->output      = Markdown::convertToHtml($problem->output);
+        $problem->hint        = Markdown::convertToHtml($problem->hint);
 
         return view('problems.show', compact('problem'));
     }
@@ -241,15 +269,15 @@ class ProblemsController extends Controller
      */
     public function edit($problem_id)
     {
-        $problem = Problem::findOrFail($problem_id);
+        $problem = $this->problemService->getProblem($problem_id);
 
         return view('problems.maker.edit', compact('problem'));
     }
 
     public function update(Requests\CreateProblemRequest $request, $id)
     {
-        $problem = Problem::findOrFail($id);
-        $problem->update($request->all());
+        $this->problemService->updateProblem($id, $request->all());
+        $problem = $this->problemService->getProblem($id);
         if( $problem->status == 1 )
             return redirect( action('ProblemsController@index', $problem->id) );
         else
@@ -275,9 +303,10 @@ class ProblemsController extends Controller
             return Redirect::back()->withErrors($validator);
         }
 
-        $problem = Problem::find($id);
-
-        if($problem) $problem->updateStatus($request->status);
+        $problem = $this->problemService->getProblem($id);
+        if($problem)
+            $this->problemService
+                 ->updateProblemStatus($problem->id, $request->status);
 
         return Redirect::back();
     }

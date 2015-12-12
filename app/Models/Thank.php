@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,14 +18,15 @@ class Thank extends Model
         'name'
     ];
 
-    static public function getAuthorId() { return 1; }
+    const authorCode = 1;
+
+    // Relation
 
     public function problems() {
-        return $this->hasMany('App\Problem');
+        return $this->hasMany('App\Models\Problem');
     }
 
     public function users() {
-        return $this->hasMany('App\User');
+        return $this->hasMany('App\Models\User');
     }
-
 }

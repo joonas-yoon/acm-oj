@@ -39,10 +39,12 @@
 
   <h2 class="ui header">
     {{ $problem->title }}
-    @if($problem->isAccepted())
-      <a class="ui green basic label">해결</a>
-    @elseif( $problem->isTried() )
-      <a class="ui red basic label">도전 중</a>
+    @if( Sentinel::check())
+      @if( $statisticsService->isAcceptedProblem(Sentinel::getUser()->id, $problem->id) )
+        <a class="ui green basic label">해결</a>
+      @elseif( $statisticsService->isTriedProblem(Sentinel::getUser()->id, $problem->id) )
+        <a class="ui red basic label">도전 중</a>
+      @endif
     @endif
   </h2>
 
@@ -59,9 +61,9 @@
   <tbody><tr>
     <td>{{ $problem->time_limit }} 초</td>
     <td>{{ $problem->memory_limit }} MB</td>
-    <td>{{ $problem->getAcceptCount() }}</td>
-    <td>{{ $problem->getSubmitCount() }}</td>
-    <td>{{ number_format($problem->getRate(), 2) }} %</td>
+    <td>{{ $ac = $statisticsService->getAcceptCountOfProblem($problem->id) }}</td>
+    <td>{{ $sc = $statisticsService->getSubmitCountOfProblem($problem->id) }}</td>
+    <td>{{ number_format($statisticsService->getRate($ac, $sc), 2) }} %</td>
     <td>
       <div class="ui star rating" data-rating="5"></div>
     </td>

@@ -45,26 +45,29 @@
             <a class="ui teal basic label">스페셜 저지</a>
           @endif
 
-          @if( $problem->isAccepted() )
-            <a class="ui green basic label">해결</a>
-          @elseif( $problem->isTried() )
-            <a class="ui red basic label">도전 중</a>
+
+          @if( Sentinel::check())
+            @if( $statisticsService->isAcceptedProblem(Sentinel::getUser()->id, $problem->id) )
+              <a class="ui green basic label">해결</a>
+            @elseif( $statisticsService->isTriedProblem(Sentinel::getUser()->id, $problem->id) )
+              <a class="ui red basic label">도전 중</a>
+            @endif
           @endif
         </td>
         <td>
           <a href="/solutions/?problem_id={{ $problem->id }}&result_id={{ $resultAccCode }}">
-            {{ $problem->getAcceptCount() }}
+            {{ $ac = $statisticsService->getAcceptCountOfProblem($problem->id) }}
           </a>
         </td>
         <td>
           <a href="/solutions/?problem_id={{ $problem->id }}">
-            {{ $problem->getSubmitCount() }}
+            {{ $sc = $statisticsService->getSubmitCountOfProblem($problem->id) }}
           </a>
         </td>
         <td>
-          <div class="ui indicating small progress" data-value="{{ $problem->getRate() }}">
+          <div class="ui indicating small progress" data-value="{{ $statisticsService->getRate($ac, $sc) }}">
             <div class="bar"></div>
-            <div class="label">{{ number_format($problem->getRate(), 2) }} %</div>
+            <div class="label">{{ number_format($statisticsService->getRate($ac, $sc), 2) }} %</div>
           </div>
         </td>
       </tr>
