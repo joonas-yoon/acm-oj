@@ -92,27 +92,6 @@ class SolutionsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create($id)
-    {
-        $problem = $this->problemService->getProblem($id);
-        $languages = Language::all()->toArray();
-        array_unshift($languages, [
-            'id' => 0, 'name' => '선택하세요'
-        ]);
-        $languages = array_pluck($languages, 'name', 'id');
-        $defaults = [
-            'language'   => Sentinel::getUser()->default_language,
-            'code_theme' => Sentinel::getUser()->default_code_theme,
-        ];
-        
-        return view('solutions.create', compact('problem', 'languages', 'defaults'));
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

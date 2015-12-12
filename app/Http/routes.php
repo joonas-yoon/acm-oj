@@ -60,7 +60,7 @@ Route::group(['prefix' => 'problems'], function()
         ]);
     });
     Route::get('new', 'ProblemsController@newProblems');
-    Route::get('preview/{id?}', 'ProblemsController@preview');
+    Route::get('preview/{id}', 'ProblemsController@preview');
     Route::post('{problems}/status', 'ProblemsController@updateStatus');
 });
 
@@ -71,7 +71,7 @@ Route::get('/rank', 'RankController@index');
 Route::get('/solutions',  'SolutionsController@index');
 Route::post('/solutions', 'SolutionsController@store');
 Route::get('/solutions/{id}', 'SolutionsController@show');
-Route::get('/submit/{id}','SolutionsController@create');
+Route::get('/submit/{id}','ProblemsController@createSolution');
 
 Route::group(['prefix' => 'user', 'as' => 'user'], function()
 {

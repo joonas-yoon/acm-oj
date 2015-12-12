@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
+use App\Language;
 use App\Models\Result;
 
 use App\Services\ProblemService,
@@ -107,10 +108,28 @@ class ProblemsController extends Controller
 
         return view('problems.maker.content');
     }
-
-    private static function makerStepClass($val, $lv){
-        if($val < $lv) return 'disabled';
-        return $val > $lv ? '':'active';
+    
+    /**
+     * This have been used as SolutionController::create
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createSolution($id)
+    {
+        $problem = $this->problemService->getProblem($id);
+        if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+        
+        $languages = Language::all()->toArray();
+        array_unshift($languages, [
+            'id' => 0, 'name' => '선택하세요'
+        ]);
+        $languages = array_pluck($languages, 'name', 'id');
+        $defaults = [
+            'language'   => Sentinel::getUser()->default_language,
+            'code_theme' => Sentinel::getUser()->default_code_theme,
+        ];
+        
+        return view('solutions.create', compact('problem', 'languages', 'defaults'));
     }
 
     /**
@@ -123,6 +142,7 @@ class ProblemsController extends Controller
     {
         $problem = $this->problemService
                         ->createProblem($request->all(), Sentinel::getUser()->id);
+        if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
         return redirect('/problems/create/data?problem='. $problem->id);
     }
 
@@ -131,6 +151,7 @@ class ProblemsController extends Controller
         // 권한 확인 필요
         $problem_id = $request->get('problem');
         $problem = $this->problemService->getProblem($problem_id);
+        if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
 
         $files = $request->file('dataFiles');
         $filesNumber = sizeof($files);
@@ -232,6 +253,15 @@ class ProblemsController extends Controller
     public function show($id)
     {
         $problem = $this->problemService->getProblem($id);
+        
+        if( $problem->status != 1 ) {
+            // 공개문제(1) 가 아니면 로그인 해야함
+            if( ! Sentinel::check() ) return redirect()->guest('login');
+            
+            // 자신이 작성한 문제만 접근
+            if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+        }
+        
         $problem->description = Markdown::convertToHtml($problem->description);
         $problem->input       = Markdown::convertToHtml($problem->input);
         $problem->output      = Markdown::convertToHtml($problem->output);
@@ -244,21 +274,12 @@ class ProblemsController extends Controller
 
     /**
      *
-     * 틀만 잡아놓고 추후에 확인하는 작업을 추가하자.
+     * 추상화를 위해 남겨둠
      *
      */
-    public function preview($id = 0)
+    public function preview($id)
     {
-        return "preview {$id}";
-
-        $problem = $this->problemService->getProblem($id);
-
-        $problem->description = Markdown::convertToHtml($problem->description);
-        $problem->input       = Markdown::convertToHtml($problem->input);
-        $problem->output      = Markdown::convertToHtml($problem->output);
-        $problem->hint        = Markdown::convertToHtml($problem->hint);
-
-        return view('problems.show', compact('problem'));
+        return $this->show($id);
     }
 
     /**
@@ -271,6 +292,14 @@ class ProblemsController extends Controller
     {
         $problem = $this->problemService->getProblem($problem_id);
 
+        if( $problem->status != 0 ) {
+            // 숨겨진 문제(1) 가 아니면 접근 불가
+            return abort(404);
+        }
+        
+        // 자신이 작성한 문제만 접근
+        if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+        
         return view('problems.maker.edit', compact('problem'));
     }
 
@@ -278,6 +307,9 @@ class ProblemsController extends Controller
     {
         $this->problemService->updateProblem($id, $request->all());
         $problem = $this->problemService->getProblem($id);
+        
+        if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+            
         if( $problem->status == 1 )
             return redirect( action('ProblemsController@index', $problem->id) );
         else
@@ -304,7 +336,9 @@ class ProblemsController extends Controller
         }
 
         $problem = $this->problemService->getProblem($id);
-        if($problem)
+        if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+        
+        if( $problem )
             $this->problemService
                  ->updateProblemStatus($problem->id, $request->status);
 
@@ -320,6 +354,14 @@ class ProblemsController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    
+    private function amIAuthorOfProblem($problem_id)
+    {
+        if( ! Sentinel::check() ) return redirect()->guest('login');
+        $author_id = $this->problemService->getAuthorOfProblem($problem_id);
+        return (Sentinel::getUser()->id != $author_id);
     }
 }
 
