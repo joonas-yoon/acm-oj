@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Result;
-
-use App\Language;
-use App\Solution;
-use App\User;
+use App\Models\Result,
+    App\Models\Language;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;

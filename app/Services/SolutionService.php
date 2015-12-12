@@ -114,6 +114,12 @@ class SolutionService
                     ->update($solution_id, ['result_id' => $result_id]);
     }
     
+    /**
+     * 솔루션 가져오기
+     *
+     * @param int $solution_id
+     * @return App\Models\Solution
+     */
     public function getSolution($solution_id)
     {
         return $this->solutionRepository->get($solution_id);
