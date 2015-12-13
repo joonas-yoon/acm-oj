@@ -53,7 +53,8 @@ class SolutionService
     public function getSolutionsByOption(array $inputs)
     {
         return $this->solutionRepository
-                    ->getSolutionsByOption($inputs, $this->paginateCount);
+                    ->getSolutionsByOption($inputs)
+                    ->paginate($this->paginateCount);
     }
 
 

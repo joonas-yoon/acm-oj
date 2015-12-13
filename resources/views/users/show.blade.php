@@ -28,18 +28,18 @@
         <a class="right floated" href="/solutions/?user={{ $user->name }}">
           <i class="icon bar chart"></i>&nbsp;{{ number_format($user->getTotalRate(),2) }} %
         </a>
-        <a class="solved" href="/solutions/?user={{ $user->name }}&result_id={{ \App\Result::getAcceptCode() }}">
+        <a class="solved" href="/solutions/?user={{ $user->name }}&result_id={{ \App\Models\Result::acceptCode }}">
           <i class="icon diamond"></i>{{ $user->total_clear }} Solved
         </a>
       </div>
     </div>
     
     <div class="ui divided selection result list">
-      @foreach( \App\Result::getOpenResults()->get() as $result )
+      @foreach( \App\Models\Result::all() as $result )
         @if( $result->id > 3 && $result->published )
         <a class="item {{ $result->class_name }}" href="/solutions?user={{ $user->name }}&result_id={{ $result->id }}">
           {{ $result->description }}
-          <div class="ui horizontal right floated {{ $result->class_name }} label">{{ $user->getResultCount($result->id) }}</div>
+          <div class="ui horizontal right floated {{ $result->class_name }} label">{{ $statisticsService->getResultCountByUser($user->id, $result->id) }}</div>
         </a>
         @endif
       @endforeach
@@ -51,7 +51,7 @@
       <h5 class="ui top attached header">해결한 문제들</h5>
       <div class="ui attached blue segment">
         <div class="ui light grey labels">
-        @foreach( $user->getAcceptProblems() as $stastics )
+        @foreach( $acceptProblem as $stastics )
           <a class="ui label" href="/problems/{{ $stastics->problems->id }}">
             {{ $stastics->problems->id }}
             <span class="detail">{{ $stastics->problems->title }}</span>
@@ -68,7 +68,7 @@
       <h5 class="ui top attached header">도전 중인 문제들</h5>
       <div class="ui attached blue segment">
         <div class="ui light grey labels">
-        @foreach( $user->getTriedProblems() as $stastics )
+        @foreach( $triedProblem as $stastics )
           <a class="ui label" href="/problems/{{ $stastics->problems->id }}">
             {{ $stastics->problems->id }}
             <span class="detail">{{ $stastics->problems->title }}</span>

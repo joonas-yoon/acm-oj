@@ -7,18 +7,31 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\User;
-use App\Language;
+use App\Services\UserService,
+    App\Services\StatisticsService;
+
+use App\Models\Language;
 use Sentinel;
 use Redirect;
 
 class UsersController extends Controller
 {
+    
+    public $userService;
+    public $statisticsService;
+    
     /**
      * Instantiate a new UserController instance.
      */
-    public function __construct()
+    public function __construct
+    (
+        UserService $userService,
+        StatisticsService $statisticsService
+    )
     {
+        $this->userService = $userService;
+        $this->statisticsService = $statisticsService;
+        
         $this->middleware('auth', [
             'except' => [
                 'show'
@@ -30,19 +43,24 @@ class UsersController extends Controller
   
     public function show($username)
     {
-        $user = User::findByNameOrFail($username);
-        $userTriedProblemCount  = $user->getTriedProblems()->count();
-        $userAcceptProblemCount = $user->getAcceptProblems()->count();
+        $user = $this->userService->getUserByNameOrEmail($username);
+        
+        $acceptProblem = $this->statisticsService->getAcceptProblemsByUser($user->id);
+        $triedProblem = $this->statisticsService->getTriedProblemsByUser($user->id);
+        $userTriedProblemCount  = $acceptProblem->count();
+        $userAcceptProblemCount = $triedProblem->count();
         $userTotalProblemCount = $userTriedProblemCount + $userAcceptProblemCount;
         $userTriedProblemRate = $userTotalProblemCount > 0 ? ($userTriedProblemCount / $userTotalProblemCount) * 100 : 0;
         
-        return view('users.show', compact('user', 'userTriedProblemRate'));
+        $statisticsService = $this->statisticsService;
+        
+        return view('users.show', compact('user', 'userTriedProblemRate', 'acceptProblem', 'triedProblem', 'statisticsService'));
     }
     
     public function showSettings($template = null, $compacts = [])
     {
         $userId = Sentinel::getUser()->id;
-        $user = User::find($userId);
+        $user = $this->userService->getUser($userId);
         
         $viewContext = 'users.settings.' . ($template ? $template : 'profile');
             
@@ -50,6 +68,7 @@ class UsersController extends Controller
         
         return view('users.settings', compact('user', 'viewContext', 'title') + $compacts);
     }
+    
     public function postUpdateProfile(Request $request)
     {
         $inputs = $request->only([
@@ -64,7 +83,7 @@ class UsersController extends Controller
             return Redirect::back()->with('error', '비밀번호가 일치하지 않습니다.');
         }
         
-        if( ! $user->updateProfile($inputs) ) {
+        if( ! $this->userService->updateProfile($user->id, $inputs) ) {
             return Redirect::back()->with('error', '정보 수정을 실패했습니다.');
         }
         
@@ -186,7 +205,7 @@ class UsersController extends Controller
         
         $filePath = \App\Helpers::uploadPhoto($file['user_photo'], $user->name);
         
-        if( $filePath && $user->updateProfile(['photo_path' => $filePath]) ) {
+        if( $filePath && $this->userService->updateProfile($user->id, ['photo_path' => $filePath]) ) {
             return Redirect::back();
         }
             

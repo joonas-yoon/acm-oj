@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Repositories\TagRepository,
     App\Repositories\UserTagRepository,
     App\Repositories\ProblemTagRepository;
-    
+
+use DB;
+
 class TagService
 {
     protected $tagRepository;
@@ -37,10 +39,22 @@ class TagService
         
         $tags = [];
         foreach($tagIds as $tag)
-            array_push($tags, $tag->tag);
+            array_push($tags, $tag->tags);
         
         return $tags;
     }
+    
+    /**
+     * 해당 문제의 전체 태그 목록 가져오기
+     *
+     * @param int   $problem_id
+     * @return array of App\Models\Tag
+     */
+    public function getTags($problem_id)
+    {
+        return $this->getPopularTags($problem_id, 0);
+    }
+    
     
     /**
      * 해당 문제의 해당 유저가 추가한 모든 태그 제거하기
@@ -131,6 +145,44 @@ class TagService
     public function updateTag($tag_id, $status)
     {
         return $this->tagRepository->update($tag_id, ['status' => $status]);
+    }
+    
+    /**
+     * 태그 추가하기
+     *
+     * @param string   $name
+     * @return boolean
+     */
+    public function createTag($name)
+    {
+        return $this->tagRepository->create(['name' => $name]);
+    }
+    
+    /**
+     * 이름으로 태그 가져오기
+     *
+     * @param string   $name
+     * @return App\Models\Tag
+     */
+    public function getTagByName($name)
+    {
+        return $this->tagRepository->getTag('name', $name);
+    }
+    
+    /**
+     * 해당 태그를 가지고 있는 문제 목록을 카운트 순으로 가져오기
+     *
+     * @param int   $tag_id
+     * @return paginate of Tag with problem
+     */
+    public function getTagWithProblem($tag_id)
+    {
+        if($this->tagRepository->get($tag_id)->status != Tag::openCode)
+            abort(404);
+            
+        return $this->problemTagRepository
+                    ->getTagWithProblem($tag_id)
+                    ->paginate($this->paginateCount);
     }
 }
 

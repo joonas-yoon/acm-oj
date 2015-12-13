@@ -17,7 +17,7 @@ class SolutionRepository extends BaseRepository
         return $this->solutions()->where('result_id', \App\Result::getAcceptCode());
     }
     
-    public function getSolutionsByOption(array $inputs, $paginateCount)
+    public function getSolutionsByOption(array $inputs)
     {
         $query = $this->model->select('solutions.*');
 
@@ -52,7 +52,7 @@ class SolutionRepository extends BaseRepository
         if($result_id > 0)
             $query->where('result_id', $result_id);
 
-        return $query->paginate($paginateCount);
+        return $query;
     }
 }
 

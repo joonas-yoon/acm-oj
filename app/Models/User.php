@@ -35,17 +35,18 @@ class User extends SentinelUser implements AuthenticatableContract,
         'permissions',
         'total_submit',
         'total_clear',
+        
         'via',
         'first_name',
         'last_name',
         'organization',
-        'photo_path'
+        'photo_path',
+        'default_language',
+        'default_code_theme'
     ];
     
     protected $loginNames = ['name', 'email'];
     
-    protected $profiles = ['via', 'first_name', 'last_name', 'email_open', 'organization', 'photo_path'];
-
     /**
      * The attributes excluded from the model's JSON form.
      *
@@ -53,95 +54,66 @@ class User extends SentinelUser implements AuthenticatableContract,
      */
     protected $hidden = ['password', 'remember_token'];
     
-
-    /**
-     * Find by username, or throw an exception.
-     *
-     * @param string $username The username.
-     * @param mixed $columns The columns to return.
-     *
-     * @throws ModelNotFoundException if no matching User exists.
-     *
-     * @return User
-     */
-    public static function findByNameOrFail(
-        $name,
-        $columns = array('*')
-    ) {
-        if ( ! is_null($user = static::whereName($name)->first($columns))) {
-            return $user;
-        }
-
-        throw new ModelNotFoundException;
-    }
-    public static function findByNameOrEmailOrFail(
-        $nameOrEmail,
-        $columns = array('*')
-    ) {
-        if ( ! is_null($user = static::whereName($nameOrEmail)->orWhere('email', $nameOrEmail)->first($columns))) {
-            return $user;
-        }
-
-        throw new ModelNotFoundException;
-    }
-
+    static public $editable = [
+        'via',
+        'first_name', 'last_name',
+        'email_open',
+        'organization',
+        'photo_path',
+        'default_language',
+        'default_code_theme'
+    ];
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function articles() {
+    public function articles()
+    {
         return $this->hasMany('App\Models\Article');
     }
 
-    public function solutions() {
+    public function solutions()
+    {
         return $this->hasMany('App\Models\Solution')->has('problem');
     }
     
-    public function statistics() {
+    public function statistics()
+    {
         return $this->hasMany('App\Models\Statistics');
     }
     
-    public function contributeProblems() {
+    public function contributeProblems()
+    {
         return $this->hasMany('App\Models\Problem');
     }
 
-    public function getAcceptCount() {
+    public function userStatistics()
+    {
+        return $this->hasMany('App\Models\UserStatistics');
+    }
+
+    public function getAcceptCount()
+    {
         return $this->total_clear;
     }
-    public function getSubmitCount() {
+    public function getSubmitCount()
+    {
         return $this->total_submit;
     }
 
-    public function getTotalRate() {
+    public function getTotalRate()
+    {
         $submitCnt = $this->getSubmitCount();
         return $submitCnt > 0 ? 100 * $this->getAcceptCount() / $submitCnt : 0;
     }
     
-    public function getAcceptProblems() {
-        return $this->statistics()->where('result_id', Result::getAcceptCode())
-            ->where('count', '>', 0)->orderBy('problem_id')
-            ->with(['problems' => function($query) {
-                $query->select('id', 'title');
-            }])->get();
+    public function getPhotoPathAttribute($photo_path) {
+        $fileName = explode('/', $photo_path);
+        $fileName = end($fileName);
+        
+        return $fileName ? "/images/profile/{$fileName}" : '';
     }
-    
-    public function getTriedProblems() {
-        return $this->statistics()->where('result_id', Result::getAcceptCode())
-            ->where('count', 0)->orderBy('problem_id')
-            ->with(['problems' => function($query) {
-                $query->select('id', 'title');
-            }])->get();
-    }
-    
-    public function userStatistics() {
-        return $this->hasMany('App\Models\UserStatistics');
-    }
-    
-    public function getResultCount($result_id) {
-        return Statistics::getCountOrZero($this->userStatistics()->where('result_id', $result_id)->first());
-    }
-    
-    public function updateProfile(array $profiles) {
-        $profiles = array_only($profiles, $this->profiles);
-        return $this->update($profiles);
+    public function getPhotoLinkAttribute() {
+        return $this->photo_path ? url($this->photo_path) : url('/images/no-image.png');
     }
 }

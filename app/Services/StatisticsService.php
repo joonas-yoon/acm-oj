@@ -135,6 +135,44 @@ class StatisticsService
         $this->problemRepository->get($problem_id)->increment('total_submit');
     }
     
+    /**
+     * 유저가 맞은 문제 목록 가져오기
+     *
+     * @param int   $user_id
+     * @return collection of statistics with problem
+     */
+    public function getAcceptProblemsByUser($user_id)
+    {
+        return $this->statisticsRepository
+                    ->getProblems($user_id, Result::acceptCode);
+    }
+    
+    /**
+     * 유저가 도전중인 문제 목록 가져오기
+     *
+     * @param int   $user_id
+     * @return collection of statistics with problem
+     */
+    public function getTriedProblemsByUser($user_id)
+    {
+        return $this->statisticsRepository
+                    ->getProblemsCountZero($user_id, Result::acceptCode);
+    }
+    
+    
+    /**
+     * 유저의 결과 카운트 가져오기
+     *
+     * @param int   $user_id
+     * @param int   $result_id
+     * @return int
+     */
+    public function getResultCountByUser($user_id, $result_id)
+    {
+        return $this->getCountOrZero($this->userStatisticsRepository
+                    ->getCount($user_id, $result_id));
+    }
+
 }
 
 

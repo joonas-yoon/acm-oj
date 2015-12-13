@@ -34,7 +34,7 @@
           {{ $user->via }}
         </td>
         <td>
-          <a href="/solutions/?user={{ $user->name }}&result_id={{ \App\Result::getAcceptCode() }}">{{ $user->getAcceptCount() }}</a>
+          <a href="/solutions/?user={{ $user->name }}&result_id={{ \App\Models\Result::acceptCode }}">{{ $user->getAcceptCount() }}</a>
         </td>
         <td>
           <a href="/solutions/?user={{ $user->name }}">{{ $user->getSubmitCount() }}</a>
