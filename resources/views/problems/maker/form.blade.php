@@ -26,15 +26,11 @@
     </div>
     <div class="field">
       <label>태그</label>
-      <select multiple="" class="ui search multiple dropdown">
+      <select name="tags[]" multiple="" class="ui search multiple dropdown">
         <option value=""></option>
-        <option value="TAG1">tag1</option><option value="TAG2">tag2</option>
-        <option value="TAG3">Another tag</option><option value="TAG4">Other tag</option>
-
-        <option value="TAGA">tag3</option><option value="TAGH">tag4</option>
-        <option value="TAGB">tag5</option><option value="TAGG">tag6</option>
-        <option value="TAGC">tag7</option><option value="TAGF">tag8</option>
-        <option value="TAGD">tag9</option><option value="TAGE">tag0</option>
+        @foreach( App\Models\Tag::getOpenTags()->get() as $tag )
+        <option value="{{ $tag->name }}">{{ $tag->name }}</option>
+        @endforeach
       </select>
     </div>
   </div>
@@ -78,3 +74,9 @@
       <a class="detail">@author3</a>
     </div>
   </div>
+  
+  <script>
+  $('.ui.dropdown').dropdown({
+    allowAdditions: true
+  });
+  </script>

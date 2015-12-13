@@ -16,12 +16,31 @@ class ProblemTag extends Model
         'tag_id',
         'count'
     ];
+    
+    public function tags()
+    {
+        return $this->belongsTo('App\Models\Tag', 'tag_id');
+    }
 
-    public function subTag() {
+    public function problems()
+    {
+        return $this->belongsTo('App\Models\Problem', 'problem_id');
+    }
+
+    public function subTag() 
+    {
         return $this->decrement('count');
     }
 
-    public function addTag() {
+    public function addTag() 
+    {
         return $this->increment('count');
+    }
+    
+    public function scopeSetTake($query, $take)
+    {
+        if($take)
+            return $query->take($take);
+        return $query;
     }
 }

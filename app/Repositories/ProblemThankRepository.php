@@ -14,26 +14,25 @@ class ProblemThankRepository extends BaseRepository
     }
     
     
-    public function getAuthorWithProblem($user_id, $paginateCount)
+    public function getAuthorWithProblem($user_id)
+    {
+        return $this->model->with(['problems' => function($query) {
+                        $query->select(Problem::$listColumns);
+                    }])
+                    ->where('user_id', $user_id)
+                    ->where('thank_id', Thank::authorCode);
+    }
+    
+    public function getAuthorWithReadyProblem($user_id)
     {
         return $this->model->with(['problems' => function($query) {
                         $query->select(Problem::$listColumns);
                     }])
                     ->where('user_id', $user_id)
                     ->where('thank_id', Thank::authorCode)
-                    ->paginate($paginateCount);
-    }
-    
-    public function getAuthorWithReadyProblem($user_id, $paginateCount)
-    {
-        return $this->model->with(['problems' => function($query) {
-                        $query->select(Problem::$listColumns)
-                              ->where('status', Problem::hiddenCode);
-                    }])
-                    ->where('user_id', $user_id)
-                    ->where('thank_id', Thank::authorCode)
-                    
-                    ->paginate($paginateCount);
+                    ->whereHas('problems', function ($query) {
+                        $query->whereIn('status', [Problem::hiddenCode, Problem::readyCode]);
+                    });
     }
     
     public function getUser($problem_id, $thank_id)

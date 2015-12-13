@@ -12,14 +12,16 @@ class ProblemRepository extends BaseRepository
         $this->model = $problem;
     }
     
-    public function getOpenProblems($paginateCount)
+    public function getOpenProblems()
     {
-        return $this->getWherePaginate('status', Problem::openCode, $paginateCount, null, Problem::$listColumns);
+        return $this->model->where('status', Problem::openCode)
+                    ->select(Problem::$listColumns);
     }
     
-    public function getHiddenProblems($paginateCount)
+    public function getHiddenProblems()
     {
-        return $this->getWherePaginate('status', Problem::openCode, $paginateCount, null, Problem::$listColumns);
+        return $this->model->where('status', Problem::hiddenCode)
+                    ->select(Problem::$listColumns);
     }
     
     public function getNewestProblems($takes)

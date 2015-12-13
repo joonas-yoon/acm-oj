@@ -7,11 +7,23 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Services\ProblemService;
+
 class PagesController extends Controller
 {
+    
+    public $problemService;
+    
+    public function __construct
+    (
+        ProblemService $problemService
+    )
+    {
+        $this->problemService = $problemService;
+    }
+    
     function index() {
-        $problems = \App\Problem::where('status', true);
-        $addedProblems = $problems->limit(6)->get();
+        $addedProblems = $this->problemService->getNewestProblems(6);
 
         return view('pages.index', compact('addedProblems'));
     }

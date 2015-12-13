@@ -38,6 +38,7 @@ class Problem extends Model
     
     const hiddenCode = 0;
     const openCode = 1;
+    const readyCode = 3;
 
     // Relation
 

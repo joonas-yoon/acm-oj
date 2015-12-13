@@ -24,7 +24,5 @@
 @stop
 
 @section('script')
-  <script>
-  $('.ui.dropdown').dropdown();
-  </script>
+
 @stop

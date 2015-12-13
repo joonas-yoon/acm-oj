@@ -22,7 +22,7 @@ class ProblemThank extends Model
     ];
 
     public function thanks() {
-        return $this->belongsTo('App\Models\Thank', 'id');
+        return $this->belongsTo('App\Models\Thank', 'thank_id');
     }
 
     public function problems() {

@@ -15,12 +15,9 @@ class Tag extends Model
         'name',
         'status'
     ];
-
-    public static function createTag($name) {
-        return Tag::create([
-            'name' => $name
-        ]);
-    }
+    
+    const openCode = 1;
+    const hiddenCode = 0;
 
     public function scopeGetOpenTags($query) {
         return $query->where('status', 1);

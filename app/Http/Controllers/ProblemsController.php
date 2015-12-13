@@ -7,11 +7,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
-use App\Language;
+use App\Models\Language;
 use App\Models\Result;
 
 use App\Services\ProblemService,
-    App\Services\StatisticsService;
+    App\Services\StatisticsService,
+    App\Services\TagService;
 
 use GrahamCampbell\Markdown\Facades\Markdown;
 
@@ -27,11 +28,13 @@ class ProblemsController extends Controller
     
     public $problemService;
     public $statisticsService; 
+    public $tagService;
     
     public function __construct
     (
         ProblemService      $problemService,
-        StatisticsService   $statisticsService
+        StatisticsService   $statisticsService,
+        TagService          $tagService
     )
     {
         $this->middleware('auth', [
@@ -40,8 +43,9 @@ class ProblemsController extends Controller
             ]
         ]);
         
-        $this->problemService = $problemService;
+        $this->problemService    = $problemService;
         $this->statisticsService = $statisticsService;
+        $this->tagService        = $tagService;
     }
 
     /**
@@ -277,8 +281,10 @@ class ProblemsController extends Controller
         $problem->hint        = Markdown::convertToHtml($problem->hint);
 
         $statisticsService = $this->statisticsService;
+        
+        $tags = $this->tagService->getPopularTags($problem->id);
 
-        return view('problems.show', compact('problem', 'statisticsService'));
+        return view('problems.show', compact('problem', 'statisticsService', 'tags'));
     }
 
     /**
@@ -309,15 +315,33 @@ class ProblemsController extends Controller
         // 자신이 작성한 문제만 접근
         if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
         
-        return view('problems.maker.edit', compact('problem'));
+        //$selectedTags = $this->tagService->getPopularTags($problem->id);
+        
+        return view('problems.maker.edit', compact('problem', 'tags'));
     }
 
     public function update(Requests\CreateProblemRequest $request, $id)
     {
-        $this->problemService->updateProblem($id, $request->all());
         $problem = $this->problemService->getProblem($id);
-        
         if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+        
+        $this->problemService->updateProblem($problem->id, $request->all());
+        
+        $tags = [];
+        $tagsNotFound = [];
+        $tagList = $request->get('tags');
+        foreach( $tagList as $tagName ) {
+            $tag = $this->tagService->getTagByName($tagName);
+            if( $tag != null ) array_push($tags, $tag->id);
+            else array_push($tagsNotFound, $tagName);
+        }
+        
+        // 없는 태그를 생성
+        foreach($tagsNotFound as $tag) {
+            $this->tagService->createTag($tag);
+        }
+        
+        $this->tagService->insertTags(Sentinel::getUser()->id, $problem->id, $tags);
             
         if( $problem->status == 1 )
             return redirect( action('ProblemsController@index', $problem->id) );

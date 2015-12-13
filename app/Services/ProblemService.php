@@ -60,7 +60,8 @@ class ProblemService
      */
     public function getOpenProblems()
     {
-        return $this->problemRepository->getOpenProblems($this->paginateCount);
+        return $this->problemRepository->getOpenProblems()
+                    ->paginate($this->paginateCount);
     }
 
     /**
@@ -82,7 +83,8 @@ class ProblemService
      */
     public function getHiddenProblems()
     {
-        return $this->problemRepository->getHiddenProblems($this->paginateCount);
+        return $this->problemRepository->getHiddenProblems()
+                    ->paginate($this->paginateCount);
     }
 
     /**
@@ -105,7 +107,8 @@ class ProblemService
     public function getAuthorWithProblem($user_id)
     {
         return $this->problemThankRepository
-                    ->getAuthorWithProblem($user_id, $this->paginateCount);
+                    ->getAuthorWithProblem($user_id)
+                    ->paginate($paginateCount);
     }
     
     
@@ -118,25 +121,8 @@ class ProblemService
     public function getAuthorWithReadyProblem($user_id)
     {
         return $this->problemThankRepository
-                    ->getAuthorWithReadyProblem($user_id, $this->paginateCount);
-    }
-    
-    /**
-     * 해당 태그를 가지고 있는 문제 목록을 카운트 순으로 가져오기
-     *
-     * @param int   $tag_id
-     * @return array of App\Models\Problem
-     */
-    public function getProblemsByTag($tag_id)
-    {
-        $tagIds = $this->problemTagRepository
-                       ->getTagWithProblem($tag_id, $this->paginateCount);
-        
-        $problems = [];
-        foreach($tagIds as $tag)
-            array_push($problems, $tag->problems);
-        
-        return $problems;
+                    ->getAuthorWithReadyProblem($user_id)
+                    ->paginate($this->paginateCount);
     }
     
     /**

@@ -91,11 +91,6 @@ Route::group(['prefix' => 'settings', 'as' => 'settings'], function()
     
     Route::get ('privacy', 'UsersController@showPrivacy');
     Route::post('privacy', 'UsersController@postPrivacy');
-    
-    Route::group(['middleware' => 'admin'], function()
-    {
-        // Route::get ('/', 'UsersController@settings');
-    });
 });
 
 Route::group(['prefix' => 'images'], function()

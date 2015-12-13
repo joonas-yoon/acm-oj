@@ -15,30 +15,40 @@ class ProblemTagRepository extends BaseRepository
     
     public function getPopularTags($problem_id, $take)
     {
-        return $this->model->with('tags')->where('problem_id', $problem_id)
-                    ->orderBy('count', 'desc')->take(3)->get();
+        return $this->model->with('tags')
+                    ->where('problem_id', $problem_id)
+                    ->orderBy('count', 'desc')
+                    ->whereHas('tags', function($query) {
+                        $query->where('status', Tag::openCode);
+                    })
+                    ->setTake($take)
+                    ->get();
     }
     
-    public function getTagWithProblem($tag_id, $paginateCount)
+    public function getTagWithProblem($tag_id)
     {
         return $this->model->with('problems', function($query) {
-            $query->select(Problem::listColumns)
-            ->where('status', Problem::openCode)->orderBy('count', 'desc');
-        })->where('tag_id', $tag_id)->paginate($paginateCount);
+                        $query->select(Problem::$listColumns)
+                              ->orderBy('count', 'desc');
+                    })
+                    ->where('tag_id', $tag_id)
+                    ->whereHas('problems', function($query) {
+                        $query->where('status', Problem::openCode);
+                    });
     }
     
     public function subProblemTag($problem_id, $tag_id)
     {
         $this->model->where('problem_id', $problem_id)
                     ->where('tag_id', $tag_id)
-                    ->first()->decrement('count');
+                    ->firstOrFail()->decrement('count');
     }
     
     public function addProblemTag($problem_id, $tag_id)
     {
         $this->model->where('problem_id', $problem_id)
                     ->where('tag_id', $tag_id)
-                    ->first()->increment('count');
+                    ->firstOrFail()->increment('count');
     }
     
     public function getOrCreate(array $values)
