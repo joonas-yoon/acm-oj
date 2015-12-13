@@ -89,11 +89,11 @@
         <td></td><td></td>
         @endif
         <td>
-          @if( $solution->user_id == Sentinel::getUser()->id )
+          @if( $solution->user_id == $getUser_id )
             <a href="/solutions/{{ $solution->id }}">{{ $solution->language->name }}</a>
           @elseif( $solution->result_id == $acceptCode
                 && $solution->is_published
-                && $amAccepted($solution->problem_id) )
+                && $amAccepted($getUser_id, $solution->problem_id) )
             <a href="/solutions/{{ $solution->id }}">{{ $solution->language->name }}</a>
           @else
             {{ $solution->language->name }}

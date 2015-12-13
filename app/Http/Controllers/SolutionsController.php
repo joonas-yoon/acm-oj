@@ -84,15 +84,16 @@ class SolutionsController extends Controller
         // $solutions = $solutions->paginateFrom(Input::get('top', ''), 20);
         //$solutions = $solutions->paginate(20, ['url' => \Request::url()]);
         
-        $amAccepted = function($pid){
-            $user = Sentinel::check() ? Sentinel::getUser()->id : '';
-            return $user ? $this->statisticsService->isAcceptedProblem($user, $pid) : false;
+        $getUser_id = Sentinel::check() ? Sentinel::getUser()->id : null;
+        
+        $amAccepted = function($uid, $pid){
+            return $uid ? $this->statisticsService->isAcceptedProblem($uid, $pid) : false;
         };
 
         return view('solutions.index', compact(
             'fromWhere', 'solutions',
             'problem_id', 'username', 'result_id', 'resultRefs', 'lang_id', 'langRefs', 'acceptCode',
-            'amAccepted'
+            'amAccepted', 'getUser_id'
         ));
     }
 
