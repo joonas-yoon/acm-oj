@@ -91,8 +91,7 @@
         <td>
           @if( $solution->user_id == $getUser_id )
             <a href="/solutions/{{ $solution->id }}">{{ $solution->language->name }}</a>
-          @elseif( $solution->result_id == $acceptCode
-                && $solution->is_published
+          @elseif( $solution->is_published
                 && $amAccepted($getUser_id, $solution->problem_id) )
             <a href="/solutions/{{ $solution->id }}">{{ $solution->language->name }}</a>
           @else
