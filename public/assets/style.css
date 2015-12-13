@@ -220,6 +220,20 @@ html, body {
 .ui.segment .ui.labels {
     line-height: 2.34rem;
 }
+.ui.sessions.list .item.active,
+.ui.sessions.list .item.active .header,
+.ui.sessions.list .item.active .content,
+.ui.sessions.list .item.active .description {
+    color: rgba(255,255,255,.95) !important;
+}
+.ui.sessions.list .item.active {
+    background-color: #2185D0 !important;
+}
+.ui.sessions.list .item.active:hover {
+    background-color: #1C70B0 !important;
+}
+.ui.sessions.list .item>i.icon { padding-left: .38rem; }
+
 
 .solution,
 .solution.waiting,

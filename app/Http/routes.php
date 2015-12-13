@@ -118,3 +118,25 @@ Route::group(['prefix' => 'password', 'as' => 'password'], function()
     Route::get ('reset', 'UsersController@showResetPassword');
     Route::post('reset/{key}', 'UsersController@postResetPassword');
 });
+
+Route::group(['prefix' => 'sessions', 'as' => 'sessions'], function()
+{
+    Route::get ('/', 'UsersController@showSessions');
+    
+    Route::get('kill', function() {
+        $user = Sentinel::getUser();
+        Sentinel::getPersistenceRepository()->flush($user);
+        return Redirect::back();
+    });
+
+    Route::get('kill-all', function() {
+        $user = Sentinel::getUser();
+        Sentinel::getPersistenceRepository()->flush($user, false);
+        return Redirect::back();
+    });
+
+    Route::get('kill/{code}', function($code) {
+        Sentinel::getPersistenceRepository()->remove($code);
+        return Redirect::back();
+    });
+});

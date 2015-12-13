@@ -21,6 +21,8 @@
   </h2>
 
   @include('errors.list')
+  
+  <a class="ui button" href="{{ action('ProblemsController@create') }}">문제 만들기</a>
 
   <table class="ui striped text-center table unstackable">
     <thead>
@@ -57,10 +59,6 @@
     </tbody>
   </table>
 
-  @include('pagination.default', ['paginator' => $paginations])
-
-  <a class="ui button" href="{{ action('ProblemsController@create') }}">문제 만들기</a>
-
   <div class="ui basic modal" id="confirmProblem">
     <i class="close icon"></i>
     <div class="header">
@@ -93,6 +91,8 @@
       {!! csrf_field() !!}
     </form>
   </div>
+
+  @include('pagination.default', ['paginator' => $paginations])
 
 </div>
 @stop

@@ -103,6 +103,20 @@ class UsersController extends Controller
         return var_dump($request);
     }
     
+    public function showSessions()
+    {
+        $user = Sentinel::getUser();
+
+        $persistence = Sentinel::getPersistenceRepository();
+        
+        return $this->showSettings('sessions', compact('user', 'persistence'));
+    }
+    public function postSessions(Request $request)
+    {
+        //
+        return var_dump($request);
+    }
+    
     public function showDefaultLanguage()
     {
         $defaults = [

@@ -32,6 +32,7 @@
       <a href="/settings" class="item {{ \App\Helpers::setActiveStrict('settings') }}">정보 수정</a>
       <a href="/password/change" class="item {{ \App\Helpers::setActive('password') }}">비밀번호 변경</a>
       <a href="/settings/language" class="item {{ \App\Helpers::setActive('settings/language') }}">기본 언어 및 테마 설정</a>
+      <a href="/sessions" class="item {{ \App\Helpers::setActive('sessions') }}">로그인 내역 관리</a>
       <a href="/settings/privacy" class="item {{ \App\Helpers::setActive('settings/privacy') }}">공개 범위 설정</a>
     </div>
     
