@@ -67,6 +67,7 @@ class SolutionService
      */
     public function createSolution(array $request)
     {
+        $code = $request['code'];
         $request = array_only($request, Solution::$editable);
         
         DB::beginTransaction();
@@ -76,7 +77,7 @@ class SolutionService
             
             $this->codeRepository->create([
                 'id' => $solution->id,
-                'code' => $request['code']
+                'code' => $code
             ]);
 
             // 코드가 들어가면 대기중으로 전환
