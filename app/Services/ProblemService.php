@@ -102,10 +102,23 @@ class ProblemService
      * @param int   $user_id
      * @return paginate of author
      */
-    public function getAuthorsWithProblem($user_id)
+    public function getAuthorWithProblem($user_id)
     {
         return $this->problemThankRepository
-                    ->getAuthorsWithProblem($user_id, $this->paginateCount);
+                    ->getAuthorWithProblem($user_id, $this->paginateCount);
+    }
+    
+    
+    /**
+     * 유저가 만든 문제 목록 중 대기중인 문제 가져오기
+     *
+     * @param int   $user_id
+     * @return paginate of author
+     */
+    public function getAuthorWithReadyProblem($user_id)
+    {
+        return $this->problemThankRepository
+                    ->getAuthorWithReadyProblem($user_id, $this->paginateCount);
     }
     
     /**

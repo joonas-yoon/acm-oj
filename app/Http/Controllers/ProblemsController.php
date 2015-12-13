@@ -77,11 +77,13 @@ class ProblemsController extends Controller
 
     public function creatingProblemsList()
     {
-        $paginations = $this->problemService->getAuthorsWithProblem(Sentinel::getUser()->id);
-
+        $paginations = $this->problemService->getAuthorWithReadyProblem(Sentinel::getUser()->id);
+        
         $problems = [];
-        foreach($paginations as $author)
-            array_push($problems, $author->problems);
+        foreach($paginations as $author) {
+            $problem = $author->problems;
+            if( $problem != null ) array_push($problems, $problem);
+        }
 
         $title = '문제 제작 - '.$paginations->currentPage().' 페이지';
         return view('problems.maker.list', compact('problems', 'title', 'paginations'));

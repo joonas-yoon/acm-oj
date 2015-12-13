@@ -36,6 +36,7 @@ class Problem extends Model
         'is_special'
     ];
     
+    const hiddenCode = 0;
     const openCode = 1;
 
     // Relation
