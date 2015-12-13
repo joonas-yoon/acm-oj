@@ -149,12 +149,11 @@ class SolutionsController extends Controller
             return abort(404);
                 
         if( Sentinel::getUser()->id != $solution->user_id ) {
+            // 다른 사람의 코드의 경우
+            // 그 코드가 공개된 코드 && 내가 그 문제를 해결
             
-            if( $solution->is_published == 0 /* 공개 */ );
-            else if( $solution->is_published == 1 /* 맞으면 공개 */
-                  && $solution->result_id != Result::acceptCode )
-                return abort(404);
-            else
+            if( ! $solution->is_published ||
+                ! $this->statisticsService->isAcceptedProblem(Sentinel::getUser()->id, $solution->problem_id) )
                 return abort(404);
         }
         
