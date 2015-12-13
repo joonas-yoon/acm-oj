@@ -36,6 +36,19 @@ class Problem extends Model
         'is_special'
     ];
     
+    static public $editable = [
+        'title',
+        'description',
+        'time_limit',
+        'memory_limit',
+        'input',
+        'output',
+        'sample_input',
+        'sample_output',
+        'hint',
+        'is_special'
+    ];
+    
     const hiddenCode = 0;
     const openCode = 1;
     const readyCode = 3;

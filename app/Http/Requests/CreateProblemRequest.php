@@ -28,7 +28,7 @@ class CreateProblemRequest extends Request
         return [
             'title'       => 'required',
             'description' => 'required|min:2',
-            'time_limit'  => 'required|numeric|min:1',
+            'time_limit'  => 'required|numeric|min:1|max:10',
             'memory_limit'=> 'required|numeric|min:64|max:512',
             'input'       => 'required|min:2',
             'output'      => 'required|min:2'

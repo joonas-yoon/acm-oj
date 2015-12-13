@@ -43,6 +43,8 @@ class ProblemService
      */
     public function createProblem(array $values, $user_id)
     {
+        $values = array_only($values, Problem::$editable);
+        
         $problem = $this->problemRepository->create($values);
 
         $problemThank = $this->problemThankRepository->create([
@@ -160,6 +162,7 @@ class ProblemService
      */
     public function updateProblem($problem_id, array $values)
     {
+        $values = array_only($values, Problem::$editable);
         return $this->problemRepository->update($problem_id, $values);
     }
 }

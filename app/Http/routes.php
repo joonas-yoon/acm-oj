@@ -66,6 +66,12 @@ Route::group(['prefix' => 'problems'], function()
 
 Route::resource('problems', 'ProblemsController');
 
+Route::group(['prefix' => 'tags'], function()
+{
+    Route::get('/', 'TagsController@index');
+    
+});
+
 Route::get('/rank', 'RankController@index');
 
 Route::get('/solutions',  'SolutionsController@index');

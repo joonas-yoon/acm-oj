@@ -30,6 +30,16 @@ class Solution extends Model
     ];
 
     protected $guarded = [];
+    
+    static public $editable = [
+        'result_id',
+        'lang_id',
+        'problem_id',
+        'user_id',
+        'size',
+        'is_hidden',
+        'is_published'
+    ];
 
     public function problem()
     {

@@ -108,6 +108,7 @@ class SolutionsController extends Controller
         $request['user_id'] = Sentinel::getUser()->id;
         $request['result_id'] = Result::tempCode;
         $request['size'] = strlen($request->code);
+        $request['is_hidden'] = false;
         $request['is_published'] = isset($request->is_published);
 
         $validator = \Validator::make($request->all(), [

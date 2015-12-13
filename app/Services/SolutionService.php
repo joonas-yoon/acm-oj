@@ -10,7 +10,8 @@ use App\Repositories\SolutionRepository,
     
 use App\Services\StatisticsService;
 
-use App\Models\Result;
+use App\Models\Result,
+    App\Models\Solution;
 
 use DB;
 
@@ -66,6 +67,8 @@ class SolutionService
      */
     public function createSolution(array $request)
     {
+        $request = array_only($request, Solution::$editable);
+        
         DB::beginTransaction();
         try {
 

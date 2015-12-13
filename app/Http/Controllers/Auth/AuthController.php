@@ -67,8 +67,9 @@ class AuthController extends Controller
         
         return Validator::make($data, $rules, [
             // messages
-            'required'  => ':attribute 를 확인하세요.',
-            'regex'     => '아이디 또는 이메일을 다시 확인하세요.',
+            'name.required' => '아이디 또는 이메일을 입력하세요',
+            'password.required' => '비밀번호를 입력하세요.',
+            'regex' => '아이디 또는 이메일을 다시 확인하세요.',
         ]);
     }
 
@@ -112,7 +113,7 @@ class AuthController extends Controller
         {
             $input = $this->getCredentials($request->all());
             
-            $return_path = $input['url'];
+            $return_path = array_get($request->all(), 'url', \URL::previous());
             
             $validator = $this->validator($input);
 
@@ -128,7 +129,7 @@ class AuthController extends Controller
                 return redirect( $return_path ? $return_path : $this->redirectTo );
             }
 
-            $errors = 'Invalid login or password.';
+            $errors = '로그인에 실패하였습니다.';
         }
         catch (NotActivatedException $e)
         {
@@ -140,7 +141,7 @@ class AuthController extends Controller
         {
             $delay = $e->getDelay();
 
-            $errors = "Your account is blocked for {$delay} second(s).";
+            $errors = "로그인에 실패한 기록이 너무 많습니다. 계정 보호를 위해 {$delay} 초 후에 다시 시도하세요.";
         }
 
         return Redirect::back()
@@ -173,8 +174,12 @@ class AuthController extends Controller
     
     public function postRegister(Request $request)
     {
-        $input = Input::all();
-
+        $creditials = [
+            'username', 'name', 'email', 'password', 'password_confirmation',
+            'first_name', 'last_name', 'organization'
+        ];
+        $input = $request->only($creditials);
+        
         $rules = [
             'name'     => 'required|min:3|max:50|unique:users',
             'email'    => 'required|unique:users|regex:'.$this->getEmailRegexp(),
@@ -192,6 +197,8 @@ class AuthController extends Controller
             
             'password.required' => '비밀번호를 입력하세요.',
             'password.confirmed' => '비밀번호가 일치하지 않습니다.',
+            
+            'fail' => 'asdasd',
         ];
 
         $validator = Validator::make($input, $rules, $messages);

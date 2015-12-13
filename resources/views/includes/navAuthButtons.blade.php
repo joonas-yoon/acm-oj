@@ -2,7 +2,7 @@
   @if ( ! Sentinel::check() )
   <div class="ui right index item">
     <div class="ui breadcrumb">
-      <a class="section" href="/login/?url=/{{ \Request::path() }}">로그인</a>
+      <a class="section" href="/login/?url={{ Input::get('url', \Request::path()) }}">로그인</a>
       <span class="divider">/</span>
       <a class="section" href="/register">회원가입</a>
     </div>

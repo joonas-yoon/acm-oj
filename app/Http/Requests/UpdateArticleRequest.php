@@ -13,7 +13,7 @@ class UpdateArticleRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        return Sentinel::check();
     }
 
     /**
