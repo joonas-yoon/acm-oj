@@ -29,25 +29,9 @@
   <div class="ui stackable grid">
     <div class="two wide column field column-label">공개 범위</div>
     <div class="fourteen wide column">
-      <div class="inline fields">
-        <div class="field">
-          <div class="ui radio checkbox">
-            {!! Form::radio('is_published', 0, 0 == Input::old('is_published'), ['class'=>'hidden']) !!}
-            <label>공개</label>
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui radio checkbox">
-            {!! Form::radio('is_published', 1, 1 == Input::old('is_published'), ['class'=>'hidden']) !!}
-            <label>정답인 경우만 공개</label>
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui radio checkbox">
-            {!! Form::radio('is_published', 2, 2 == Input::old('is_published'), ['class'=>'hidden']) !!}
-            <label>비공개</label>
-          </div>
-        </div>
+      <div class="ui toggle checkbox">
+        <input type="checkbox" name="is_published" tabindex="0" class="hidden" {{ old('is_published', 1) == 1 ? 'checked':'' }}>
+        <label>소스 코드 공개</label>
       </div>
     </div>
   </div>
@@ -96,7 +80,7 @@
       maxRating: 5
     })
   ;
-  $('.ui.radio.checkbox').checkbox();
+  $('.ui.checkbox').checkbox();
   $('select.dropdown').dropdown();
   </script>
   

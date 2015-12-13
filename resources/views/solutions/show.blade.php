@@ -51,19 +51,16 @@
     
     <div class="ui hidden divider"></div>
     
+    @if( Sentinel::getUser()->id == $solution->user_id )
     <div class="ui form">
-      <div class="inline fields">
-        <label>소스 코드 공개 여부</label>
-        @for( $i=0; $i < count($codeIsPublished); ++$i )
-        <div class="field">
-          <div class="ui radio checkbox">
-            <input type="radio" name="is_published" {{ $i == $solution->is_published ? 'checked' : '' }}>
-            <label>{{ $codeIsPublished[ $i ] }}</label>
-          </div>
+      <div class="field">
+        <div class="ui toggle checkbox">
+          <input type="checkbox" name="is_published" tabindex="0" class="hidden" {{ $solution->is_published ? 'checked':'' }}>
+          <label>같은 문제를 해결한 사람들에게 이 소스 코드를 공개합니다.</label>
         </div>
-        @endfor
       </div>
     </div>
+    @endif
     
 </div>
 @stop
@@ -71,6 +68,7 @@
 @section('script')
   <script>
     $('.popup').popup();
+    $('.ui.checkbox').checkbox();
   </script>
   <script src="/assets/editor/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
   <script src="/assets/editor.js" type="text/javascript" charset="utf-8"></script>

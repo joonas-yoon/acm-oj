@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 use App\Services\SolutionService,
-    App\Services\ProblemService;
+    App\Services\ProblemService,
+    App\Services\StatisticsService;
 
 use Input;
 use Sentinel;
@@ -30,11 +31,13 @@ class SolutionsController extends Controller
     public function __construct
     (
         SolutionService $solutionService,
-        ProblemService $problemService
+        ProblemService $problemService,
+        StatisticsService $statisticsService
     )
     {
         $this->solutionService = $solutionService;
         $this->problemService = $problemService;
+        $this->statisticsService = $statisticsService;
         
         $this->middleware('auth', [
             'except' => [
@@ -80,14 +83,16 @@ class SolutionsController extends Controller
 
         // $solutions = $solutions->paginateFrom(Input::get('top', ''), 20);
         //$solutions = $solutions->paginate(20, ['url' => \Request::url()]);
+        
+        $amAccepted = function($pid){
+            $user = Sentinel::check() ? Sentinel::getUser()->id : '';
+            return $user ? $this->statisticsService->isAcceptedProblem($user, $pid) : false;
+        };
 
         return view('solutions.index', compact(
             'fromWhere', 'solutions',
-            'problem_id',
-            'username',
-            'result_id', 'resultRefs',
-            'lang_id', 'langRefs',
-            'acceptCode'
+            'problem_id', 'username', 'result_id', 'resultRefs', 'lang_id', 'langRefs', 'acceptCode',
+            'amAccepted'
         ));
     }
 
@@ -102,6 +107,7 @@ class SolutionsController extends Controller
         $request['user_id'] = Sentinel::getUser()->id;
         $request['result_id'] = Result::tempCode;
         $request['size'] = strlen($request->code);
+        $request['is_published'] = isset($request->is_published);
 
         $validator = \Validator::make($request->all(), [
             'problem_id' => 'required|numeric|min:1',
@@ -151,10 +157,9 @@ class SolutionsController extends Controller
                 return abort(404);
         }
         
-        $codeIsPublished = ['공개', '맞았을 때만 공개', '비공개'];
         $acceptCode = Result::acceptCode;
         
-        return view('solutions.show', compact('code', 'solution', 'codeIsPublished', 'acceptCode'));
+        return view('solutions.show', compact('code', 'solution', 'acceptCode'));
     }
 
     /**

@@ -24,7 +24,8 @@ class Solution extends Model
         'time',
         'memory',
         'size',
-        'is_hidden',
+        'is_hidden',    // 채점 현황에서 아예 제거
+        'is_published', // 소스 코드 공개 여부
         'created_at',
     ];
 
