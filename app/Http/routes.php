@@ -73,7 +73,7 @@ Route::group(['prefix' => 'tags'], function()
     Route::pattern('id', '[0-9]+');
     Route::group(['prefix' => '{id}'], function()
     {
-        Route::get('/', function(){ return '기달'; });
+        Route::get('/', 'TagsController@show');
         Route::get('problems', 'TagsController@problems');
     });
     

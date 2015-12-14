@@ -9,24 +9,44 @@
 
     @include('problems.nav')
     
-    <div class="ui hidden divider"></div>
-
-    <div class="ui four doubling cards">
+    <div class="ui four doubling link cards">
     @foreach( $tags as $tag )
     <div class="ui fluid card">
       <div class="content">
         <i class="right floated star icon"></i>
-        <div class="header">{{ $tag->name }}</div>
-        <div class="description">
-          <p>{{ $tag->id }}번 태그</p>
-          <p>{{ $tag->problemTag->count() }}개의 문제</p>
+        <a class="header" href="/tags/{{ $tag->id }}">{{ $tag->name }}</a>
+        <div class="meta">1004번의 인기 태그</div>
+        
+        <div class="ui small feed">
+          <div class="event">
+            <div class="content">
+              <div class="summary">
+                <a href="/tags/{{ $tag->id }}/problems">{{ $tag->problemTag->count() }} 개</a>의 문제
+              </div>
+            </div>
+          </div>
+          <div class="event">
+            <div class="content">
+              <div class="summary">
+                 평점 7.4 : <div class="ui star rating" data-rating="3" data-max-rating="5"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="extra content">
-        <span class="left floated"><i class="star icon"></i> 0 개의 평가</span>
+      
+      @if( rand()%2 )
+      <div class="ui bottom attached button">
+        <i class="star icon"></i>
+        평가하기
       </div>
+      @else
+      <div class="ui bottom attached button disabled">
+        <i class="check icon"></i>
+        나의 평점 : 7점
+      </div>
+      @endif
     </div>
-    
     @endforeach
     </div>
 
@@ -35,6 +55,6 @@
 
 @section('script')
   <script>
-    
+  $('.ui.rating').rating();
   </script>
 @stop
