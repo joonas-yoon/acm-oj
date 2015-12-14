@@ -6,8 +6,8 @@
 
 @section('content')
 <div class="ui container">
-  
-  @include('problems.nav')
+
+  @include('problems.nav', ['tag' => $tag])
 
   <table class="ui compact striped text-center table unstackable">
     <thead>
@@ -20,21 +20,21 @@
       </tr>
     </thead>
     <tbody>
-      @foreach($problems as $problem)
+      @foreach($tags as $tag)
       <tr>
         <td>
-          {{ $problem->id }}
+          {{ $tag->problems->id }}
         </td>
         <td class="text-left">
-          <a href="{{ url('/problems/'.$problem->id) }}">{{ $problem->title }}</a>&nbsp;&nbsp;
+          <a href="{{ url('/problems/'.$tag->problems->id) }}">{{ $tag->problems->title }}</a>&nbsp;&nbsp;
 
-          @if( $problem->is_special )
+          @if( $tag->problems->is_special )
             <a class="ui teal basic label">스페셜 저지</a>
           @endif
 
 
           @if( Sentinel::check())
-            @if( ($uac = ($problem->statistics->first()? $problem->statistics->first()->count: -1)) > 0 )
+            @if( ($uac = ($tag->problems->statistics->first()? $tag->problems->statistics->first()->count: -1)) > 0 )
               <a class="ui green basic label">해결</a>
             @elseif( $uac == 0 )
               <a class="ui red basic label">도전 중</a>
@@ -42,13 +42,13 @@
           @endif
         </td>
         <td>
-          <a href="/solutions/?problem_id={{ $problem->id }}&result_id={{ $resultAccCode }}">
-            {{ $ac = ($problem->problemStatistics->first()? $problem->problemStatistics->first()->count : 0) }}
+          <a href="/solutions/?problem_id={{ $tag->problems->id }}&result_id={{ $resultAccCode }}">
+            {{ $ac = ($tag->problems->problemStatistics->first()? $tag->problems->problemStatistics->first()->count : 0) }}
           </a>
         </td>
         <td>
-          <a href="/solutions/?problem_id={{ $problem->id }}">
-            {{ $sc = $problem->total_submit }}
+          <a href="/solutions/?problem_id={{ $tag->problems->id }}">
+            {{ $sc = $tag->problems->total_submit }}
           </a>
         </td>
         <td>
@@ -62,7 +62,7 @@
     </tbody>
   </table>
 
-  @include('pagination.default', ['paginator' => $problems])
+  @include('pagination.default', ['paginator' => $tags])
 </div>
 @stop
 

@@ -6,6 +6,8 @@ use App\Repositories\TagRepository,
     App\Repositories\UserTagRepository,
     App\Repositories\ProblemTagRepository;
 
+use App\Models\Tag;
+
 use DB;
 
 class TagService
@@ -13,6 +15,8 @@ class TagService
     protected $tagRepository;
     protected $userTagRepository;
     protected $problemTagRepository;
+    
+    public $paginateCount = 20;
     
     public function __construct
     (
@@ -178,12 +182,23 @@ class TagService
     public function getTagWithProblem($tag_id)
     {
         if($this->tagRepository->get($tag_id)->status != Tag::openCode)
-            abort(404);
+            return abort(404);
             
         return $this->problemTagRepository
                     ->getTagWithProblem($tag_id)
                     ->paginate($this->paginateCount);
     }
+    
+    /**
+     * 모든 열린 태그와 그 태그를 가지고 있는 문제 목록을 가져오기
+     *
+     * @param int   $tag_id
+     * @return paginate of Tag with problem
+     */
+    public function getOpenTagsWithProblem()
+    {
+        return $this->tagRepository
+                    ->getOpenTagsWithProblem()
+                    ->paginate($this->paginateCount);
+    }
 }
-
-?>
