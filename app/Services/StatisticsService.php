@@ -97,8 +97,11 @@ class StatisticsService
      */
     public function isAcceptedProblem($user_id, $problem_id)
     {
-        return $this->getCountOrZero($this->statisticsRepository
-            ->getStatistics($user_id, $problem_id, Result::acceptCode)) > 0;
+        $stat = $this->statisticsRepository
+                     ->getStatistics($user_id, $problem_id, Result::acceptCode);
+        if($stat)
+            return $stat->count;
+        return -1;
     }
 
     /**
@@ -174,6 +177,3 @@ class StatisticsService
     }
 
 }
-
-
-?>

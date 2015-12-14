@@ -70,6 +70,17 @@ Route::group(['prefix' => 'tags'], function()
 {
     Route::get('/', 'TagsController@index');
     
+    Route::pattern('id', '[0-9]+');
+    Route::group(['prefix' => '{id}'], function()
+    {
+        Route::get('/', function(){ return '기달'; });
+        Route::get('problems', 'TagsController@problems');
+    });
+    
+    Route::group(['middleware' => 'auth|admin'], function()
+    {
+        // Route::get('create', ...);
+    });
 });
 
 Route::get('/rank', 'RankController@index');

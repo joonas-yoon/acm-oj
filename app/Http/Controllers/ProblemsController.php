@@ -55,7 +55,7 @@ class ProblemsController extends Controller
      */
     public function index()
     {
-        $problems = $this->problemService->getOpenProblems();
+        $problems = $this->problemService->getOpenProblems(Sentinel::getUser()->id);
         $statisticsService = $this->statisticsService;
 
         $title = '문제 목록 - '.$problems->currentPage().' 페이지';

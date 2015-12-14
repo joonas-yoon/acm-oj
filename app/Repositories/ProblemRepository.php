@@ -2,7 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Models\Problem;
+use App\Models\Problem,
+    App\Models\Result;
 
 class ProblemRepository extends BaseRepository
 {
@@ -15,6 +16,21 @@ class ProblemRepository extends BaseRepository
     public function getOpenProblems()
     {
         return $this->model->where('status', Problem::openCode)
+                    ->select(Problem::$listColumns);
+    }
+    
+    public function getOpenProblemsWithStatistics($user_id)
+    {
+        return $this->model->with([
+                    'problemStatistics' => function($query) {
+                        $query->where('result_id', Result::acceptCode);
+                    },
+                    'statistics' => function($query) use ($user_id) {
+                        $query->where('user_id', $user_id)
+                              ->where('result_id', Result::acceptCode);
+                    }
+                    ])
+                    ->where('status', Problem::openCode)
                     ->select(Problem::$listColumns);
     }
     

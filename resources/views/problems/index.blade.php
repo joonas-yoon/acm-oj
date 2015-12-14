@@ -6,21 +6,8 @@
 
 @section('content')
 <div class="ui container">
-  <h2 class="ui header">
-    <div class="ui secondary menu right floated">
-      <a class="item {{ \App\Helpers::setActiveStrict('problems') }}" href="/problems">문제</a>
-      <a class="item {{ \App\Helpers::setActive('problems/new') }}" href="/problems/new">새로 추가된 문제</a>
-      <a class="item">출처</a>
-      <a class="item">태그</a>
-      <a class="item {{ \App\Helpers::setActive('problems/create') }}" href="/problems/create/list">만들기</a>
-    </div>
-
-    <i class="book icon"></i>
-    <div class="content">
-      문제 목록
-      <div class="sub header">Problems</div>
-    </div>
-  </h2>
+  
+  @include('problems.nav', ['options' => isset($options) ? $options : []])
 
   <table class="ui compact striped text-center table unstackable">
     <thead>
@@ -47,21 +34,21 @@
 
 
           @if( Sentinel::check())
-            @if( $statisticsService->isAcceptedProblem(Sentinel::getUser()->id, $problem->id) )
+            @if( ($uac = ($problem->statistics->first()? $problem->statistics->first()->count: -1)) > 0 )
               <a class="ui green basic label">해결</a>
-            @elseif( $statisticsService->isTriedProblem(Sentinel::getUser()->id, $problem->id) )
+            @elseif( $uac == 0 )
               <a class="ui red basic label">도전 중</a>
             @endif
           @endif
         </td>
         <td>
           <a href="/solutions/?problem_id={{ $problem->id }}&result_id={{ $resultAccCode }}">
-            {{ $ac = $statisticsService->getAcceptCountOfProblem($problem->id) }}
+            {{ $ac = ($problem->problemStatistics->first()? $problem->problemStatistics->first()->count : 0) }}
           </a>
         </td>
         <td>
           <a href="/solutions/?problem_id={{ $problem->id }}">
-            {{ $sc = $statisticsService->getSubmitCountOfProblem($problem->id) }}
+            {{ $sc = $problem->total_submit }}
           </a>
         </td>
         <td>

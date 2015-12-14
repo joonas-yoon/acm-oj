@@ -60,9 +60,9 @@ class ProblemService
      *
      * @return Illuminate\Support\Collection
      */
-    public function getOpenProblems()
+    public function getOpenProblems($user_id)
     {
-        return $this->problemRepository->getOpenProblems()
+        return $this->problemRepository->getOpenProblemsWithStatistics($user_id)
                     ->paginate($this->paginateCount);
     }
 
@@ -166,6 +166,3 @@ class ProblemService
         return $this->problemRepository->update($problem_id, $values);
     }
 }
-
-
-?>

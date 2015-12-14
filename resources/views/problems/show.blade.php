@@ -8,30 +8,7 @@
   
 <div class="ui container">
   
-  <div class="ui secondary menu" id="problemnav">
-    <a class="item {{ App\Helpers::setActive('problems.show', Route::current()) }}" href="#">
-      {{ $problem->id }}번: {{ $problem->title }}
-    </a>
-    <a class="item" href="#">
-      (출처)
-    </a>
-    <a class="item" href="/submit/{{ $problem->id }}">
-      제출하기
-    </a>
-    <a class="item" href="/solutions?from=problem&problem_id={{ $problem->id }}">
-      채점 현황
-    </a>
-    <div class="right menu">
-      <div class="ui category search item">
-        <div class="ui transparent icon input">
-          <input class="prompt" type="text" placeholder="Search problem...">
-          <i class="search link icon"></i>
-        </div>
-        <div class="results"></div>
-      </div>
-    </div>
-  </div>
-  
+  @include('problems.nav', ['options' => ['problem_id' => $problem->id] ])
 
   @if ($problem->is_special)
   <a class="ui red ribbon label">스페셜 저지</a>
@@ -40,9 +17,9 @@
   <h2 class="ui header">
     {{ $problem->title }}
     @if( Sentinel::check())
-      @if( $statisticsService->isAcceptedProblem(Sentinel::getUser()->id, $problem->id) )
+      @if( ($uac = $statisticsService->isAcceptedProblem(Sentinel::getUser()->id, $problem->id)) > 0 )
         <a class="ui green basic label">해결</a>
-      @elseif( $statisticsService->isTriedProblem(Sentinel::getUser()->id, $problem->id) )
+      @elseif( $uac == 0 )
         <a class="ui red basic label">도전 중</a>
       @endif
     @endif

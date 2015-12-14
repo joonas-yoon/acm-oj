@@ -130,6 +130,3 @@ class SolutionService
         return $this->solutionRepository->get($solution_id);
     }
 }
-
-
-?>

@@ -7,20 +7,16 @@
 @section('content')
 <div class="ui container">
 
-  <h2 class="ui header">
-    <i class="flag icon"></i>
-    <div class="content">
-      채점 현황
-      <div class="sub header">Submissions</div>
-    </div>
-  </h2>
-
   @if( $fromWhere == 'problem' )
-  문제로부터 넘어옴<br/><br/>
+  
+    @include('problems.nav', ['options' => ['problem_id' => $problem_id] ])
+    
   @elseif( $fromWhere == 'contest' )
+  
   대회로부터 넘어옴<br/><br/>
+  
   @endif
-
+  
   <!-- search form -->
   <form method="GET" class="ui form">
     <div class="five fields">

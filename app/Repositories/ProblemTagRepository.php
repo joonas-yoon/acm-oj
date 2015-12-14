@@ -17,6 +17,7 @@ class ProblemTagRepository extends BaseRepository
     {
         return $this->model->with('tags')
                     ->where('problem_id', $problem_id)
+                    ->where('count', '>', 0)
                     ->orderBy('count', 'desc')
                     ->whereHas('tags', function($query) {
                         $query->where('status', Tag::openCode);
@@ -27,11 +28,12 @@ class ProblemTagRepository extends BaseRepository
     
     public function getTagWithProblem($tag_id)
     {
-        return $this->model->with('problems', function($query) {
-                        $query->select(Problem::$listColumns)
-                              ->orderBy('count', 'desc');
-                    })
+        return $this->model->with(['problems' => function($query) {
+                        $query->select(Problem::$listColumns);
+                    }])
                     ->where('tag_id', $tag_id)
+                    ->where('count', '>', 0)
+                    ->orderBy('count', 'desc')
                     ->whereHas('problems', function($query) {
                         $query->where('status', Problem::openCode);
                     });

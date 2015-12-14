@@ -4,25 +4,23 @@
 @section('content')
 <div class="ui container">
 
-  <h2 class="ui header">
-    <div class="ui secondary menu right floated">
-      <a class="item {{ \App\Helpers::setActiveStrict('problems') }}" href="/problems">문제</a>
-      <a class="item {{ \App\Helpers::setActive('problems/new') }}" href="/problems/new">새로 추가된 문제</a>
-      <a class="item">출처</a>
-      <a class="item">태그</a>
-      <a class="item {{ \App\Helpers::setActive('problems/create') }}" href="/problems/create/list">만들기</a>
-    </div>
-
-    <i class="book icon"></i>
-    <div class="content">
-      문제 목록
-      <div class="sub header">Problems</div>
-    </div>
-  </h2>
+  @include('problems.nav')
 
   @include('errors.list')
   
-  <a class="ui button" href="{{ action('ProblemsController@create') }}">문제 만들기</a>
+  <div class="ui icon message">
+    <i class="inbox icon"></i>
+    <div class="content">
+      <div class="header">
+        문제 만들기
+      </div>
+      <p>온라인 저지에 추가되었으면 하는 문제를 작성해주세요.</p>
+      <a href="{{ action('ProblemsController@create') }}" class="ui right labeled icon button">
+        <i class="right pencil icon"></i>
+        작성하기
+      </a>
+    </div>
+  </div>
 
   <table class="ui striped text-center table unstackable">
     <thead>

@@ -23,7 +23,9 @@ html, body {
     padding-top: 2.25em;
     padding-bottom: 3em;
 }
-
+.ui.attached.tabular.menu {
+    margin-bottom: 1.73rem;
+}
 .ui.popup .ui.column .ui.header {
     white-space: nowrap;
 }
