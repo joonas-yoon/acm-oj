@@ -7,13 +7,13 @@
 @section('content')
 <div class="ui container">
 
-  @if( $fromWhere == 'problem' )
+  @if( $fromWhere == 'problem' && $problem_id )
   
-    @include('problems.nav', ['options' => ['problem_id' => $problem_id] ])
+    @include('problems.nav', ['problem_id' => $problem_id] )
     
   @elseif( $fromWhere == 'contest' )
   
-  대회로부터 넘어옴<br/><br/>
+    대회로부터 넘어옴<br/><br/>
   
   @endif
   

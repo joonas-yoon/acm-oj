@@ -7,13 +7,7 @@
 @section('content')
 <div class="ui container">
 
-  <div class="ui breadcrumb" style="padding-bottom:1em;">
-    <a class="section" href="/problems">문제 목록</a>
-    <i class="right chevron icon divider"></i>
-    <a class="section" href="/problems/{{ $problem->id }}">{{ $problem->id }}번</a>
-    <i class="right chevron icon divider"></i>
-    <div class="active section">Submit</div>
-  </div>
+  @include('problems.nav', ['problem_id' => $problem->id] )
 
   <h2 class="ui dividing header">{{ $problem->title }}</h2>
 
