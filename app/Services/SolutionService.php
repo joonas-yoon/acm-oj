@@ -11,7 +11,8 @@ use App\Repositories\SolutionRepository,
 use App\Services\StatisticsService;
 
 use App\Models\Result,
-    App\Models\Solution;
+    App\Models\Solution,
+    App\Models\Problem;
 
 use DB;
 
@@ -74,6 +75,8 @@ class SolutionService extends BaseService
      */
     public function createSolution(array $request)
     {
+        if(Problem::findOrFail($request['problem_id'])->status != Problem::openCode)
+            abort(404);
         $code = $request['code'];
         $request = array_only($request, Solution::$editable);
         
