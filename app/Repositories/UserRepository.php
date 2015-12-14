@@ -14,8 +14,7 @@ class UserRepository extends BaseRepository
     
     public function getUserByNameOrEmail($nameOrEmail)
     {
-        return $this->model->where('name', $nameOrEmail)
-                    ->orWhere('email', $nameOrEmail)
+        return $this->model->whereNameOrEmail($nameOrEmail)
                     ->firstOrFail();
     }
 

@@ -16,4 +16,14 @@ class ProblemStatistics extends Model
         'count'
     ];
 
+    public function scopeWhereProblem($query, $problem_id)
+    {
+        return $query->where('problem_id', $problem_id);
+    }
+    
+    public function scopeWhereResult($query, $result_id)
+    {
+        return $query->where('result_id', $result_id);
+    }
+
 }

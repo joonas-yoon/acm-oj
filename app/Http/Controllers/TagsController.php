@@ -35,14 +35,19 @@ class TagsController extends Controller
     )
     {
         $this->middleware('auth', [
-            'except' => [
-                'index'
+            'only' => [
+                ''
             ]
         ]);
         
         $this->problemService    = $problemService;
         $this->statisticsService = $statisticsService;
         $this->tagService        = $tagService;
+        
+        $user = Sentinel::getUser();
+        $this->problemService->setUser($user);
+        $this->statisticsService->setUser($user);
+        $this->tagService->setUser($user);
     }
 
     /**
@@ -58,6 +63,13 @@ class TagsController extends Controller
         //var_dump($tags->get());
         
         return view('tags.index', compact('tags', 'tagService'));
+    }
+    
+    public function show($id)
+    {
+        $tag = Tag::where('id', $id)->where('status', 1)->first();
+        
+        return view('tags.show', compact('tag'));
     }
     
     /**

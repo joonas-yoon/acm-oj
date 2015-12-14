@@ -35,13 +35,11 @@
     </div>
     
     <div class="ui divided selection result list">
-      @foreach( \App\Models\Result::all() as $result )
-        @if( $result->id > 3 && $result->published )
+      @foreach( $results as $result )
         <a class="item {{ $result->class_name }}" href="/solutions?user={{ $user->name }}&result_id={{ $result->id }}">
           {{ $result->description }}
-          <div class="ui horizontal right floated {{ $result->class_name }} label">{{ $statisticsService->getResultCountByUser($user->id, $result->id) }}</div>
+          <div class="ui horizontal right floated {{ $result->class_name }} label">{{ $statisticsService->getCountOrZero($result->userStatisticses->first()) }}</div>
         </a>
-        @endif
       @endforeach
     </div>
   
@@ -52,9 +50,9 @@
       <div class="ui attached blue segment">
         <div class="ui light grey labels">
         @foreach( $acceptProblem as $stastics )
-          <a class="ui label" href="/problems/{{ $stastics->problems->id }}">
-            {{ $stastics->problems->id }}
-            <span class="detail">{{ $stastics->problems->title }}</span>
+          <a class="ui label" href="/problems/{{ $stastics->problem->id }}">
+            {{ $stastics->problem->id }}
+            <span class="detail">{{ $stastics->problem->title }}</span>
           </a>
         @endforeach
         </div>
@@ -69,9 +67,9 @@
       <div class="ui attached blue segment">
         <div class="ui light grey labels">
         @foreach( $triedProblem as $stastics )
-          <a class="ui label" href="/problems/{{ $stastics->problems->id }}">
-            {{ $stastics->problems->id }}
-            <span class="detail">{{ $stastics->problems->title }}</span>
+          <a class="ui label" href="/problems/{{ $stastics->problem->id }}">
+            {{ $stastics->problem->id }}
+            <span class="detail">{{ $stastics->problem->title }}</span>
           </a>
         @endforeach
         </div>

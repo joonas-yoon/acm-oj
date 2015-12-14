@@ -25,16 +25,15 @@
         <td>
           {{ $problem->id }}
         </td>
-        <td class="text-left">
+        <td class="left aligned">
           <a href="{{ url('/problems/'.$problem->id) }}">{{ $problem->title }}</a>&nbsp;&nbsp;
 
           @if( $problem->is_special )
             <a class="ui teal basic label">스페셜 저지</a>
           @endif
 
-
-          @if( Sentinel::check())
-            @if( ($uac = ($problem->statistics->first()? $problem->statistics->first()->count: -1)) > 0 )
+          @if( Sentinel::check() )
+            @if( ($uac = ($problem->statisticses->first()? $problem->statisticses->first()->count: -1)) > 0 )
               <a class="ui green basic label">해결</a>
             @elseif( $uac == 0 )
               <a class="ui red basic label">도전 중</a>
@@ -43,7 +42,7 @@
         </td>
         <td>
           <a href="/solutions/?problem_id={{ $problem->id }}&result_id={{ $resultAccCode }}">
-            {{ $ac = ($problem->problemStatistics->first()? $problem->problemStatistics->first()->count : 0) }}
+            {{ $ac = ($problem->problemStatisticses->first()? $problem->problemStatisticses->first()->count : 0) }}
           </a>
         </td>
         <td>

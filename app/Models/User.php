@@ -77,7 +77,7 @@ class User extends SentinelUser implements AuthenticatableContract,
         return $this->hasMany('App\Models\Solution')->has('problem');
     }
     
-    public function statistics()
+    public function statisticses()
     {
         return $this->hasMany('App\Models\Statistics');
     }
@@ -87,7 +87,7 @@ class User extends SentinelUser implements AuthenticatableContract,
         return $this->hasMany('App\Models\Problem');
     }
 
-    public function userStatistics()
+    public function userStatisticses()
     {
         return $this->hasMany('App\Models\UserStatistics');
     }
@@ -115,5 +115,12 @@ class User extends SentinelUser implements AuthenticatableContract,
     }
     public function getPhotoLinkAttribute() {
         return $this->photo_path ? url($this->photo_path) : url('/images/no-image.png');
+    }
+    
+    public function scopeWhereNameOrEmail($query, $nameOrEmail)
+    {
+        return $query->where(function($query2) use ($nameOrEmail) {
+                        $query2->where('name', $nameOrEmail)->orWhere('email', $nameOrEmail);
+                     });
     }
 }

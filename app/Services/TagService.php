@@ -10,14 +10,13 @@ use App\Models\Tag;
 
 use DB;
 
-class TagService
+class TagService extends BaseService
 {
     protected $tagRepository;
     protected $userTagRepository;
     protected $problemTagRepository;
     
-    public $paginateCount = 20;
-    
+
     public function __construct
     (
         TagRepository $tagRepository,
@@ -43,7 +42,7 @@ class TagService
         
         $tags = [];
         foreach($tagIds as $tag)
-            array_push($tags, $tag->tags);
+            array_push($tags, $tag->tag);
         
         return $tags;
     }
@@ -67,9 +66,10 @@ class TagService
      * @param int   $problem_id
      * @return boolean
      */
-    public function deleteTags($user_id, $problem_id)
+    public function deleteTags($problem_id)
     {
-        $userTags = $this->userTagRepository->getUserTagsByProblem($user_id, $problem_id);
+        $userTags = $this->userTagRepository
+                         ->getUserTagsByProblem($this->user_id, $problem_id);
         
         foreach($userTags as $userTag) {
             DB::beginTransaction();
@@ -104,7 +104,7 @@ class TagService
      * @param array $tags
      * @return boolean
      */
-    public function insertTags($user_id, $problem_id, array $tags)
+    public function insertTags($problem_id, array $tags)
     {
         
         $this->deleteTags($user_id, $problem_id);
@@ -120,7 +120,7 @@ class TagService
             try {
                 
                 $this->userTagRepository->create([
-                    'user_id' => $user_id,
+                    'user_id' => $this->user_id,
                     'problem_id' => $problem_id,
                     'tag_id' => $tag_id
                 ]);
@@ -185,7 +185,7 @@ class TagService
             return abort(404);
             
         return $this->problemTagRepository
-                    ->getTagWithProblem($tag_id)
+                    ->getTagWithProblem($this->user_id, $tag_id)
                     ->paginate($this->paginateCount);
     }
     

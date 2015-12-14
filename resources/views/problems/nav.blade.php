@@ -1,9 +1,10 @@
 
   <div class="ui top attached tabular menu">
     @if( isset($problem_id) )
-      <a class="item {{ \App\Helpers::setActive('problems') }}" href="/problems/{{ $options['problem_id'] }}">{{ $options['problem_id'] }}번</a>
+      <a class="item {{ \App\Helpers::setActive('problems') }}" href="/problems/{{ $problem_id }}">{{ $problem_id }}번</a>
+      <a class="item {{ \App\Helpers::setActive('submit') }}" href="/submit/{{ $problem_id }}">제출하기</a>
       <a class="item {{ \App\Helpers::setActiveStrict('problems') }}" href="/problems">문제 목록</a>
-      <a class="item {{ \App\Helpers::setActive('solutions') }}" href="/solutions/?from=problem&problem_id={{ $options['problem_id'] }}">채점 현황</a>
+      <a class="item {{ \App\Helpers::setActive('solutions') }}" href="/solutions/?from=problem&problem_id={{ $problem_id }}">채점 현황</a>
     @else
       <a class="item {{ \App\Helpers::setActiveStrict('problems') }}" href="/problems">문제 목록</a>
       <a class="item {{ \App\Helpers::setActive('problems/new') }}" href="/problems/new">새로 추가된 문제</a>

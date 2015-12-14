@@ -21,7 +21,7 @@
           <div class="event">
             <div class="content">
               <div class="summary">
-                <a href="/tags/{{ $tag->id }}/problems">{{ $tag->problemTag->count() }} 개</a>의 문제
+                <a href="/tags/{{ $tag->id }}/problems">{{ $tag->problemTags->count() }} 개</a>의 문제
               </div>
             </div>
           </div>

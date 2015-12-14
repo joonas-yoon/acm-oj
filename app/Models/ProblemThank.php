@@ -21,13 +21,41 @@ class ProblemThank extends Model
         'user_id'
     ];
 
-    public function thanks() {
+    public function thank() {
         return $this->belongsTo('App\Models\Thank', 'thank_id');
     }
 
-    public function problems() {
+    public function problem() {
         return $this->belongsTo('App\Models\Problem', 'problem_id');
     }
 
+    public function scopeWithProblem($query)
+    {
+        return $query->with(['problem' => function($query) {
+                        $query->list();
+                     }]);
+    }
+    
+    public function scopeWhereProblem($query, $problem_id)
+    {
+        return $query->where('problem_id', $problem_id);
+    }
+    
+    public function scopeWhereUser($query, $user_id)
+    {
+        return $query->where('user_id', $user_id);
+    }
+    
+    public function scopeWhereThank($query, $thank_id)
+    {
+        return $query->where('thank_id', $thank_id);
+    }
+    
+    public function scopeInProblemStatus($query, array $status)
+    {
+        return $query->whereHas('problem', function ($query) use ($status) {
+                        $query->whereIn('status', $status);
+                     });
+    }
 
 }

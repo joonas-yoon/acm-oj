@@ -13,38 +13,39 @@ class ProblemRepository extends BaseRepository
         $this->model = $problem;
     }
     
+    public function getProblem($user_id, $problem_id)
+    {
+        return $this->model
+                    ->withStatistics($user_id, Result::acceptCode)
+                    ->whereProblem($problem_id);
+    }
+    
     public function getOpenProblems()
     {
-        return $this->model->where('status', Problem::openCode)
-                    ->select(Problem::$listColumns);
+        return $this->model->list()
+                    ->whereStatus(Problem::openCode);
+                    
     }
     
     public function getOpenProblemsWithStatistics($user_id)
     {
-        return $this->model->with([
-                    'problemStatistics' => function($query) {
-                        $query->where('result_id', Result::acceptCode);
-                    },
-                    'statistics' => function($query) use ($user_id) {
-                        $query->where('user_id', $user_id)
-                              ->where('result_id', Result::acceptCode);
-                    }
-                    ])
-                    ->where('status', Problem::openCode)
-                    ->select(Problem::$listColumns);
+        return $this->model->list()
+                    ->withStatistics($user_id, Result::acceptCode)
+                    ->whereStatus(Problem::openCode);
     }
     
     public function getHiddenProblems()
     {
-        return $this->model->where('status', Problem::hiddenCode)
-                    ->select(Problem::$listColumns);
+        return $this->model->list()
+                    ->whereStatus(Problem::hiddenCode);
     }
     
-    public function getNewestProblems($takes)
+    public function getNewestProblems($user_id, $takes)
     {
-        return $this->model->latest('created_at')->latest('id')
-                    ->where('status', Problem::openCode)
-                    ->take($takes)->get(Problem::$listColumns);
+        return $this->model->list()->latest('created_at')->latest('id')
+                    ->withStatistics($user_id, Result::acceptCode)
+                    ->whereStatus(Problem::openCode)
+                    ->take($takes)->get();
     }
 }
 ?>

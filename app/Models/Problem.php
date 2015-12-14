@@ -60,24 +60,57 @@ class Problem extends Model
         return $this->hasMany('App\Models\Solution');
     }
 
-    public function problemStatistics()
+    public function problemStatisticses()
     {
         return $this->hasMany('App\Models\ProblemStatistics');
     }
     
-    public function statistics()
+    public function statisticses()
     {
         return $this->hasMany('App\Models\Statistics');
     }
     
-    public function problemThank()
+    public function problemThanks()
     {
         return $this->hasMany('App\Models\ProblemThank', 'problem_id');
     }
     
-    public function problemTag()
+    public function problemTags()
     {
         return $this->hasMany('App\Models\ProblemTag');
+    }
+    
+    public function scopeWhereProblem($query, $problem_id)
+    {
+        return $query->where('id', $problem_id);
+    }
+    
+    public function scopeWithStatistics($query, $user_id, $result_id)
+    {
+        if($user_id == null)
+            return $query->with([
+                        'problemStatisticses' => function($query2) use ($result_id) {
+                        $query2->whereResult($result_id);
+                      }]);
+    
+        return $query->with([
+                        'problemStatisticses' => function($query2) use ($result_id) {
+                        $query2->whereResult($result_id);
+                      },
+                        'statisticses' => function($query2) use ($user_id, $result_id) {
+                        $query2->whereUser($user_id)
+                              ->whereResult($result_id);
+                      }]);
+    }
+    
+    public function scopeWhereStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
+    
+    public function scopeList($query)
+    {
+        return $query->select(Problem::$listColumns);
     }
 
 }

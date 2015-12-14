@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Result;
+
 class Tag extends Model
 {
     protected $table = 'tags';
@@ -19,7 +21,7 @@ class Tag extends Model
     const openCode = 1;
     const hiddenCode = 0;
 
-    public function problemTag()
+    public function problemTags()
     {
         return $this->hasMany('App\Models\ProblemTag', 'tag_id');
     }
@@ -31,5 +33,19 @@ class Tag extends Model
 
     public function scopeGetOpenTags($query) {
         return $query->where('status', 1);
+    }
+    
+    public function scopeWithProblemTag($query, $status)
+    {
+        return $query->with(['problemTags' => function($query2) use ($status) {
+                        $query2->whereHas('problem', function($query3) use ($status) {
+                            $query3->whereStatus($status);
+                        });
+                    }]);
+    }
+    
+    public function scopeWhereStatus($query, $status)
+    {
+        return $query->where('status', $status);
     }
 }

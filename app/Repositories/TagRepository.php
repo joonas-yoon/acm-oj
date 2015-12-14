@@ -20,12 +20,7 @@ class TagRepository extends BaseRepository
     
     public function getOpenTagsWithProblem()
     {
-        return $this->model->with(['problemTag' => function($query) {
-                        $query->whereHas('problems', function($query2) {
-                            $query2->where('status', Problem::openCode);
-                        });
-                    }])
-                    ->where('status', Tag::openCode);
+        return $this->model->withProblemTag(Problem::openCode)
+                    ->whereStatus(Tag::openCode);
     }
 }
-?>

@@ -24,6 +24,7 @@ class SolutionsController extends Controller
 {
     public $problemService;
     public $solutionService;
+    public $statisticsService;
     
     /**
      * Instantiate a new SolutionsController instance.
@@ -38,6 +39,11 @@ class SolutionsController extends Controller
         $this->solutionService = $solutionService;
         $this->problemService = $problemService;
         $this->statisticsService = $statisticsService;
+        
+        $user = Sentinel::getUser();
+        $this->problemService->setUser($user);
+        $this->statisticsService->setUser($user);
+        $this->solutionService->setUser($user);
         
         $this->middleware('auth', [
             'except' => [
@@ -83,17 +89,15 @@ class SolutionsController extends Controller
 
         // $solutions = $solutions->paginateFrom(Input::get('top', ''), 20);
         //$solutions = $solutions->paginate(20, ['url' => \Request::url()]);
-        
-        $getUser_id = Sentinel::check() ? Sentinel::getUser()->id : null;
-        
-        $amAccepted = function($uid, $pid){
-            return $uid ? $this->statisticsService->isAcceptedProblem($uid, $pid) : false;
-        };
 
+        $getUser_id = $this->statisticsService->getUser();
+        if($getUser_id)
+            $getUser_id = $getUser_id->id;
+        
         return view('solutions.index', compact(
             'fromWhere', 'solutions',
             'problem_id', 'username', 'result_id', 'resultRefs', 'lang_id', 'langRefs', 'acceptCode',
-            'amAccepted', 'getUser_id'
+            'getUser_id'
         ));
     }
 
@@ -154,7 +158,7 @@ class SolutionsController extends Controller
             // 그 코드가 공개된 코드 && 내가 그 문제를 해결
             
             if( ! $solution->is_published ||
-                ! $this->statisticsService->isAcceptedProblem(Sentinel::getUser()->id, $solution->problem_id) )
+                ! $solution->statisticses->first() )
                 return abort(404);
         }
         

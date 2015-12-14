@@ -46,6 +46,11 @@ class ProblemsController extends Controller
         $this->problemService    = $problemService;
         $this->statisticsService = $statisticsService;
         $this->tagService        = $tagService;
+        
+        $user = Sentinel::getUser();
+        $this->problemService->setUser($user);
+        $this->statisticsService->setUser($user);
+        $this->tagService->setUser($user);
     }
 
     /**
@@ -55,7 +60,7 @@ class ProblemsController extends Controller
      */
     public function index()
     {
-        $problems = $this->problemService->getOpenProblems(Sentinel::getUser()->id);
+        $problems = $this->problemService->getOpenProblems();
         $statisticsService = $this->statisticsService;
 
         $title = '문제 목록 - '.$problems->currentPage().' 페이지';
@@ -85,7 +90,7 @@ class ProblemsController extends Controller
         
         $problems = [];
         foreach($paginations as $author) {
-            $problem = $author->problems;
+            $problem = $author->problem;
             if( $problem != null ) array_push($problems, $problem);
         }
 
@@ -283,6 +288,7 @@ class ProblemsController extends Controller
         $statisticsService = $this->statisticsService;
         
         $tags = $this->tagService->getPopularTags($problem->id);
+
 
         return view('problems.show', compact('problem', 'statisticsService', 'tags'));
     }

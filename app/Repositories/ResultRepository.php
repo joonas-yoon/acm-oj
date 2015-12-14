@@ -11,6 +11,13 @@ class ResultRepository extends BaseRepository
         $this->model = $result;
     }
     
+    public function getResultWithUserStatistics($user_id)
+    {
+        return $this->model
+                    ->withUserStatistics($user_id)
+                    ->whereResultUp(Result::runningCode)
+                    ->wherePublished(true);
+    }
 }
 
 ?>

@@ -15,7 +15,7 @@ use App\Models\Result,
 
 use DB;
 
-class SolutionService
+class SolutionService extends BaseService
 {
     protected $solutionRepository;
     protected $userRepository;
@@ -25,8 +25,7 @@ class SolutionService
     
     protected $statisticsService;
     
-    public $paginateCount = 20;
-    
+
     public function __construct
     (
         SolutionRepository $solutionRepository,
@@ -45,6 +44,14 @@ class SolutionService
         
     }
     
+    public function setUser($user)
+    {
+        $this->user = $user;
+        if($user)
+            $this->user_id = $user->id;
+        $this->statisticsService->setUser($user);
+    }
+    
     /**
      * 해당 옵션에 대한 솔루션 가져오기
      *
@@ -54,7 +61,7 @@ class SolutionService
     public function getSolutionsByOption(array $inputs)
     {
         return $this->solutionRepository
-                    ->getSolutionsByOption($inputs)
+                    ->getSolutionsByOption($this->user_id, $inputs)
                     ->paginate($this->paginateCount);
     }
 
@@ -83,7 +90,7 @@ class SolutionService
             // 코드가 들어가면 대기중으로 전환
             
             $this->statisticsService
-                 ->addSubmit($request['user_id'], $request['problem_id']);
+                 ->addSubmit($request['problem_id']);
             
             // I think this approach is bad. but using for performance.
             $solution->update(['result_id'=>Result::waitCode]);
@@ -127,6 +134,8 @@ class SolutionService
      */
     public function getSolution($solution_id)
     {
-        return $this->solutionRepository->get($solution_id);
+        return $this->solutionRepository
+                    ->getSolution($this->user_id, $solution_id)
+                    ->firstOrFail();
     }
 }

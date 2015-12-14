@@ -15,42 +15,36 @@ class ProblemTagRepository extends BaseRepository
     
     public function getPopularTags($problem_id, $take)
     {
-        return $this->model->with('tags')
-                    ->where('problem_id', $problem_id)
-                    ->where('count', '>', 0)
-                    ->orderBy('count', 'desc')
-                    ->whereHas('tags', function($query) {
-                        $query->where('status', Tag::openCode);
-                    })
+        return $this->model->withTag()
+                    ->whereProblem($problem_id)
+                    ->whereCountUp(0)
+                    ->hasTagStatus(Tag::openCode)
+                    ->orderByCount('desc')
                     ->setTake($take)
                     ->get();
     }
     
-    public function getTagWithProblem($tag_id)
+    public function getTagWithProblem($user_id, $tag_id)
     {
-        return $this->model->with(['problems' => function($query) {
-                        $query->select(Problem::$listColumns);
-                    }])
-                    ->where('tag_id', $tag_id)
-                    ->where('count', '>', 0)
-                    ->orderBy('count', 'desc')
-                    ->whereHas('problems', function($query) {
-                        $query->where('status', Problem::openCode);
-                    });
+        return $this->model->withProblem($user_id)
+                    ->whereTag($tag_id)
+                    ->whereCountUp(0)
+                    ->hasProblemStatus(Problem::openCode)
+                    ->orderByCount('desc');
     }
     
     public function subProblemTag($problem_id, $tag_id)
     {
-        $this->model->where('problem_id', $problem_id)
-                    ->where('tag_id', $tag_id)
-                    ->firstOrFail()->decrement('count');
+        $this->model->whereProblem($problem_id)
+                    ->whereTag($tag_id)
+                    ->firstOrFail()->subTag();
     }
     
     public function addProblemTag($problem_id, $tag_id)
     {
-        $this->model->where('problem_id', $problem_id)
-                    ->where('tag_id', $tag_id)
-                    ->firstOrFail()->increment('count');
+        $this->model->whereProblem($problem_id)
+                    ->whereTag($tag_id)
+                    ->firstOrFail()->addTag();
     }
     
     public function getOrCreate(array $values)

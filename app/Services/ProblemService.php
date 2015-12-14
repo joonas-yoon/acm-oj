@@ -10,14 +10,12 @@ use App\Repositories\ProblemRepository,
 use App\Models\Thank,
     App\Models\Problem;
 
-class ProblemService
+class ProblemService extends BaseService
 {
     protected $problemRepository;
     protected $thankRepository;
     protected $problemThankRepository;
     protected $problemTagRepository;
-    
-    public $paginateCount = 20;
     
     public function __construct
     (
@@ -41,7 +39,7 @@ class ProblemService
      * @param int   $user_id
      * @return App\Models\Problem
      */
-    public function createProblem(array $values, $user_id)
+    public function createProblem(array $values)
     {
         $values = array_only($values, Problem::$editable);
         
@@ -49,7 +47,7 @@ class ProblemService
 
         $problemThank = $this->problemThankRepository->create([
             'thank_id' => Thank::authorCode,
-            'user_id' => $user_id,
+            'user_id' => $this->user_id,
             'problem_id' => $problem->id
         ]);
         return $problem;
@@ -60,9 +58,10 @@ class ProblemService
      *
      * @return Illuminate\Support\Collection
      */
-    public function getOpenProblems($user_id)
+    public function getOpenProblems()
     {
-        return $this->problemRepository->getOpenProblemsWithStatistics($user_id)
+        return $this->problemRepository
+                    ->getOpenProblemsWithStatistics($this->user_id)
                     ->paginate($this->paginateCount);
     }
 
@@ -75,7 +74,9 @@ class ProblemService
      */    
     public function getProblem($problem_id)
     {
-        return $this->problemRepository->get($problem_id);
+        return $this->problemRepository
+                    ->getProblem($this->user_id, $problem_id)
+                    ->firstOrFail();
     }
 
     /**
@@ -85,7 +86,8 @@ class ProblemService
      */
     public function getHiddenProblems()
     {
-        return $this->problemRepository->getHiddenProblems()
+        return $this->problemRepository
+                    ->getHiddenProblems()
                     ->paginate($this->paginateCount);
     }
 
@@ -97,7 +99,8 @@ class ProblemService
      */
     public function getNewestProblems($takes)
     {
-        return $this->problemRepository->getNewestProblems($takes);
+        return $this->problemRepository
+                    ->getNewestProblems($this->user_id, $takes);
     }
     
     /**
@@ -106,10 +109,10 @@ class ProblemService
      * @param int   $user_id
      * @return paginate of author
      */
-    public function getAuthorWithProblem($user_id)
+    public function getAuthorWithProblem()
     {
         return $this->problemThankRepository
-                    ->getAuthorWithProblem($user_id)
+                    ->getAuthorWithProblem($this->user_id)
                     ->paginate($paginateCount);
     }
     
@@ -120,10 +123,10 @@ class ProblemService
      * @param int   $user_id
      * @return paginate of author
      */
-    public function getAuthorWithReadyProblem($user_id)
+    public function getAuthorWithReadyProblem()
     {
         return $this->problemThankRepository
-                    ->getAuthorWithReadyProblem($user_id)
+                    ->getAuthorWithReadyProblem($this->user_id)
                     ->paginate($this->paginateCount);
     }
     

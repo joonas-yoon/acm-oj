@@ -21,4 +21,14 @@ class UserTag extends Model
     public function problemTag() {
         return $this->belongsTo('App\Models\ProblemTag');
     }
+    
+    public function scopeWhereUser($query, $user_id)
+    {
+        return $this->where('user_id', $user_id);
+    }
+    
+    public function scopeWhereProblem($query, $problem_id)
+    {
+        return $this->where('problem_id', $problem_id);
+    }
 }

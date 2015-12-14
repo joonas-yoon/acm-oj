@@ -29,19 +29,31 @@ class Result extends Model
     const waitCode = 2;
     const tempCode = 1;
 
-    public function solutions(){
+    public function solutions()
+    {
         return $this->hasMany('App\Models\Solution', 'result_id');
     }
     
-    public function scopeGetOpenResults(){
-        return $this->whereNotIn('id', $this->getHiddenCodes());
+    public function userStatisticses()
+    {
+        return $this->hasMany('App\Models\UserStatistics', 'result_id');
     }
 
-    public static function getHiddenCodes() {
-        return [
-            0,  // id가 0인 것은 없음
-            \App\Result::getTempCode(),
-            // \App\Result::getWaitCode()
-        ];
+    public function scopeWithUserStatistics($query, $user_id)
+    {
+        return $query->with(['userStatisticses' => function($query2) use ($user_id) {
+            $query2->whereUser($user_id);
+        }]);
     }
+    
+    public function scopeWhereResultUp($query, $count)
+    {
+        return $query->where('id', '>', $count);
+    }
+    
+    public function scopeWherePublished($query, $tf)
+    {
+        return $query->where('published', $tf);
+    }
+
 }

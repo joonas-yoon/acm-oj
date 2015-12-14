@@ -15,7 +15,7 @@ use App\Models\Result,
 
 use DB;
 
-class UserService
+class UserService extends BaseService
 {
     protected $solutionRepository;
     protected $userRepository;
@@ -25,8 +25,7 @@ class UserService
     
     protected $statisticsService;
     
-    public $paginateCount = 20;
-    
+
     public function __construct
     (
         SolutionRepository $solutionRepository,
@@ -45,11 +44,6 @@ class UserService
         
     }
     
-    public function getUser($user_id)
-    {
-        return $this->userRepository->get($user_id);
-    }
- 
     /**
      * 이름이나 이메일로 유저 가져오기
      *
@@ -69,10 +63,10 @@ class UserService
      * @param array $profiles
      * @return boolean
      */
-    public function updateProfile($user_id, array $profiles)
+    public function updateProfile(array $profiles)
     {
         $profiles = array_only($profiles, User::$editable);
-        return $this->userRepository->update($user_id, $profiles);
+        return $this->userRepository->update($this->user_id, $profiles);
     }
 
 }

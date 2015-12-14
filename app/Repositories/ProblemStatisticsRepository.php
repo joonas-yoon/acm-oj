@@ -15,8 +15,8 @@ class ProblemStatisticsRepository extends BaseRepository
     public function getProblemStatistics($problem_id, $result_id)
     {
         return $this->model
-                    ->where('problem_id', $problem_id)
-                    ->where('result_id', $result_id)
+                    ->whereProblem($problem_id)
+                    ->whereResult($result_id)
                     ->first();
     }
     

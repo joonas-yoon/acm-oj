@@ -13,13 +13,14 @@ use App\Models\Result;
 
 use Sentinel;
 
-class StatisticsService
+class StatisticsService extends BaseService
 {
     protected $statisticsRepository;
     protected $userStatisticsRepository;
     protected $problemStatisticsRepository;
     protected $problemRepository;
     protected $userRepository;
+    protected $resultRepository;
     
     public function __construct
     (
@@ -27,7 +28,8 @@ class StatisticsService
         UserStatisticsRepository $userStatisticsRepository,
         ProblemStatisticsRepository $problemStatisticsRepository,
         ProblemRepository $problemRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        ResultRepository $resultRepository
     )
     {
         $this->statisticsRepository = $statisticsRepository;
@@ -35,6 +37,7 @@ class StatisticsService
         $this->problemStatisticsRepository = $problemStatisticsRepository;
         $this->problemRepository = $problemRepository;
         $this->userRepository = $userRepository;
+        $this->resultRepository = $resultRepository;
     }
     
     
@@ -58,7 +61,7 @@ class StatisticsService
      * @param App\Models:hasCount   $statistics
      * @return int
      */ 
-    static protected function getCountOrZero($statistics) {
+    static public function getCountOrZero($statistics) {
         if( isset($statistics) )
             return $statistics->count;
         return 0;
@@ -126,15 +129,15 @@ class StatisticsService
      * @param int   $problem_id
      * @return boolean
      */
-    public function addSubmit($user_id, $problem_id)
+    public function addSubmit($problem_id)
     {
         $this->statisticsRepository->firstOrCreate([
-            'user_id' => $user_id,
+            'user_id' => $this->user_id,
             'problem_id' => $problem_id,
             'result_id' => Result::acceptCode
         ]);
         
-        $this->userRepository->get($user_id)->increment('total_submit');
+        $this->userRepository->get($this->user_id)->increment('total_submit');
         $this->problemRepository->get($problem_id)->increment('total_submit');
     }
     
@@ -147,7 +150,8 @@ class StatisticsService
     public function getAcceptProblemsByUser($user_id)
     {
         return $this->statisticsRepository
-                    ->getProblems($user_id, Result::acceptCode);
+                    ->getProblems($user_id, Result::acceptCode)
+                    ->get();
     }
     
     /**
@@ -159,7 +163,8 @@ class StatisticsService
     public function getTriedProblemsByUser($user_id)
     {
         return $this->statisticsRepository
-                    ->getProblemsCountZero($user_id, Result::acceptCode);
+                    ->getProblemsCountZero($user_id, Result::acceptCode)
+                    ->get();
     }
     
     
@@ -175,5 +180,19 @@ class StatisticsService
         return $this->getCountOrZero($this->userStatisticsRepository
                     ->getCount($user_id, $result_id));
     }
+
+    /**
+     * 유저의 모든 결과 카운트 가져오기
+     *
+     * @param int   $user_id
+     * @return collction of result with statistiscs
+     */
+    public function getAllResultCountByUser($user_id)
+    {
+        return $this->resultRepository
+                    ->getResultWithUserStatistics($user_id)
+                    ->get();
+    }
+
 
 }

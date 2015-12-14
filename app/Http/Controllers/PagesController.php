@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 
 use App\Services\ProblemService;
 
+use Sentinel;
+
 class PagesController extends Controller
 {
     
@@ -20,10 +22,13 @@ class PagesController extends Controller
     )
     {
         $this->problemService = $problemService;
+        $user = Sentinel::getUser();
+        $this->problemService->setUser($user);
     }
     
-    function index() {
-        $addedProblems = $this->problemService->getNewestProblems(6);
+    function index()
+    {
+        $addedProblems = $this->problemService->getNewestProblems(7);
 
         return view('pages.index', compact('addedProblems'));
     }

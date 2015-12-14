@@ -32,6 +32,10 @@ class UsersController extends Controller
         $this->userService = $userService;
         $this->statisticsService = $statisticsService;
         
+        $user = Sentinel::getUser();
+        $this->userService->setUser($user);
+        $this->statisticsService->setUser($user);
+
         $this->middleware('auth', [
             'except' => [
                 'show'
@@ -54,13 +58,14 @@ class UsersController extends Controller
         
         $statisticsService = $this->statisticsService;
         
-        return view('users.show', compact('user', 'userTriedProblemRate', 'acceptProblem', 'triedProblem', 'statisticsService'));
+        $results = $this->statisticsService->getAllResultCountByUser($user->id);
+
+        return view('users.show', compact('user', 'userTriedProblemRate', 'acceptProblem', 'triedProblem', 'statisticsService', 'results'));
     }
     
     public function showSettings($template = null, $compacts = [])
     {
-        $userId = Sentinel::getUser()->id;
-        $user = $this->userService->getUser($userId);
+        $user = $this->userService->getUser();
         
         $viewContext = 'users.settings.' . ($template ? $template : 'profile');
             
@@ -77,13 +82,13 @@ class UsersController extends Controller
         
         $inputs['email_open'] = $inputs['email_open'] != null;
         
-        $user = Sentinel::getUser();
+        $user = $this->userService->getUser();
         $credentials = array('password' => $inputs['password']);
         if( ! Sentinel::validateCredentials($user, $credentials) ) {
             return Redirect::back()->with('error', '비밀번호가 일치하지 않습니다.');
         }
         
-        if( ! $this->userService->updateProfile($user->id, $inputs) ) {
+        if( ! $this->userService->updateProfile($inputs) ) {
             return Redirect::back()->with('error', '정보 수정을 실패했습니다.');
         }
         
@@ -138,9 +143,10 @@ class UsersController extends Controller
     
     public function showDefaultLanguage()
     {
+        $user = $this->userService->getUser();
         $defaults = [
-            'language'   => Sentinel::getUser()->default_language,
-            'code_theme' => Sentinel::getUser()->default_code_theme,
+            'language'   => $user->default_language,
+            'code_theme' => $user->default_code_theme,
         ];
         
         $langs  = Language::all();
@@ -205,7 +211,7 @@ class UsersController extends Controller
         
         $filePath = \App\Helpers::uploadPhoto($file['user_photo'], $user->name);
         
-        if( $filePath && $this->userService->updateProfile($user->id, ['photo_path' => $filePath]) ) {
+        if( $filePath && $this->userService->updateProfile(['photo_path' => $filePath]) ) {
             return Redirect::back();
         }
             

@@ -8,7 +8,7 @@
   
 <div class="ui container">
   
-  @include('problems.nav', ['options' => ['problem_id' => $problem->id] ])
+  @include('problems.nav', ['problem_id' => $problem->id])
 
   @if ($problem->is_special)
   <a class="ui red ribbon label">스페셜 저지</a>
@@ -17,7 +17,7 @@
   <h2 class="ui header">
     {{ $problem->title }}
     @if( Sentinel::check())
-      @if( ($uac = $statisticsService->isAcceptedProblem(Sentinel::getUser()->id, $problem->id)) > 0 )
+      @if( ($uac = ($problem->statisticses->first()? $problem->statisticses->first()->count: -1)) > 0 )
         <a class="ui green basic label">해결</a>
       @elseif( $uac == 0 )
         <a class="ui red basic label">도전 중</a>
@@ -38,8 +38,8 @@
   <tbody><tr>
     <td>{{ $problem->time_limit }} 초</td>
     <td>{{ $problem->memory_limit }} MB</td>
-    <td>{{ $ac = $statisticsService->getAcceptCountOfProblem($problem->id) }}</td>
-    <td>{{ $sc = $statisticsService->getSubmitCountOfProblem($problem->id) }}</td>
+    <td>{{ $ac = ($problem->problemStatisticses->first()? $problem->problemStatisticses->first()->count : 0) }}</td>
+    <td>{{ $sc = $problem->total_submit }}</td>
     <td>{{ number_format($statisticsService->getRate($ac, $sc), 2) }} %</td>
     <td>
       <div class="ui star rating" data-rating="5"></div>

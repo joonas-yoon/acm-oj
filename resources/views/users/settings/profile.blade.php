@@ -39,31 +39,24 @@
     
     <div class="ui hidden divider"></div>
     
-    <div class="ui accordion field">
-      <div class="title">
-        <i class="icon dropdown"></i>
-        자세한 정보
+    <div class="inline fields">
+      <div class="three wide field">
+        <label>이름</label>
       </div>
-      <div class="content">
-        <div class="inline fields">
-          <div class="three wide field">
-            <label>이름</label>
-          </div>
-          <div class="field">
-            <input type="text" name="last_name" placeholder="성" value="{{ $user->last_name }}">
-          </div>
-          <div class="field">
-            <input type="text" name="first_name" placeholder="이름" value="{{ $user->first_name }}">
-          </div>
-        </div>
-        <div class="inline fields">
-          <div class="three wide field">
-            <label>소속</label>
-          </div>
-          <div class="thirteen wide field">
-            <input type="text" name="organization" placeholder="회사 또는 학교, 팀 등" value="{{ $user->organization }}">
-          </div>
-        </div>
+      <div class="field">
+        <input type="text" name="last_name" placeholder="성" value="{{ $user->last_name }}">
+      </div>
+      <div class="field">
+        <input type="text" name="first_name" placeholder="이름" value="{{ $user->first_name }}">
+      </div>
+    </div>
+    
+    <div class="inline fields">
+      <div class="three wide field">
+        <label>소속</label>
+      </div>
+      <div class="thirteen wide field">
+        <input type="text" name="organization" placeholder="회사 또는 학교, 팀 등" value="{{ $user->organization }}">
       </div>
     </div>
     
