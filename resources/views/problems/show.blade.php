@@ -84,14 +84,12 @@
     <div class="ui horizontal divider">Hint</div>
     <div class="context">
       {!!  $problem->hint !!}
-      @if( count($tags) > 0 )
-        @foreach( $tags as $tag )
-          <a class="ui tag label">{{ $tag->name }}</a>
-        @endforeach
-      @endif
       <div class="vhint tags">
-        <a class="ui tag label">Brute Force</a>
-        <a class="ui tag label">Greed</a>
+        @if( count($tags) > 0 )
+          @foreach( $tags as $tag )
+            <a class="ui tag label" href="/tags/{{ $tag->id }}">{{ $tag->name }}</a>
+          @endforeach
+        @endif
       </div>
     </div>
 

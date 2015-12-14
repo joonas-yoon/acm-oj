@@ -30,8 +30,8 @@
     <div class="ui hidden divider"></div>
     
     <div class="ui three statistics">
-      <a class="statistic" href="/tags/{{ $tag->id }}/problems">
-        <div class="value">3</div>
+      <a class="statistic popup" href="/tags/{{ $tag->id }}/problems" data-content="{{ $problemsCount }}개의 연관된 문제를 만나보세요!" data-position="top center">
+        <div class="value">{{ $problemsCount }}</div>
         <div class="label">연관된 문제</div>
       </a>
       <div class="statistic">
@@ -93,5 +93,7 @@
       transition: 'vertical flip in',
       duration: 500
     });
+    
+    $('.popup').popup();
 </script>
 @stop

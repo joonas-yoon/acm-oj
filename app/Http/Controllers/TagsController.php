@@ -35,8 +35,8 @@ class TagsController extends Controller
     )
     {
         $this->middleware('auth', [
-            'only' => [
-                ''
+            'except' => [
+                'index', 'show', 'problems'
             ]
         ]);
         
@@ -67,9 +67,12 @@ class TagsController extends Controller
     
     public function show($id)
     {
-        $tag = Tag::where('id', $id)->where('status', 1)->first();
+        $tag = Tag::findOrFail($id);
         
-        return view('tags.show', compact('tag'));
+        $tags = $this->tagService->getTagWithProblem($tag->id);
+        $problemsCount = $tags->count();
+        
+        return view('tags.show', compact('tag', 'problemsCount'));
     }
     
     /**

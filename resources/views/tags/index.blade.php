@@ -35,16 +35,16 @@
         </div>
       </div>
       
-      @if( rand()%2 )
+      @if( Sentinel::check() )
       <div class="ui bottom attached button">
         <i class="star icon"></i>
         평가하기
       </div>
       @else
-      <div class="ui bottom attached button disabled">
-        <i class="check icon"></i>
-        나의 평점 : 7점
-      </div>
+      <a class="ui bottom attached button" href="/login">
+        <i class="unlock alternate icon"></i>
+        로그인이 필요합니다
+      </a>
       @endif
     </div>
     @endforeach
