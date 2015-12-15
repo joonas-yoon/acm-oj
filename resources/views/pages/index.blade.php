@@ -51,7 +51,7 @@
                 <div class="column">
                     <div class="ui blue segment">새로 추가된 문제</div>
                     <div class="ui stacked segments">
-                        @foreach($addedProblems as $problem)
+                        @foreach(ProblemService::getNewestProblems(7) as $problem)
                         <div class="ui segment">
                             <a href="/problems/{{ $problem->id }}" style="color:#333;">{{ $problem->title }}</a>
                         </div>
@@ -59,42 +59,24 @@
                     </div>
                 </div>
                 <div class="column">
-                    <div class="ui blue segment">최근 번역된 문제</div>
-                    <div class="ui segments">
+                    <div class="ui blue segment">빈도가 높은 태그</div>
+                    <div class="ui stacked segments">
+                        @forelse(TagService::getOpenTagsWithProblem()->take(7) as $tag)
                         <div class="ui segment">
-                            <p>탑</p>
+                            <a href="/tags/{{ $tag->id }}" style="color:#333;">{{ $tag->name }}</a>
                         </div>
-                        <div class="ui segment">
-                            <p>나랏말싸미</p>
+                        @empty
+                        <div class="ui bottom attached message">
+                            <i class="notched circle loading icon"></i> 준비중입니다!
                         </div>
-                        <div class="ui segment">
-                            <p>마라토너</p>
-                        </div>
-                        <div class="ui segment">
-                            <p>맛있는 거 먹고싶다</p>
-                        </div>
+                        @endforelse
                     </div>
                 </div>
                 <div class="column">
                     <div class="ui blue segment">번역을 기다리는 문제</div>
-                    <div class="ui raised segments">
-                        <div class="ui segment">
-                            <p>Top</p>
-                        </div>
-                        <div class="ui segment">
-                            <p>Sdjustment toad</p>
-                        </div>
-                        <div class="ui segment">
-                            <p>Sleepy Part</p>
-                        </div>
-                        <div class="ui segment">
-                            <p>Enchanted distance</p>
-                        </div>
-                        <div class="ui segment">
-                            <p>Puncture</p>
-                        </div>
-                        <div class="ui segment">
-                            <p>cough</p>
+                    <div class="ui stacked segments">
+                        <div class="ui bottom attached message">
+                            <i class="notched circle loading icon"></i> 준비중입니다!
                         </div>
                     </div>
                 </div>

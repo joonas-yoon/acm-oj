@@ -16,9 +16,9 @@
 // Disable checkpoints (throttling, activation) for demo purposes
 Sentinel::disableCheckpoints();
 
-Route::get('/', 'PagesController@index');
-Route::get('/about', 'PagesController@about');
-Route::get('/example', function(){return view('example');});
+Route::get('/', function(){return view('pages.index');});
+Route::get('/about', function(){return view('pages.about');});
+Route::get('/example', function(){return viewp('example');});
 
 # Admin Routes
 Route::group(['before' => 'auth|admin'], function()
