@@ -7,12 +7,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
-use App\Models\Language;
-use App\Models\Result;
+use App\Models\Language,
+    App\Models\Result,
+    App\Models\User;
 
-use App\Services\ProblemService,
-    App\Services\StatisticsService,
-    App\Services\TagService;
+use StatisticsService;
+use ProblemService;
+use TagService;
 
 use GrahamCampbell\Markdown\Facades\Markdown;
 
@@ -26,15 +27,8 @@ class ProblemsController extends Controller
      * Instantiate a new ProblemsController instance.
      */
     
-    public $problemService;
-    public $statisticsService; 
-    public $tagService;
-    
     public function __construct
     (
-        ProblemService      $problemService,
-        StatisticsService   $statisticsService,
-        TagService          $tagService
     )
     {
         $this->middleware('auth', [
@@ -43,14 +37,11 @@ class ProblemsController extends Controller
             ]
         ]);
         
-        $this->problemService    = $problemService;
-        $this->statisticsService = $statisticsService;
-        $this->tagService        = $tagService;
-        
         $user = Sentinel::getUser();
-        $this->problemService->setUser($user);
-        $this->statisticsService->setUser($user);
-        $this->tagService->setUser($user);
+        ProblemService::setUser($user);
+        TagService::setUser($user);
+        StatisticsService::setUser($user);
+        
     }
 
     /**
@@ -60,33 +51,31 @@ class ProblemsController extends Controller
      */
     public function index()
     {
-        $problems = $this->problemService->getOpenProblems();
-        $statisticsService = $this->statisticsService;
+        $problems = ProblemService::getOpenProblems();
 
         $title = '문제 목록 - '.$problems->currentPage().' 페이지';
         $resultAccCode = Result::acceptCode;
 
         return view('problems.index', compact(
-            'problems', 'statisticsService', 'title', 'resultAccCode'
+            'problems', 'title', 'resultAccCode'
         ));
     }
 
     public function newProblems ()
     {
-        $problems = $this->problemService->getNewestProblems(15);
-        $statisticsService = $this->statisticsService;
+        $problems = ProblemService::getNewestProblems(15);
 
         $title = '새로 추가된 문제 목록';
         $resultAccCode = Result::acceptCode;
 
         return view('problems.index', compact(
-            'problems', 'statisticsService', 'title', 'resultAccCode'
+            'problems', 'title', 'resultAccCode'
         ));
     }
 
     public function creatingProblemsList()
     {
-        $paginations = $this->problemService->getAuthorWithReadyProblem(Sentinel::getUser()->id);
+        $paginations = ProblemService::getAuthorWithReadyProblem(Sentinel::getUser()->id);
         
         $problems = [];
         foreach($paginations as $author) {
@@ -107,7 +96,7 @@ class ProblemsController extends Controller
     {
         if( $step == 'data' ){
             $problem_id = Input::get('problem');
-            $author_id = $this->problemService->getAuthorOfProblem($problem_id);
+            $author_id = ProblemService::getAuthorOfProblem($problem_id);
             
             if( Sentinel::getUser()->id != $author_id ) return abort(404);
             
@@ -127,7 +116,7 @@ class ProblemsController extends Controller
      */
     public function createSolution($id)
     {
-        $problem = $this->problemService->getProblem($id);
+        $problem = ProblemService::getProblem($id);
         
         if( $problem->status != 1 ) {
             // 공개문제(1) 가 아니면 로그인 해야함
@@ -168,7 +157,7 @@ class ProblemsController extends Controller
     {
         // 권한 확인 필요
         $problem_id = $request->get('problem');
-        $problem = $this->problemService->getProblem($problem_id);
+        $problem = ProblemService::getProblem($problem_id);
         if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
 
         $files = $request->file('dataFiles');
@@ -270,7 +259,7 @@ class ProblemsController extends Controller
      */
     public function show($id)
     {
-        $problem = $this->problemService->getProblem($id);
+        $problem = ProblemService::getProblem($id);
         
         if( $problem->status != 1 ) {
             // 공개문제(1) 가 아니면 로그인 해야함
@@ -285,12 +274,11 @@ class ProblemsController extends Controller
         $problem->output      = Markdown::convertToHtml($problem->output);
         $problem->hint        = Markdown::convertToHtml($problem->hint);
 
-        $statisticsService = $this->statisticsService;
-        
-        $tags = $this->tagService->getPopularTags($problem->id);
+
+        $tags = TagService::getPopularTags($problem->id);
 
 
-        return view('problems.show', compact('problem', 'statisticsService', 'tags'));
+        return view('problems.show', compact('problem', 'tags'));
     }
 
     /**
@@ -311,7 +299,7 @@ class ProblemsController extends Controller
      */
     public function edit($problem_id)
     {
-        $problem = $this->problemService->getProblem($problem_id);
+        $problem = ProblemService::getProblem($problem_id);
 
         if( $problem->status != 0 ) {
             // 숨겨진 문제(1) 가 아니면 접근 불가
@@ -321,33 +309,33 @@ class ProblemsController extends Controller
         // 자신이 작성한 문제만 접근
         if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
         
-        //$selectedTags = $this->tagService->getPopularTags($problem->id);
+        //$selectedTags = TagService::getPopularTags($problem->id);
         
         return view('problems.maker.edit', compact('problem', 'tags'));
     }
 
     public function update(Requests\CreateProblemRequest $request, $id)
     {
-        $problem = $this->problemService->getProblem($id);
+        $problem = ProblemService::getProblem($id);
         if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
         
-        $this->problemService->updateProblem($problem->id, $request->all());
+        ProblemService::updateProblem($problem->id, $request->all());
         
         $tags = [];
         $tagsNotFound = [];
         $tagList = $request->get('tags');
         foreach( $tagList as $tagName ) {
-            $tag = $this->tagService->getTagByName($tagName);
+            $tag = TagService::getTagByName($tagName);
             if( $tag != null ) array_push($tags, $tag->id);
             else array_push($tagsNotFound, $tagName);
         }
         
         // 없는 태그를 생성
         foreach($tagsNotFound as $tag) {
-            $this->tagService->createTag($tag);
+            TagService::createTag($tag);
         }
         
-        $this->tagService->insertTags(Sentinel::getUser()->id, $problem->id, $tags);
+        TagService::insertTags(Sentinel::getUser()->id, $problem->id, $tags);
             
         if( $problem->status == 1 )
             return redirect( action('ProblemsController@index', $problem->id) );
@@ -374,7 +362,7 @@ class ProblemsController extends Controller
             return Redirect::back()->withErrors($validator);
         }
 
-        $problem = $this->problemService->getProblem($id);
+        $problem = ProblemService::getProblem($id);
         if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
         
         if( $problem )
@@ -399,7 +387,7 @@ class ProblemsController extends Controller
     private function amIAuthorOfProblem($problem_id)
     {
         if( ! Sentinel::check() ) return redirect()->guest('login');
-        $author_id = $this->problemService->getAuthorOfProblem($problem_id);
+        $author_id = ProblemService::getAuthorOfProblem($problem_id);
         return (Sentinel::getUser()->id != $author_id);
     }
 }

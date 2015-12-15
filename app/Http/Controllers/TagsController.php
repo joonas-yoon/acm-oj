@@ -11,9 +11,10 @@ use App\Models\Language,
     App\Models\Result,
     App\Models\Tag;
 
-use App\Services\ProblemService,
-    App\Services\StatisticsService,
-    App\Services\TagService;
+use ProblemService;
+use SolutionService;
+use StatisticsService;
+use TagService;
 
 use Sentinel;
 
@@ -22,17 +23,8 @@ class TagsController extends Controller
     /**
      * Instantiate a new ProblemsController instance.
      */
-    
-    public $problemService;
-    public $statisticsService; 
-    public $tagService;
-    
-    public function __construct
-    (
-        ProblemService      $problemService,
-        StatisticsService   $statisticsService,
-        TagService          $tagService
-    )
+
+    public function __construct()
     {
         $this->middleware('auth', [
             'except' => [
@@ -40,14 +32,10 @@ class TagsController extends Controller
             ]
         ]);
         
-        $this->problemService    = $problemService;
-        $this->statisticsService = $statisticsService;
-        $this->tagService        = $tagService;
-        
         $user = Sentinel::getUser();
-        $this->problemService->setUser($user);
-        $this->statisticsService->setUser($user);
-        $this->tagService->setUser($user);
+        ProblemService::setUser($user);
+        StatisticsService::setUser($user);
+        TagService::setUser($user);
     }
 
     /**
@@ -57,19 +45,18 @@ class TagsController extends Controller
      */
     public function index()
     {
-        $tags = $this->tagService->getOpenTagsWithProblem();
-        $tagService = $this->tagService;
+        $tags = TagService::getOpenTagsWithProblem();
 
         //var_dump($tags->get());
         
-        return view('tags.index', compact('tags', 'tagService'));
+        return view('tags.index', compact('tags'));
     }
     
     public function show($id)
     {
         $tag = Tag::findOrFail($id);
         
-        $tags = $this->tagService->getTagWithProblem($tag->id);
+        $tags = TagService::getTagWithProblem($tag->id);
         $problemsCount = $tags->count();
         
         return view('tags.show', compact('tag', 'problemsCount'));
@@ -84,14 +71,13 @@ class TagsController extends Controller
     {
         $tag = Tag::findOrFail($id);
         
-        $tags = $this->tagService->getTagWithProblem($tag->id);
-        $statisticsService = $this->statisticsService;
+        $tags = TagService::getTagWithProblem($tag->id);
 
         $title = '문제 목록 - '. $tag->name . ' - '.$tags->currentPage().' 페이지';
         $resultAccCode = Result::acceptCode;
         
         return view('tags.problems', compact(
-            'tag', 'tags', 'statisticsService', 'title', 'resultAccCode'
+            'tag', 'tags', 'title', 'resultAccCode'
         ));
     }
 }

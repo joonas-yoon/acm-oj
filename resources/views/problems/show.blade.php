@@ -40,7 +40,7 @@
     <td>{{ $problem->memory_limit }} MB</td>
     <td>{{ $ac = ($problem->problemStatisticses->first()? $problem->problemStatisticses->first()->count : 0) }}</td>
     <td>{{ $sc = $problem->total_submit }}</td>
-    <td>{{ number_format($statisticsService->getRate($ac, $sc), 2) }} %</td>
+    <td>{{ number_format(StatisticsService::getRate($ac, $sc), 2) }} %</td>
     <td>
       <div class="ui star rating" data-rating="5"></div>
     </td>

@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Services\UserService,
-    App\Services\StatisticsService;
+use UserService;
+use StatisticsService;
 
 use App\Models\Language;
 use Sentinel;
@@ -16,25 +16,18 @@ use Redirect;
 
 class UsersController extends Controller
 {
-    
-    public $userService;
-    public $statisticsService;
-    
+
     /**
      * Instantiate a new UserController instance.
      */
     public function __construct
     (
-        UserService $userService,
-        StatisticsService $statisticsService
     )
     {
-        $this->userService = $userService;
-        $this->statisticsService = $statisticsService;
-        
+
         $user = Sentinel::getUser();
-        $this->userService->setUser($user);
-        $this->statisticsService->setUser($user);
+        UserService::setUser($user);
+        StatisticsService::setUser($user);
 
         $this->middleware('auth', [
             'except' => [
@@ -47,25 +40,23 @@ class UsersController extends Controller
   
     public function show($username)
     {
-        $user = $this->userService->getUserByNameOrEmail($username);
+        $user = UserService::getUserByNameOrEmail($username);
         
-        $acceptProblem = $this->statisticsService->getAcceptProblemsByUser($user->id);
-        $triedProblem = $this->statisticsService->getTriedProblemsByUser($user->id);
+        $acceptProblem = StatisticsService::getAcceptProblemsByUser($user->id);
+        $triedProblem = StatisticsService::getTriedProblemsByUser($user->id);
         $userTriedProblemCount  = $acceptProblem->count();
         $userAcceptProblemCount = $triedProblem->count();
         $userTotalProblemCount = $userTriedProblemCount + $userAcceptProblemCount;
         $userTriedProblemRate = $userTotalProblemCount > 0 ? ($userTriedProblemCount / $userTotalProblemCount) * 100 : 0;
         
-        $statisticsService = $this->statisticsService;
-        
-        $results = $this->statisticsService->getAllResultCountByUser($user->id);
+        $results = StatisticsService::getAllResultCountByUser($user->id);
 
-        return view('users.show', compact('user', 'userTriedProblemRate', 'acceptProblem', 'triedProblem', 'statisticsService', 'results'));
+        return view('users.show', compact('user', 'userTriedProblemRate', 'acceptProblem', 'triedProblem', 'results'));
     }
     
     public function showSettings($template = null, $compacts = [])
     {
-        $user = $this->userService->getUser();
+        $user = UserService::getUser();
         
         $viewContext = 'users.settings.' . ($template ? $template : 'profile');
             
@@ -82,13 +73,13 @@ class UsersController extends Controller
         
         $inputs['email_open'] = $inputs['email_open'] != null;
         
-        $user = $this->userService->getUser();
+        $user = UserService::getUser();
         $credentials = array('password' => $inputs['password']);
         if( ! Sentinel::validateCredentials($user, $credentials) ) {
             return Redirect::back()->with('error', '비밀번호가 일치하지 않습니다.');
         }
         
-        if( ! $this->userService->updateProfile($inputs) ) {
+        if( ! UserService::updateProfile($inputs) ) {
             return Redirect::back()->with('error', '정보 수정을 실패했습니다.');
         }
         
@@ -143,7 +134,7 @@ class UsersController extends Controller
     
     public function showDefaultLanguage()
     {
-        $user = $this->userService->getUser();
+        $user = UserService::getUser();
         $defaults = [
             'language'   => $user->default_language,
             'code_theme' => $user->default_code_theme,
@@ -211,7 +202,7 @@ class UsersController extends Controller
         
         $filePath = \App\Helpers::uploadPhoto($file['user_photo'], $user->name);
         
-        if( $filePath && $this->userService->updateProfile(['photo_path' => $filePath]) ) {
+        if( $filePath && UserService::updateProfile(['photo_path' => $filePath]) ) {
             return Redirect::back();
         }
             

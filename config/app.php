@@ -145,7 +145,12 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        
         App\Providers\ProblemServiceProvider::class,
+        App\Providers\TagServiceProvider::class,
+        App\Providers\SolutionServiceProvider::class,
+        App\Providers\StatisticsServiceProvider::class,
+        App\Providers\UserServiceProvider::class,
 
         /*
          * Semantic UI Framework Service Provider
@@ -214,16 +219,25 @@ return [
 
         'Form'      => Illuminate\Html\FormFacade::class,
         'Html'      => Illuminate\Html\HtmlFacade::class,
-        'Flash'     => Laracasts\Flash\Flash::class,
-        'Markdown'  => GrahamCampbell\Markdown\Facades\Markdown::class,
-
+        
+        /**
+         *  First party defined
+         */
+        'ProblemService' => App\Services\Facades\ProblemService::class,
+        'TagService' => App\Services\Facades\TagService::class,
+        'SolutionService' => App\Services\Facades\SolutionService::class,
+        'StatisticsService' => App\Services\Facades\StatisticsService::class,
+        'UserService' => App\Services\Facades\UserService::class,
+        
         /**
          *  Third-Party Classes
          */
+        'Flash'     => Laracasts\Flash\Flash::class,
+        'Markdown'  => GrahamCampbell\Markdown\Facades\Markdown::class,
         'Activation' => Cartalyst\Sentinel\Laravel\Facades\Activation::class,
         'Reminder'   => Cartalyst\Sentinel\Laravel\Facades\Reminder::class,
         'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
         'Image'      => Intervention\Image\Facades\Image::class,
-        'Active' => HieuLe\Active\Facades\Active::class,
+        'Active'     => HieuLe\Active\Facades\Active::class,
     ],
 ];

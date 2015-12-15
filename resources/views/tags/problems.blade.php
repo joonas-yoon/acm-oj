@@ -52,9 +52,9 @@
           </a>
         </td>
         <td>
-          <div class="ui indicating small progress" data-value="{{ $statisticsService->getRate($ac, $sc) }}">
+          <div class="ui indicating small progress" data-value="{{ StatisticsService::getRate($ac, $sc) }}">
             <div class="bar"></div>
-            <div class="label">{{ number_format($statisticsService->getRate($ac, $sc), 2) }} %</div>
+            <div class="label">{{ number_format(StatisticsService::getRate($ac, $sc), 2) }} %</div>
           </div>
         </td>
       </tr>

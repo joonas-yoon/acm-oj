@@ -12,9 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
-use App\Services\SolutionService,
-    App\Services\ProblemService,
-    App\Services\StatisticsService;
+use ProblemService;
+use SolutionService;
+use StatisticsService;
 
 use Input;
 use Sentinel;
@@ -22,28 +22,16 @@ use Carbon\Carbon;
 
 class SolutionsController extends Controller
 {
-    public $problemService;
-    public $solutionService;
-    public $statisticsService;
-    
+
     /**
      * Instantiate a new SolutionsController instance.
      */
-    public function __construct
-    (
-        SolutionService $solutionService,
-        ProblemService $problemService,
-        StatisticsService $statisticsService
-    )
+    public function __construct()
     {
-        $this->solutionService = $solutionService;
-        $this->problemService = $problemService;
-        $this->statisticsService = $statisticsService;
-        
         $user = Sentinel::getUser();
-        $this->problemService->setUser($user);
-        $this->statisticsService->setUser($user);
-        $this->solutionService->setUser($user);
+        ProblemService::setUser($user);
+        StatisticsService::setUser($user);
+        SolutionService::setUser($user);
         
         $this->middleware('auth', [
             'except' => [
@@ -80,7 +68,7 @@ class SolutionsController extends Controller
         
         $acceptCode = Result::acceptCode;
 
-        $solutions = $this->solutionService->getSolutionsByOption([
+        $solutions = SolutionService::getSolutionsByOption([
             'problem_id' => $problem_id,
             'username'   => $username,
             'lang_id'    => $lang_id,
@@ -90,7 +78,7 @@ class SolutionsController extends Controller
         // $solutions = $solutions->paginateFrom(Input::get('top', ''), 20);
         //$solutions = $solutions->paginate(20, ['url' => \Request::url()]);
 
-        $getUser_id = $this->statisticsService->getUser();
+        $getUser_id = StatisticsService::getUser();
         if($getUser_id)
             $getUser_id = $getUser_id->id;
         
@@ -135,7 +123,7 @@ class SolutionsController extends Controller
                     ->withInput();
         }
 
-        $this->solutionService->createSolution($request->all());
+        SolutionService::createSolution($request->all());
         return redirect('/solutions/?from=problem&problem_id=' . $request->problem_id );
     }
 
@@ -147,7 +135,7 @@ class SolutionsController extends Controller
      */
     public function show($id)
     {
-        $solution = $this->solutionService->getSolution($id);
+        $solution = SolutionService::getSolution($id);
         $code = $solution->code;
 
         if( $solution->is_hidden )

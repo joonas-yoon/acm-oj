@@ -2,46 +2,20 @@
 
 namespace App\Services;
 
-use App\Repositories\SolutionRepository,
-    App\Repositories\UserRepository,
-    App\Repositories\CodeRepository,
-    App\Repositories\StatisticsRepository,
-    App\Repositories\ResultRepository;
+use App\Repositories\UserRepository;
     
-use App\Services\StatisticsService;
-
-use App\Models\Result,
-    App\Models\User;
-
 use DB;
 
 class UserService extends BaseService
 {
-    protected $solutionRepository;
     protected $userRepository;
-    protected $codeRepository;
-    protected $statisticsRepository;
-    protected $resultRepository;
-    
-    protected $statisticsService;
-    
 
     public function __construct
     (
-        SolutionRepository $solutionRepository,
-        UserRepository $userRepository,
-        CodeRepository $codeRepository,
-        ResultRepository $resultRepository,
-        StatisticsService $statisticsService
+        UserRepository $userRepository
     )
     {
-        $this->solutionRepository = $solutionRepository;
         $this->userRepository = $userRepository;
-        $this->codeRepository = $codeRepository;
-        $this->resultRepository = $resultRepository;
-        
-        $this->statisticsService = $statisticsService;
-        
     }
     
     /**

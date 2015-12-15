@@ -48,7 +48,7 @@ class StatisticsService extends BaseService
      * @param int   $submitCount
      * @return double
      */
-    static public function getRate($acceptCount, $submitCount)
+    public function getRate($acceptCount, $submitCount)
     {
         if($submitCount)
             return 100 * $acceptCount / ($acceptCount + $submitCount);
@@ -61,7 +61,7 @@ class StatisticsService extends BaseService
      * @param App\Models:hasCount   $statistics
      * @return int
      */ 
-    static public function getCountOrZero($statistics) {
+    public function getCountOrZero($statistics) {
         if( isset($statistics) )
             return $statistics->count;
         return 0;

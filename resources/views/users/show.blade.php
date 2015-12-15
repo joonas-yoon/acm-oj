@@ -38,7 +38,7 @@
       @foreach( $results as $result )
         <a class="item {{ $result->class_name }}" href="/solutions?user={{ $user->name }}&result_id={{ $result->id }}">
           {{ $result->description }}
-          <div class="ui horizontal right floated {{ $result->class_name }} label">{{ $statisticsService->getCountOrZero($result->userStatisticses->first()) }}</div>
+          <div class="ui horizontal right floated {{ $result->class_name }} label">{{ StatisticsService::getCountOrZero($result->userStatisticses->first()) }}</div>
         </a>
       @endforeach
     </div>
