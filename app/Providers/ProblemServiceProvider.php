@@ -96,8 +96,8 @@ class ProblemServiceProvider extends ServiceProvider
             'ProblemRepository',
             'ThankRepository',
             'ProblemThankRepository',
-            'ProblemRepository',
-            'ProblemTagRepository'
+            'ProblemTagRepository',
+            'ProblemService'
         ];
     }
     

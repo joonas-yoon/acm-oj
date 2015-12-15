@@ -122,7 +122,8 @@ class StatisticsServiceProvider extends ServiceProvider
             'ProblemStatisticsRepository',
             'ProblemRepository',
             'UserRepository',
-            'ResultRepository'
+            'ResultRepository',
+            'StatisticsService'
         ];
     }
 }

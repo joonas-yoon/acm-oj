@@ -83,7 +83,8 @@ class TagServiceProvider extends ServiceProvider
         return [
             'TagRepository',
             'UserTagRepository',
-            'ProblemTagRepository'
+            'ProblemTagRepository',
+            'TagService'
         ];
     }
 }

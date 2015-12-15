@@ -111,7 +111,8 @@ class SolutionServiceProvider extends ServiceProvider
             'CodeRepository',
             'ProblemRepository',
             'ResultRepository',
-            'StatisticsService'
+            'StatisticsService',
+            'SolutionService'
         ];
     }
 }
