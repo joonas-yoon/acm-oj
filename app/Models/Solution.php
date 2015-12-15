@@ -69,18 +69,6 @@ class Solution extends Model
     {
         return $this->hasMany('App\Models\Statistics', 'user_id');
     }
-
-    /**
-     * 결과를 Html 형식을 추가하여 반환
-     *
-     * @param int $result_id
-     * @return string
-     */
-    public function resultToHtml()
-    {
-        $result = $this->result;
-        return "<span class=\"solution {$result->class_name}\">{$result->description}</span>";
-    }
     
     public function scopeWithWired($query, $user_id)
     {

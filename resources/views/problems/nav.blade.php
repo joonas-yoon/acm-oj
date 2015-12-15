@@ -6,10 +6,10 @@
       @if( Sentinel::check() )
         @if( isset($username) && Sentinel::getUser()->name == $username )
         <a class="item" href="/solutions/?from=problem&problem_id={{ $problem_id }}">채점 현황</a>
-        <a class="item {{ \App\Helpers::setActive('solutions') }}" href="/solutions/?from=problem&problem_id={{ $problem_id }}&user={{ Sentinel::getUser()->name }}">내 소스</a>
+        <a class="item {{ \App\Helpers::setActive('solutions') }}" href="/solutions/?from=problem&problem_id={{ $problem_id }}&user={{ Sentinel::getUser()->name }}">내 채점</a>
         @else
         <a class="item {{ \App\Helpers::setActive('solutions') }}" href="/solutions/?from=problem&problem_id={{ $problem_id }}">채점 현황</a>
-        <a class="item" href="/solutions/?from=problem&problem_id={{ $problem_id }}&user={{ Sentinel::getUser()->name }}">내 소스</a>
+        <a class="item" href="/solutions/?from=problem&problem_id={{ $problem_id }}&user={{ Sentinel::getUser()->name }}">내 채점</a>
         @endif
       @else
         <a class="item {{ \App\Helpers::setActive('solutions') }}" href="/solutions/?from=problem&problem_id={{ $problem_id }}">채점 현황</a>

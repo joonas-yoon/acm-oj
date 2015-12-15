@@ -56,4 +56,8 @@ class Result extends Model
         return $query->where('published', $tf);
     }
 
+    public function getHtmlAttribute()
+    {
+        return "<span class=\"solution {$this->class_name}\">{$this->description}</span>";
+    }
 }

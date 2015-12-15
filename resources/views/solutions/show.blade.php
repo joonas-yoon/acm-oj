@@ -28,7 +28,7 @@
           <td>
             <a class="popup title" href="/problems/{{ $solution->problem->id }}" data-content="{{ $solution->problem->title }}" data-variation="inverted">{{ $solution->problem->id }}</a>
           </td>
-          <td>{!! $solution->resultToHtml() !!}</td>
+          <td>{!! $solution->result->Html !!}</td>
           @if( $solution->result_id == $acceptCode )
           <td>{{ $solution->time }} <span class="solution unit"> MS</span></td>
           <td>{{ $solution->memory }} <span class="solution unit"> KB</span></td>
@@ -68,7 +68,7 @@
 @section('script')
   <script>
     $('.popup').popup();
-    $('.ui.checkbox').checkbox();
+    //$('.ui.checkbox').checkbox();
   </script>
   <script src="/assets/editor/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
   <script src="/assets/editor.js" type="text/javascript" charset="utf-8"></script>
