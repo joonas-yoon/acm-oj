@@ -145,6 +145,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ProblemServiceProvider::class,
 
         /*
          * Semantic UI Framework Service Provider
@@ -160,6 +161,7 @@ return [
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
         
         Intervention\Image\ImageServiceProvider::class,
+        HieuLe\Active\ActiveServiceProvider::class,
 
     ],
 
@@ -222,5 +224,6 @@ return [
         'Reminder'   => Cartalyst\Sentinel\Laravel\Facades\Reminder::class,
         'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
         'Image'      => Intervention\Image\Facades\Image::class,
+        'Active' => HieuLe\Active\Facades\Active::class,
     ],
 ];

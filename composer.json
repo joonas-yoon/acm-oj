@@ -14,7 +14,8 @@
         "fzaninotto/faker": "^1.5",
         "graham-campbell/markdown": "^5.3",
         "cartalyst/sentinel": "2.0.*",
-        "intervention/image": "^2.3"
+        "intervention/image": "^2.3",
+        "hieu-le/active": "^3.0"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",

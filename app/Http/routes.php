@@ -47,7 +47,7 @@ Route::group(['prefix' => 'problems'], function()
             'uses' => 'ProblemsController@store'
         ]);
         Route::get('list', [
-            'as'   => 'problems.create.index',
+            'as'   => 'problems.create.list',
             'uses' => 'ProblemsController@creatingProblemsList'
         ]);
         Route::post('data', [
@@ -59,22 +59,25 @@ Route::group(['prefix' => 'problems'], function()
             'uses' => 'ProblemsController@create'
         ]);
     });
-    Route::get('new', 'ProblemsController@newProblems');
+    Route::get('new', [
+        'as'   => 'problems.index.new',
+        'uses' => 'ProblemsController@newProblems'
+    ]);
     Route::get('preview/{id}', 'ProblemsController@preview');
     Route::post('{problems}/status', 'ProblemsController@updateStatus');
 });
 
 Route::resource('problems', 'ProblemsController');
 
-Route::group(['prefix' => 'tags'], function()
+Route::group(['prefix' => 'tags', 'as' => 'tags'], function()
 {
-    Route::get('/', 'TagsController@index');
+    Route::get('/', 'TagsController@index')->name('.index');
     
     Route::pattern('id', '[0-9]+');
     Route::group(['prefix' => '{id}'], function()
     {
-        Route::get('/', 'TagsController@show');
-        Route::get('problems', 'TagsController@problems');
+        Route::get('/', 'TagsController@show')->name('.show');
+        Route::get('problems', 'TagsController@problems')->name('.problems');
     });
     
     Route::group(['middleware' => 'auth|admin'], function()
@@ -85,29 +88,33 @@ Route::group(['prefix' => 'tags'], function()
 
 Route::get('/rank', 'RankController@index');
 
-Route::get('/solutions',  'SolutionsController@index');
-Route::post('/solutions', 'SolutionsController@store');
-Route::get('/solutions/{id}', 'SolutionsController@show');
-Route::get('/submit/{id}','ProblemsController@createSolution');
+Route::group(['prefix' => 'solutions', 'as' => 'solutions'], function()
+{
+    Route::get('/',  'SolutionsController@index')->name('.index');
+    Route::post('/', 'SolutionsController@store')->name('.store');
+    Route::get('{id}', 'SolutionsController@show')->name('.show');
+});
+Route::get('/submit/{id}','ProblemsController@createSolution')
+     ->name('problems.submit');
 
 Route::group(['prefix' => 'user', 'as' => 'user'], function()
 {
     Route::get('/', function(){
         return redirect( action('RankController@index') );
     });
-    Route::get('{username}', 'UsersController@show');
+    Route::get('{username}', 'UsersController@show')->name('.show');
 });
 
 Route::group(['prefix' => 'settings', 'as' => 'settings'], function()
 {
-    Route::get  ('/', 'UsersController@showSettings');
+    Route::get  ('/', 'UsersController@showSettings')->name('.index');
     Route::patch('/', 'UsersController@postUpdateProfile');
     
-    Route::get  ('language', 'UsersController@showDefaultLanguage');
-    Route::patch('language', 'UsersController@postDefaultLanguage');
+    Route::get  ('language', 'UsersController@showDefaultLanguage')->name('.language');
+    Route::patch('language', 'UsersController@postDefaultLanguage')->name('.language');
     
-    Route::get ('privacy', 'UsersController@showPrivacy');
-    Route::post('privacy', 'UsersController@postPrivacy');
+    Route::get ('privacy', 'UsersController@showPrivacy')->name('.privacy');
+    Route::post('privacy', 'UsersController@postPrivacy')->name('.privacy');
 });
 
 Route::group(['prefix' => 'images'], function()

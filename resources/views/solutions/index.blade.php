@@ -7,9 +7,9 @@
 @section('content')
 <div class="ui container">
 
-  @if( $fromWhere == 'problem' && $problem_id )
+  @if( if_query('from', 'problem') && if_query('problem_id', true) )
   
-    @include('problems.nav', ['problem_id' => $problem_id] )
+    @include('problems.nav')
     
   @elseif( $fromWhere == 'contest' )
   
