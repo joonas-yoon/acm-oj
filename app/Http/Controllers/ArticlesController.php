@@ -51,7 +51,7 @@ class ArticlesController extends Controller
     }
 
     public function edit($id) {
-        $article = Auth::user()->articles()->findOrFail($id);
+        $article = Sentinel::user()->articles()->findOrFail($id);
         //$article = Article::findOrFail($id);
 
         return view('articles.edit', compact('article'));

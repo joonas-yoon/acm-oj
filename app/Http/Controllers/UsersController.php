@@ -184,7 +184,7 @@ class UsersController extends Controller
     {
         $inputs = $request->only(['default_language', 'default_code_theme']);
         
-        if( ! Sentinel::getUser()->updateProfile($inputs) ) {
+        if( ! UserService::updateProfile($inputs) ) {
             return Redirect::back()->with('error', '변경에 실패했습니다.');
         }
         

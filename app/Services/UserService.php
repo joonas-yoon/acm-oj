@@ -3,7 +3,8 @@
 namespace App\Services;
 
 use App\Repositories\UserRepository;
-    
+
+use App\Models\User;
 use DB;
 
 class UserService extends BaseService
