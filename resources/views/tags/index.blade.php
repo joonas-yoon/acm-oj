@@ -11,7 +11,7 @@
     
     <div class="ui four doubling link cards">
     @foreach( $tags as $tag )
-    <div class="ui fluid card">
+    <div class="ui card">
       <div class="content">
         <i class="right floated star icon"></i>
         <a class="header" href="/tags/{{ $tag->id }}">{{ $tag->name }}</a>
