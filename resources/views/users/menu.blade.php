@@ -29,11 +29,11 @@
     </div>
     
     <div class="ui vertical fluid menu">
-      <a href="/settings" class="item {{ \App\Helpers::setActiveStrict('settings') }}">정보 수정</a>
-      <a href="/password/change" class="item {{ \App\Helpers::setActive('password') }}">비밀번호 변경</a>
-      <a href="/settings/language" class="item {{ \App\Helpers::setActive('settings/language') }}">기본 언어 및 테마 설정</a>
-      <a href="/sessions" class="item {{ \App\Helpers::setActive('sessions') }}">로그인 내역 관리</a>
-      <a href="/settings/privacy" class="item {{ \App\Helpers::setActive('settings/privacy') }}">공개 범위 설정</a>
+      <a href="/settings" class="item {{ active_class( if_uri(['settings']) ) }}">정보 수정</a>
+      <a href="/password/change" class="item {{ active_class( if_uri_pattern(['password/*']) ) }}">비밀번호 변경</a>
+      <a href="/settings/language" class="item {{ active_class( if_route(['settings.language']) ) }}">기본 언어 및 테마 설정</a>
+      <a href="/sessions" class="item {{ active_class( if_route(['sessions']) ) }}">로그인 내역 관리</a>
+      <a href="/settings/privacy" class="item {{ active_class( if_route(['settings/privacy']) ) }}">공개 범위 설정</a>
     </div>
     
     {!! Form::open(array('name'=>'fPhoto', 'url'=>'/upload/photo', 'files'=>true, 'style'=>'display:none;')) !!}

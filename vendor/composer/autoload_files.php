@@ -20,4 +20,5 @@ return array(
     $vendorDir . '/illuminate/html/helpers.php',
     $vendorDir . '/laracasts/flash/src/Laracasts/Flash/functions.php',
     $vendorDir . '/hieu-le/active/src/helpers.php',
+    $baseDir . '/app/Helpers/helpers.php',
 );

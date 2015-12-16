@@ -200,7 +200,7 @@ class UsersController extends Controller
         if( ! array_has($file, 'user_photo') )
             return Redirect::back();
         
-        $filePath = \App\Helpers::uploadPhoto($file['user_photo'], $user->name);
+        $filePath = upload_photo_on_storage($file['user_photo'], $user->name);
         
         if( $filePath && UserService::updateProfile(['photo_path' => $filePath]) ) {
             return Redirect::back();
