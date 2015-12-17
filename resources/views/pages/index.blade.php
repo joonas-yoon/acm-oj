@@ -38,7 +38,8 @@
           <div class="ui green segment">이 문제는 어때요?</div>
           <?php
           $randProblem = ProblemService::getOpenProblems()->random();
-          $ac = 0, $sc = 0;
+          $ac = 0;
+          $sc = 0;
           if( $randProblem ) {
             $ac = ($randProblem->problemStatisticses->first()? $randProblem->problemStatisticses->first()->count : 0);
             $sc = $randProblem->total_submit;
