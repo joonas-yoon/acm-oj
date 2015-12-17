@@ -23,4 +23,9 @@ class TagRepository extends BaseRepository
         return $this->model->withProblemTag(Problem::openCode)
                     ->whereStatus(Tag::openCode);
     }
+    
+    public function getOrCreate(array $values)
+    {
+        return $this->model->firstOrCreate($values);
+    }
 }

@@ -15,8 +15,7 @@ class UserTagRepository extends BaseRepository
     public function getUserTagsByProblem($user_id, $problem_id)
     {
         return $this->model->whereUser($user_id)
-                    ->whereProblem($problem_id)
-                    ->get();
+                    ->whereProblem($problem_id);
     }
     
 }

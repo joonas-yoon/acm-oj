@@ -16,6 +16,7 @@ class TagService extends BaseService
     protected $userTagRepository;
     protected $problemTagRepository;
     
+    const limitTagCount = 3;
 
     public function __construct
     (
@@ -27,6 +28,17 @@ class TagService extends BaseService
         $this->tagRepository = $tagRepository;
         $this->userTagRepository = $userTagRepository;
         $this->problemTagRepository = $problemTagRepository;
+    }
+    
+    
+    /**
+     * 태그 추가 개수 제한
+     *
+     * @return int
+     */
+    public function getLimitTagCount()
+    {
+        return $this::limitTagCount;
     }
     
     /**
@@ -62,14 +74,14 @@ class TagService extends BaseService
     /**
      * 해당 문제의 해당 유저가 추가한 모든 태그 제거하기
      *
-     * @param int   $user_id
      * @param int   $problem_id
      * @return boolean
      */
     public function deleteTags($problem_id)
     {
         $userTags = $this->userTagRepository
-                         ->getUserTagsByProblem($this->user_id, $problem_id);
+                         ->getUserTagsByProblem($this->user_id, $problem_id)
+                         ->get();
         
         foreach($userTags as $userTag) {
             DB::beginTransaction();
@@ -99,7 +111,6 @@ class TagService extends BaseService
     /**
      * 해당 문제의 해당 유저가 선택한 태그 추가하기. 이미 존재하는것은 제거
      *
-     * @param int   $user_id
      * @param int   $problem_id
      * @param array $tags
      * @return boolean
@@ -107,9 +118,13 @@ class TagService extends BaseService
     public function insertTags($problem_id, array $tags)
     {
         
-        $this->deleteTags($this->user_id, $problem_id);
+        $this->deleteTags($problem_id);
         
-        foreach( $tags as $tag_id) {
+        foreach( $tags as $tagName) {
+            $tag_id = $this->tagRepository->getOrCreate([
+                'name' => $tagName
+            ])->id;
+
             $problemTag = $this->problemTagRepository->getOrCreate([
                 'problem_id' => $problem_id,
                 'tag_id' => $tag_id

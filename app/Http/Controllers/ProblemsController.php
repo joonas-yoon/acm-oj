@@ -316,22 +316,32 @@ class ProblemsController extends Controller
         
         ProblemService::updateProblem($problem->id, $request->all());
         
-        $tags = [];
-        $tagsNotFound = [];
-        $tagList = (array)$request->get('tags');
-        foreach( $tagList as $tagName ) {
-            $tag = TagService::getTagByName($tagName);
-            if( $tag != null ) array_push($tags, $tag->id);
-            else array_push($tagsNotFound, $tagName);
-        }
-        
-        // 없는 태그를 생성
-        foreach( $tagsNotFound as $tag ) {
-            $tag_id = TagService::createTag($tag);
-            array_push($tags, $tag_id);
+        $limitTagCount = TagService::getLimitTagCount();
+        $tags = $request->get('tags');
+        if( count($tags) > $limitTagCount ) {
+            return redirect()->back()
+                             ->withErrors('태그는 최대 '. $limitTagCount .'개까지만 등록할 수 있습니다.');
         }
         
         TagService::insertTags($problem->id, $tags);
+        
+        // $tags = [];
+        // $tagsNotFound = [];
+        // $tagList = $request->get('tags');
+
+        // foreach( $tagList as $tagName ) {
+        //     $tag = TagService::getTagByName($tagName);
+        //     if( $tag != null ) array_push($tags, $tag->id);
+        //     else array_push($tagsNotFound, $tagName);
+        // }
+        
+        // // 없는 태그를 생성
+        // foreach( $tagsNotFound as $tag ) {
+        //     $tag_id = TagService::createTag($tag);
+        //     array_push($tags, $tag_id);
+        // }
+        
+        // TagService::insertTags($problem->id, $tags);
             
         if( $problem->status == 1 )
             return redirect( action('ProblemsController@index', $problem->id) );
