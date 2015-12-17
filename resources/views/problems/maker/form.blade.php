@@ -24,9 +24,9 @@
       <div class="ui basic label">MB</div>
       </div>
     </div>
-    <div class="field">
+    <div class="tags field">
       <label>태그</label>
-      <select name="tags[]" multiple="" class="ui search multiple dropdown">
+      <select name="tags[]" multiple="" class="ui search multiple dropdown"  data-title="Using click events" data-content="Click">
         <option value=""></option>
         @foreach( App\Models\Tag::getOpenTags()->get() as $tag )
         <option value="{{ $tag->name }}">{{ $tag->name }}</option>
@@ -85,5 +85,14 @@
         '{{ $tag->name }}',
       @endforeach
     ])
+  ;
+  $('.tags.field')
+    .popup({
+      on: 'focus',
+      position : 'center bottom',
+      target   : '.test.image',
+      title    : 'My favorite dog',
+      content  : 'My favorite dog would like other dogs as much as themselves'
+    })
   ;
   </script>

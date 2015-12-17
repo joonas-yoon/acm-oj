@@ -1,5 +1,9 @@
 @extends('master')
 
+@section('title')
+문제 제작 - 내용 작성하기
+@stop
+
 @section('content')
 <div class="ui container">
 

@@ -1,5 +1,9 @@
 @extends('master')
 
+@section('title')
+문제 제작 - {{ $problem_id }}번 데이터 추가하기
+@stop
+
 @section('content')
 <div class="ui container">
 
