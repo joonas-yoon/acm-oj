@@ -4,6 +4,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 use Intervention\Image\ImageManagerStatic as Image;
 
 if (!function_exists('if_uri_start')) {
+    /**
+     * extending hieu-le/active function
+     *
+     * @param array $array
+     *
+     * @return bool
+     */
     function if_uri_start(array $array)
     {
         if( ! function_exists('if_uri') || ! function_exists('if_uri_pattern') )
@@ -50,5 +57,28 @@ if (!function_exists('upload_photo_on_storage')) {
             ->save($imageFileAbsolutePath);
             
         return $image ? $imageFilePath : null;
+    }
+}
+
+if (!function_exists('is_admin')) {
+    /**
+     * extending hieu-le/active function
+     *
+     * @param int $user_id
+     *
+     * @return bool
+     */
+    function is_admin($user_id = null)
+    {
+        if( $user_id ) {
+            $user = Sentinel::findById($user_id);
+        }
+        else if( Sentinel::check() ) {
+            $user = Sentinel::getUser();
+        }
+        else return false;
+        
+        $admin = Sentinel::findRoleByName('Administrator');
+        return $user && $user->inRole($admin);
     }
 }

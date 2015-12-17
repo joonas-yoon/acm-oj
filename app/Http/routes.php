@@ -20,13 +20,6 @@ Route::get('/', function(){return view('pages.index');});
 Route::get('/about', function(){return view('pages.about');});
 Route::get('/example', function(){return viewp('example');});
 
-# Admin Routes
-Route::group(['before' => 'auth|admin'], function()
-{
-    //Route::get('/admin', ['as' => 'admin.dashboard', 'uses' => 'AdminController@getHome']);
-    //Route::resource('admin/profiles', 'AdminUsersController', ['only' => ['index', 'show', 'edit', 'update', 'destroy']]);
-});
-
 Route::resource('articles', 'ArticlesController');
 
 Route::get ('login', 'Auth\AuthController@getLogin');
@@ -78,11 +71,6 @@ Route::group(['prefix' => 'tags', 'as' => 'tags'], function()
     {
         Route::get('/', 'TagsController@show')->name('.show');
         Route::get('problems', 'TagsController@problems')->name('.problems');
-    });
-    
-    Route::group(['middleware' => 'auth|admin'], function()
-    {
-        // Route::get('create', ...);
     });
 });
 
@@ -158,4 +146,10 @@ Route::group(['prefix' => 'sessions', 'as' => 'sessions'], function()
         Sentinel::getPersistenceRepository()->remove($code);
         return Redirect::back();
     });
+});
+
+
+Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'admin'], function()
+{
+    Route::get('/', 'AdminController@index');
 });
