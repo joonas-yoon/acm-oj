@@ -10,7 +10,7 @@
 
   {!! Form::model($problem, ['method' => 'PATCH', 'url' => '/problems/'. $problem->id, 'class' => 'ui form', 'id' => 'problem']) !!}
 
-  @include('problems.maker.form')
+  @include('problems.maker.form', ['tags' => TagService::getTags($problem->id)])
 
   <div class="ui divider hidden"></div>
 

@@ -107,9 +107,9 @@ class TagService extends BaseService
     public function insertTags($problem_id, array $tags)
     {
         
-        $this->deleteTags($user_id, $problem_id);
+        $this->deleteTags($this->user_id, $problem_id);
         
-        foreach($tags as $tag_id) {
+        foreach( $tags as $tag_id) {
             $problemTag = $this->problemTagRepository->getOrCreate([
                 'problem_id' => $problem_id,
                 'tag_id' => $tag_id

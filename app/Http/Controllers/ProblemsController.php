@@ -75,13 +75,9 @@ class ProblemsController extends Controller
 
     public function creatingProblemsList()
     {
-        $paginations = ProblemService::getAuthorWithReadyProblem(Sentinel::getUser()->id);
+        $paginations = ProblemService::getAuthorWithReadyProblem();
         
-        $problems = [];
-        foreach($paginations as $author) {
-            $problem = $author->problem;
-            if( $problem != null ) array_push($problems, $problem);
-        }
+        $problems = array_pluck($paginations, 'problem');
 
         $title = '문제 제작 - '.$paginations->currentPage().' 페이지';
         return view('problems.maker.list', compact('problems', 'title', 'paginations'));
@@ -147,8 +143,7 @@ class ProblemsController extends Controller
      */
     public function store(Requests\CreateProblemRequest $request)
     {
-        $problem = $this->problemService
-                        ->createProblem($request->all(), Sentinel::getUser()->id);
+        $problem = ProblemService::createProblem($request->all());
         if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
         return redirect('/problems/create/data?problem='. $problem->id);
     }
@@ -323,7 +318,7 @@ class ProblemsController extends Controller
         
         $tags = [];
         $tagsNotFound = [];
-        $tagList = $request->get('tags');
+        $tagList = (array)$request->get('tags');
         foreach( $tagList as $tagName ) {
             $tag = TagService::getTagByName($tagName);
             if( $tag != null ) array_push($tags, $tag->id);
@@ -331,11 +326,12 @@ class ProblemsController extends Controller
         }
         
         // 없는 태그를 생성
-        foreach($tagsNotFound as $tag) {
-            TagService::createTag($tag);
+        foreach( $tagsNotFound as $tag ) {
+            $tag_id = TagService::createTag($tag);
+            array_push($tags, $tag_id);
         }
         
-        TagService::insertTags(Sentinel::getUser()->id, $problem->id, $tags);
+        TagService::insertTags($problem->id, $tags);
             
         if( $problem->status == 1 )
             return redirect( action('ProblemsController@index', $problem->id) );
@@ -366,8 +362,7 @@ class ProblemsController extends Controller
         if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
         
         if( $problem )
-            $this->problemService
-                 ->updateProblemStatus($problem->id, $request->status);
+            ProblemService::updateProblemStatus($problem->id, $request->status);
 
         return Redirect::back();
     }

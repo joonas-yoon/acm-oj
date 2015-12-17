@@ -45,7 +45,7 @@ class ProblemRepository extends BaseRepository
         return $this->model->list()->latest('created_at')->latest('id')
                     ->withStatistics($user_id, Result::acceptCode)
                     ->whereStatus(Problem::openCode)
-                    ->take($takes)->get();
+                    ->take($takes);
     }
 }
 ?>

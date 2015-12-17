@@ -57,17 +57,17 @@ class Problem extends Model
 
     public function solutions()
     {
-        return $this->hasMany('App\Models\Solution');
+        return $this->hasMany('App\Models\Solution', 'problem_id');
     }
 
     public function problemStatisticses()
     {
-        return $this->hasMany('App\Models\ProblemStatistics');
+        return $this->hasMany('App\Models\ProblemStatistics', 'problem_id');
     }
     
     public function statisticses()
     {
-        return $this->hasMany('App\Models\Statistics');
+        return $this->hasMany('App\Models\Statistics', 'problem_id');
     }
     
     public function problemThanks()
@@ -77,7 +77,7 @@ class Problem extends Model
     
     public function problemTags()
     {
-        return $this->hasMany('App\Models\ProblemTag');
+        return $this->hasMany('App\Models\ProblemTag', 'problem_id');
     }
     
     public function scopeWhereProblem($query, $problem_id)
@@ -89,18 +89,18 @@ class Problem extends Model
     {
         if($user_id == null)
             return $query->with([
-                        'problemStatisticses' => function($query2) use ($result_id) {
-                        $query2->whereResult($result_id);
-                      }]);
+                'problemStatisticses' => function($query2) use ($result_id) {
+                $query2->whereResult($result_id);
+            }]);
     
         return $query->with([
-                        'problemStatisticses' => function($query2) use ($result_id) {
-                        $query2->whereResult($result_id);
-                      },
-                        'statisticses' => function($query2) use ($user_id, $result_id) {
-                        $query2->whereUser($user_id)
-                              ->whereResult($result_id);
-                      }]);
+            'problemStatisticses' => function($query2) use ($result_id) {
+            $query2->whereResult($result_id);
+        },
+            'statisticses' => function($query2) use ($user_id, $result_id) {
+            $query2->whereUser($user_id)
+                   ->whereResult($result_id);
+        }]);
     }
     
     public function scopeWhereStatus($query, $status)

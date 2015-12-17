@@ -76,7 +76,14 @@
   </div>
   
   <script>
-  $('.ui.dropdown').dropdown({
-    allowAdditions: true
-  });
+  $('.ui.dropdown')
+    .dropdown({
+      allowAdditions: true
+    })
+    .dropdown('set selected',[
+      @foreach( (isset($tags) ? $tags : []) as $tag )
+        '{{ $tag->name }}',
+      @endforeach
+    ])
+  ;
   </script>

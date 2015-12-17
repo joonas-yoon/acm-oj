@@ -100,7 +100,8 @@ class ProblemService extends BaseService
     public function getNewestProblems($takes)
     {
         return $this->problemRepository
-                    ->getNewestProblems($this->user_id, $takes);
+                    ->getNewestProblems($this->user_id, $takes)
+                    ->get();
     }
     
     /**
@@ -113,7 +114,7 @@ class ProblemService extends BaseService
     {
         return $this->problemThankRepository
                     ->getAuthorWithProblem($this->user_id)
-                    ->paginate($paginateCount);
+                    ->paginate($this->paginateCount);
     }
     
     
