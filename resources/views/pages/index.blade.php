@@ -38,10 +38,14 @@
           <div class="ui green segment">이 문제는 어때요?</div>
           <?php
           $randProblem = ProblemService::getOpenProblems()->random();
-          $ac = ($randProblem->problemStatisticses->first()? $randProblem->problemStatisticses->first()->count : 0);
-          $sc = $randProblem->total_submit;
+          $ac = 0, $sc = 0;
+          if( $randProblem ) {
+            $ac = ($randProblem->problemStatisticses->first()? $randProblem->problemStatisticses->first()->count : 0);
+            $sc = $randProblem->total_submit;
+          }
           $rate = number_format(StatisticsService::getRate($ac, $sc), 2);
           ?>
+          @if( $randProblem )
           <div class="ui card">
             @if( Sentinel::check() )
               {{-- 맞은 문제가 안나오고 전체 문제가 카운팅 되고 있음 --}}
@@ -69,6 +73,11 @@
               <a class="ui positive button" href="/problems/{{ $randProblem->id }}">풀러가기</a>
             </div>
           </div>
+          @else
+          <div class="ui card">
+            <div class="content">등록된 문제가 없습니다.</div>
+          </div>
+          @endif
         </div>
         <div class="column">
           <div class="ui blue segment">새로 추가된 문제</div>
