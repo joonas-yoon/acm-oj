@@ -143,6 +143,12 @@ class ProblemServiceProtected extends BaseServiceProtected
                     ->paginate($this->paginateCount);
     }
     
+    /**
+     * 모든 대기중인 문제 목록 가져오기
+     *
+     * @param int   $user_id
+     * @return paginate of problem
+     */
     public function getReadyProblems()
     {
         return $this->problemRepository
