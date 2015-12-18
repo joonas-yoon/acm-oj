@@ -1,8 +1,10 @@
 
   <div class="ui top attached tabular menu">
-    @if( if_route(['problems.show', 'problems.submit']) || if_query('problem_id', true) )
-      <a class="item {{ active_class( if_uri_pattern(['problems/*']) ) }}" href="/problems/{{ $problem_id }}">{{ $problem_id }}번</a>
-      <a class="item {{ active_class( if_uri_pattern(['submit/*']) ) }}" href="/submit/{{ $problem_id }}">제출하기</a>
+    @if( if_route(['problems.show', 'problems.submit', 'problems.preview']) || if_query('problem_id', true) )
+      <a class="item {{ active_class( if_uri_start(['problems']) ) }}" href="/problems/{{ $problem_id }}">{{ $problem_id }}번</a>
+      @if( ProblemService::getProblem($problem_id)->status == 1 )
+      <a class="item {{ active_class( if_uri_start(['submit']) ) }}" href="/submit/{{ $problem_id }}">제출하기</a>
+      @endif
       @if( Sentinel::check() )
         <a class="item {{ active_class( if_route(['solutions.index']) && ! if_query('user', Sentinel::getUser()->name) ) }}" href="/solutions/?from=problem&problem_id={{ $problem_id }}">채점 현황</a>
         <a class="item {{ active_class( if_query('user', Sentinel::getUser()->name) ) }}" href="/solutions/?from=problem&problem_id={{ $problem_id }}&user={{ Sentinel::getUser()->name }}">내 채점</a>

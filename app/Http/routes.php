@@ -56,7 +56,10 @@ Route::group(['prefix' => 'problems'], function()
         'as'   => 'problems.index.new',
         'uses' => 'ProblemsController@newProblems'
     ]);
-    Route::get('preview/{id}', 'ProblemsController@preview');
+    Route::get('preview/{id}', [
+        'as'   => 'problems.preview',
+        'uses' => 'ProblemsController@preview'
+    ]);
     Route::post('{problems}/status', 'ProblemsController@updateStatus');
 });
 
