@@ -28,6 +28,8 @@ class SolutionsController extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
+        
         $user = Sentinel::getUser();
         ProblemService::setUser($user);
         StatisticsService::setUser($user);
@@ -38,8 +40,6 @@ class SolutionsController extends Controller
                 'index'
             ]
         ]);
-        
-        Carbon::setLocale('ko');
     }
     
     /**

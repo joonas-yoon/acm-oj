@@ -111,11 +111,8 @@ class ProblemsController extends Controller
         $problem = ProblemService::getProblem($id);
         
         if( $problem->status != 1 ) {
-            // 공개문제(1) 가 아니면 로그인 해야함
-            if( ! Sentinel::check() ) return redirect()->guest('login');
-            
-            // 자신이 작성한 문제만 접근
-            if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+            // 공개문제(1) 가 아니면 제출이 불가함
+            return abort(404);
         }
         
         $languages = Language::all()->toArray();
@@ -252,7 +249,7 @@ class ProblemsController extends Controller
     {
         $problem = ProblemService::getProblem($id);
         
-        if( $problem->status != 1 ) {
+        if( ! is_admin() && $problem->status != 1 ) {
             // 공개문제(1) 가 아니면 로그인 해야함
             if( ! Sentinel::check() ) return redirect()->guest('login');
             

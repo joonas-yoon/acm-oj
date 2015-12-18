@@ -8,6 +8,8 @@ use App\Repositories\TagRepository,
 
 use App\Models\Tag;
 
+use DB;
+
 class TagServiceProtected extends BaseServiceProtected
 {
     protected $tagRepository;
