@@ -43,7 +43,7 @@ class ProblemRepository extends BaseRepository
     
     public function getNewestProblems($user_id, $takes)
     {
-        return $this->model->list()->latest('created_at')->latest('id')
+        return $this->model->list()->latest('updated_at')->latest('id')
                     ->withStatistics($user_id, Result::acceptCode)
                     ->whereStatus(Problem::openCode)
                     ->take($takes);

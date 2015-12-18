@@ -95,9 +95,8 @@ class ProblemsController extends Controller
     {
         if( $step == 'data' ){
             $problem_id = Input::get('problem');
-            $author_id = ProblemService::getAuthorOfProblem($problem_id);
             
-            if( Sentinel::getUser()->id != $author_id ) return abort(404);
+            if( ! $this->amIAuthorOfProblem($problem_id) ) return abort(404);
             
             return view('problems.maker.data', compact('problem_id'));
         }
@@ -144,7 +143,7 @@ class ProblemsController extends Controller
     public function store(Requests\CreateProblemRequest $request)
     {
         $problem = ProblemService::createProblem($request->all());
-        if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+        if( ! $this->amIAuthorOfProblem($problem->id) ) return abort(404);
         return redirect('/problems/create/data?problem='. $problem->id);
     }
 
@@ -153,7 +152,7 @@ class ProblemsController extends Controller
         // 권한 확인 필요
         $problem_id = $request->get('problem');
         $problem = ProblemService::getProblem($problem_id);
-        if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+        if( ! $this->amIAuthorOfProblem($problem->id) ) return abort(404);
 
         $files = $request->file('dataFiles');
         $filesNumber = sizeof($files);
@@ -284,12 +283,10 @@ class ProblemsController extends Controller
     {
         $problem = ProblemService::getProblem($id);
         
-        if( ! is_admin() && $problem->status != 1 ) {
-            // 공개문제(1) 가 아니면 로그인 해야함
-            if( ! Sentinel::check() ) return redirect()->guest('login');
-            
-            // 자신이 작성한 문제만 접근
-            if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+        if( ! is_admin() ) {
+            if( $problem->status != Problem::hiddenCode ) return abort(404);
+        
+            if( ! $this->amIAuthorOfProblem($problem->id) ) return abort(404);
         }
         
         $problem->description = Markdown::convertToHtml($problem->description);
@@ -312,13 +309,14 @@ class ProblemsController extends Controller
     {
         $problem = ProblemService::getProblem($problem_id);
 
-        if( $problem->status != 0 ) {
+        if( ! is_admin() && $problem->status != 0 ) {
+            // 관리자가 아니라면
             // 숨겨진 문제(1) 가 아니면 접근 불가
             return abort(404);
         }
         
         // 자신이 작성한 문제만 접근
-        if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+        if( ! $this->amIAuthorOfProblem($problem->id) ) return abort(404);
         
         //$selectedTags = TagService::getPopularTags($problem->id);
         
@@ -328,7 +326,7 @@ class ProblemsController extends Controller
     public function update(Requests\CreateProblemRequest $request, $id)
     {
         $problem = ProblemService::getProblem($id);
-        if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+        if( ! $this->amIAuthorOfProblem($problem->id) ) return abort(404);
         
         ProblemService::updateProblem($problem->id, $request->all());
         
@@ -341,28 +339,10 @@ class ProblemsController extends Controller
         
         TagService::insertTags($problem->id, $tags);
         
-        // $tags = [];
-        // $tagsNotFound = [];
-        // $tagList = $request->get('tags');
-
-        // foreach( $tagList as $tagName ) {
-        //     $tag = TagService::getTagByName($tagName);
-        //     if( $tag != null ) array_push($tags, $tag->id);
-        //     else array_push($tagsNotFound, $tagName);
-        // }
-        
-        // // 없는 태그를 생성
-        // foreach( $tagsNotFound as $tag ) {
-        //     $tag_id = TagService::createTag($tag);
-        //     array_push($tags, $tag_id);
-        // }
-        
-        // TagService::insertTags($problem->id, $tags);
-            
         if( $problem->status == 1 )
             return redirect( action('ProblemsController@index', $problem->id) );
         else
-            return redirect('/problems/create/list');
+            return redirect( action('ProblemsController@preview', $problem->id) );
     }
 
     public function updateStatus(Request $request, $id)
@@ -423,9 +403,11 @@ class ProblemsController extends Controller
     
     private function amIAuthorOfProblem($problem_id)
     {
+        if( is_admin() ) return true;
+        
         if( ! Sentinel::check() ) return redirect()->guest('login');
         $author_id = ProblemService::getAuthorOfProblem($problem_id);
-        return (Sentinel::getUser()->id != $author_id);
+        return (Sentinel::getUser()->id == $author_id);
     }
 }
 

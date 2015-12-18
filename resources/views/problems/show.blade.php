@@ -11,32 +11,45 @@
   @include('problems.nav', ['problem_id' => $problem->id])
   
   @if( if_route(['problems.preview']) )
-  <div class="ui icon info message">
-    <i class="book icon"></i>
-    <div class="content">
-      <div class="header">
-        {{ $problem->id }}번 미리보기
+    @if( $problem->status == App\Models\Problem::hiddenCode )
+    <div class="ui icon warning message">
+      <i class="warning icon"></i>
+      <div class="content">
+        <div class="header">현재 작성중인 문제입니다.</div>
+        <p>이 문제에 대한 행동을 취할 수 없습니다.</p>
       </div>
-      <p>이 문제에 대한 행동을 취할 수 있습니다.</p>
-      @if( is_admin() )
-        @if( $problem->status == App\Models\Problem::readyCode )
-        <a class="ui labeled icon positive button" href="/problems/{{ $problem->id }}/publish">
-          <i class="plus icon"></i> 공개하기
-        </a>
-        @elseif( $problem->status == App\Models\Problem::openCode )
-        <a class="ui labeled icon negative button" href="/problems/{{ $problem->id }}/publish/cancel">
-          <i class="minus icon"></i> 문제 숨기기
-        </a>
-        @endif
-      @endif
-      <a class="ui labeled icon basic teal button" href="/problems/create/data?problem={{ $problem->id }}">
-        <i class="inbox icon"></i> 데이터 추가
-      </a>
-      <a class="ui labeled icon negative button">
-        <i class="trash icon"></i> 문제 삭제하기
-      </a>
     </div>
-  </div>
+    @else
+    <div class="ui icon info message">
+      <i class="book icon"></i>
+      <div class="content">
+        <div class="header">
+          {{ $problem->id }}번 미리보기
+        </div>
+        <p>이 문제에 대한 행동을 취할 수 있습니다.</p>
+        @if( is_admin() )
+          @if( $problem->status == App\Models\Problem::readyCode )
+          <a class="ui labeled icon positive button" href="/problems/{{ $problem->id }}/publish">
+            <i class="plus icon"></i> 공개하기
+          </a>
+          @elseif( $problem->status == App\Models\Problem::openCode )
+          <a class="ui labeled icon negative button" href="/problems/{{ $problem->id }}/publish/cancel">
+            <i class="minus icon"></i> 보류하기
+          </a>
+          @endif
+        @endif
+        <a class="ui labeled icon basic teal button" href="/problems/create/data?problem={{ $problem->id }}">
+          <i class="inbox icon"></i> 데이터 추가
+        </a>
+        <a class="ui labeled icon vk button" href="/problems/{{ $problem->id }}/edit">
+          <i class="pencil icon"></i> 수정하기
+        </a>
+        <a class="ui labeled icon negative button">
+          <i class="trash icon"></i> 삭제하기
+        </a>
+      </div>
+    </div>
+    @endif
   @endif
   
   @if( $problem->is_special )
