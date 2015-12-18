@@ -12,9 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
-use ProblemService;
 use SolutionService;
-use StatisticsService;
 
 use Input;
 use Sentinel;
@@ -31,8 +29,6 @@ class SolutionsController extends Controller
         parent::__construct();
         
         $user = Sentinel::getUser();
-        ProblemService::setUser($user);
-        StatisticsService::setUser($user);
         SolutionService::setUser($user);
         
         $this->middleware('auth', [
@@ -78,7 +74,7 @@ class SolutionsController extends Controller
         // $solutions = $solutions->paginateFrom(Input::get('top', ''), 20);
         //$solutions = $solutions->paginate(20, ['url' => \Request::url()]);
 
-        $getUser_id = StatisticsService::getUser();
+        $getUser_id = SolutionService::getUser();
         if($getUser_id)
             $getUser_id = $getUser_id->id;
         
@@ -97,32 +93,11 @@ class SolutionsController extends Controller
      */
     public function store(Requests\CreateSolutionRequest $request)
     {
-        $request['user_id'] = Sentinel::getUser()->id;
         $request['result_id'] = Result::tempCode;
         $request['size'] = strlen($request->code);
         $request['is_hidden'] = false;
         $request['is_published'] = isset($request->is_published);
-
-        $validator = \Validator::make($request->all(), [
-            'problem_id' => 'required|numeric|min:1',
-            'lang_id'    => 'required|numeric|min:1',
-            'code'       => 'required|min:1',
-            'user_id'    => 'required',
-            'size'       => 'required'
-        ], [
-            'problem_id.required' => '문제의 상태를 확인해주세요.',
-            'lang_id.required'    => '언어를 선택하세요.',
-            'lang_id.min'         => '언어를 선택하세요.',
-            'code.required'       => '소스 코드가 너무 짧습니다.',
-            'code.min'            => '소스 코드가 너무 짧습니다.'
-        ]);
-
-        if ($validator->fails()) {
-            return \Redirect::back()
-                    ->withErrors($validator)
-                    ->withInput();
-        }
-
+        
         SolutionService::createSolution($request->all());
         return redirect('/solutions/?from=problem&problem_id=' . $request->problem_id );
     }

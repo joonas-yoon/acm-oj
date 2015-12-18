@@ -43,6 +43,7 @@ class SolutionService extends BaseService
         if(Problem::findOrFail($request['problem_id'])->status != Problem::openCode)
             abort(404);
         $code = $request['code'];
+        $request['user_id'] = $this->user->id;
         $request = array_only($request, Solution::$editable);
         $request = array_add($request, 'code', $code);
         return $this->service->createSolution($request);
