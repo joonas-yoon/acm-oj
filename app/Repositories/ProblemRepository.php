@@ -53,6 +53,7 @@ class ProblemRepository extends BaseRepository
     {
         return $this->model->list()
                     ->withUser()
+                    ->withTag()
                     ->whereStatus($status);
     }
     

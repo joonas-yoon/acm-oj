@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Services\Protects\TagServiceProtected;
 
+use App\Models\Tag;
+
 class TagService extends BaseService
 {
     public function __construct
@@ -115,6 +117,8 @@ class TagService extends BaseService
      */
     public function getTagWithProblem($tag_id)
     {
+        if(Tag::findOrFail($tag_id)->status != Tag::openCode)
+            return abort(404);
         return $this->service->getTagWithProblem($tag_id);
     }
     

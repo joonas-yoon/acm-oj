@@ -196,9 +196,6 @@ class TagServiceProtected extends BaseServiceProtected
      */
     public function getTagWithProblem($tag_id)
     {
-        if($this->tagRepository->get($tag_id)->status != Tag::openCode)
-            return abort(404);
-            
         return $this->problemTagRepository
                     ->getTagWithProblem($this->user_id, $tag_id)
                     ->paginate($this->paginateCount);

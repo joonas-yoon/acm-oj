@@ -27,13 +27,13 @@
           &nbsp;가 대기중으로 전환되었습니다.
           <div class="date" data-content="{{ $problem->updated_at }}" data-variation="inverted">{{ $problem->updated_at->diffForHumans() }}</div>
         </div>
-        @if( count($problem->problemTags) > 0 )
+        @if( count($problem->tags) > 0 )
         <div class="extra content">
-          @foreach( $problem->problemTags as $ptag )
-          <a class="ui label {{ $ptag->tag->status ? '':'disabled' }}" href="/tags/{{ $ptag->tag->id }}">
+          @foreach( $problem->tags as $tag )
+          <a class="ui label {{ $tag->status ? '':'disabled' }}" href="/tags/{{ $tag->id }}">
             <i class="tag icon"></i>
-            {{ $ptag->tag->name }}
-            <div class="detail">{{ $ptag->count }}</div>
+            {{ $tag->name }}
+            
           </a>
           @endforeach
         </div>

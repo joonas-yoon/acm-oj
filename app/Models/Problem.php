@@ -94,9 +94,19 @@ class Problem extends Model
                     ->wherePivot('thank_id', Thank::authorCode);
     }
     
+    public function tags()
+    {
+        return $this->belongsToMany('App\Models\Tag', 'problem_tag', 'problem_id','tag_id');
+    }
+    
     public function scopeWithUser($query)
     {
         return $query->with('user');
+    }
+    
+    public function scopeWithTag($query)
+    {
+        return $query->with('tags');
     }
     
     public function scopeWhereProblem($query, $problem_id)

@@ -44,7 +44,7 @@
           @endif
         </td>
         <td>
-          @if( $problem->status == 0 )
+          @if( $problem->status == App\Models\Problem::hiddenCode )
           <a href="{{ action('ProblemsController@edit', $problem->id) }}" class="ui green tiny button">문제 수정</a>
           <a href="{{ url('/problems/create/data?problem='.$problem->id) }}" class="ui green tiny button">데이터 추가</a>
           <a href="#" class="ui blue tiny button problem-confirm" data-problem-title="{{ $problem->title }}" data-problem-id="{{ $problem->id }}">작성 완료</a>
