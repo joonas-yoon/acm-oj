@@ -2,33 +2,18 @@
 
 namespace App\Services;
 
-use App\Repositories\ProblemRepository,
-    App\Repositories\ThankRepository,
-    App\Repositories\ProblemThankRepository,
-    App\Repositories\ProblemTagRepository;
+use App\Services\Protects\ProblemServiceProtected;
 
-use App\Models\Thank,
-    App\Models\Problem;
+use App\Models\Problem;
 
 class ProblemService extends BaseService
 {
-    protected $problemRepository;
-    protected $thankRepository;
-    protected $problemThankRepository;
-    protected $problemTagRepository;
-    
     public function __construct
     (
-        ProblemRepository $problemRepository,
-        ThankRepository $thankRepository,
-        ProblemThankRepository $problemThankRepository,
-        ProblemTagRepository $problemTagRepository
+        ProblemServiceProtected $problemServiceProtected
     )
     {
-        $this->problemRepository = $problemRepository;
-        $this->thankRepository = $thankRepository;
-        $this->problemThankRepository = $problemThankRepository;
-        $this->problemTagRepository = $problemTagRepository;
+        $this->service = $problemServiceProtected;
     }
     
     
@@ -42,15 +27,7 @@ class ProblemService extends BaseService
     public function createProblem(array $values)
     {
         $values = array_only($values, Problem::$editable);
-        
-        $problem = $this->problemRepository->create($values);
-
-        $problemThank = $this->problemThankRepository->create([
-            'thank_id' => Thank::authorCode,
-            'user_id' => $this->user_id,
-            'problem_id' => $problem->id
-        ]);
-        return $problem;
+        return $this->service->createProblem($values);
     }
     
     /**
@@ -60,23 +37,29 @@ class ProblemService extends BaseService
      */
     public function getOpenProblems()
     {
-        return $this->problemRepository
-                    ->getOpenProblemsWithStatistics($this->user_id)
-                    ->paginate($this->paginateCount);
+        return $this->service->getOpenProblems();
     }
 
     /**
      * 문제 가져오기
      *
      * @param int   $problem_id
-     * @param int   $status
      * @return App\Models\Problem
      */    
     public function getProblem($problem_id)
     {
-        return $this->problemRepository
-                    ->getProblem($this->user_id, $problem_id)
-                    ->firstOrFail();
+        return $this->service->getProblem($problem_id);
+    }
+
+    /**
+     * 문제 Thank 가져오기
+     *
+     * @param int   $problem_id
+     * @return App\Models\ProblemThank with User, Thank
+     */    
+    public function getProblemThanks($problem_id)
+    {
+        return $this->service->getProblemThank($problem_id);
     }
 
     /**
@@ -86,9 +69,7 @@ class ProblemService extends BaseService
      */
     public function getHiddenProblems()
     {
-        return $this->problemRepository
-                    ->getHiddenProblems()
-                    ->paginate($this->paginateCount);
+        return $this->service->getHiddenProblems();
     }
 
     /**
@@ -99,22 +80,18 @@ class ProblemService extends BaseService
      */
     public function getNewestProblems($takes)
     {
-        return $this->problemRepository
-                    ->getNewestProblems($this->user_id, $takes)
-                    ->get();
+        return $this->service->getNewestProblems($takes);
     }
     
     /**
      * 유저가 만든 문제 목록 가져오기
      *
      * @param int   $user_id
-     * @return paginate of author
+     * @return paginate of problem
      */
-    public function getAuthorWithProblem()
+    public function getProblemsByAuthor()
     {
-        return $this->problemThankRepository
-                    ->getAuthorWithProblem($this->user_id)
-                    ->paginate($this->paginateCount);
+        return $this->service->getProblemsByAuthor();
     }
     
     
@@ -122,13 +99,19 @@ class ProblemService extends BaseService
      * 유저가 만든 문제 목록 중 대기중인 문제 가져오기
      *
      * @param int   $user_id
-     * @return paginate of author
+     * @return paginate of problem
      */
-    public function getAuthorWithReadyProblem()
+    public function getReadyProblemsByAuthor()
     {
-        return $this->problemThankRepository
-                    ->getAuthorWithReadyProblem($this->user_id)
-                    ->paginate($this->paginateCount);
+        return $this->service->getReadyProblemsByAuthor();
+    }
+    
+    public function getReadyProblems()
+    {
+        if( !is_admin() )
+            return false;
+        
+        return $this->service->getReadyProblems();
     }
     
     /**
@@ -139,8 +122,29 @@ class ProblemService extends BaseService
      */
     public function getAuthorOfProblem($problem_id)
     {
-        return $this->problemThankRepository
-                    ->getUser($problem_id, Thank::authorCode);
+        return $this->service->getAuthorOfProblem($problem_id);
+    }
+    
+    /**
+     * 유저가 맞은 문제 목록 가져오기
+     *
+     * @param int   $user_id
+     * @return collection of problem
+     */
+    public function getAcceptProblemsByUser($user_id)
+    {
+        return $this->service->getAcceptProblemsByUser($user_id);
+    }
+    
+    /**
+     * 유저가 도전중인 문제 목록 가져오기
+     *
+     * @param int   $user_id
+     * @return collection of problem
+     */
+    public function getTriedProblemsByUser($user_id)
+    {
+        return $this->service->getTriedProblemsByUser($user_id);
     }
     
     
@@ -153,7 +157,7 @@ class ProblemService extends BaseService
      */
     public function updateProblemStatus($problem_id, $status)
     {
-        return $this->problemRepository->update($problem_id, ['status'=>$status]);
+        return $this->service->updateProblemStatus($problem_id, $status);
     }
     
     
@@ -167,6 +171,6 @@ class ProblemService extends BaseService
     public function updateProblem($problem_id, array $values)
     {
         $values = array_only($values, Problem::$editable);
-        return $this->problemRepository->update($problem_id, $values);
+        return $this->service->updateProblem($problem_id, $values);
     }
 }

@@ -20,13 +20,30 @@ class ProblemThank extends Model
         'thank_id',
         'user_id'
     ];
+    
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
+    }
 
-    public function thank() {
+    public function thank()
+    {
         return $this->belongsTo('App\Models\Thank', 'thank_id');
     }
 
-    public function problem() {
+    public function problem()
+    {
         return $this->belongsTo('App\Models\Problem', 'problem_id');
+    }
+
+    public function scopeWithThank($query)
+    {
+        return $query->with('thank');
+    }
+
+    public function scopeWithUser($query)
+    {
+        return $query->with('user');
     }
 
     public function scopeWithProblem($query)

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Thank;
+
 class Problem extends Model
 {
     /**
@@ -70,9 +72,9 @@ class Problem extends Model
         return $this->hasMany('App\Models\Statistics', 'problem_id');
     }
     
-    public function problemThanks()
+    public function thanks()
     {
-        return $this->hasMany('App\Models\ProblemThank', 'problem_id');
+        return $this->belongsToMany('App\Models\Thank', 'problem_thank', 'problem_id', 'thank_id');
     }
     
     public function problemTags()
@@ -80,9 +82,32 @@ class Problem extends Model
         return $this->hasMany('App\Models\ProblemTag', 'problem_id');
     }
     
+    public function problemThanks()
+    {
+        return $this->hasMany('App\Models\ProblemThank', 'problem_id');
+    }
+    
+    public function user()
+    {
+        return $this->belongsToMany('App\Models\User', 'problem_thank', 'problem_id','user_id')
+                    ->wherePivot('thank_id', Thank::authorCode);
+    }
+    
+    public function scopeWithUser($query)
+    {
+        return $query->with('user');
+    }
+    
     public function scopeWhereProblem($query, $problem_id)
     {
         return $query->where('id', $problem_id);
+    }
+    
+    public function scopeWithProblemThank($query)
+    {
+        return $query->with(['problemThanks' => function ($query2) {
+            $query2->withThank()->withUser();
+        }]);
     }
     
     public function scopeWithStatistics($query, $user_id, $result_id)
@@ -108,9 +133,20 @@ class Problem extends Model
         return $query->where('status', $status);
     }
     
+    public function scopeInStatus($query, array $status)
+    {
+        return $query->whereIn('status', $status);
+    }
+    
     public function scopeList($query)
     {
         return $query->select(Problem::$listColumns);
     }
 
+    public function scopeHasUser($query, $user_id, $thank_id)
+    {
+        return $query->whereHas('problemThanks', function($query2) use ($user_id, $thank_id) {
+           $query2->whereUser($user_id)->whereThank($thank_id); 
+        });
+    }
 }

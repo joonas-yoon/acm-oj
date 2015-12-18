@@ -14,6 +14,8 @@ use App\Models\Tag,
 
 use App\Services\TagService;
 
+use App\Services\Protects\TagServiceProtected;
+
 class TagServiceProvider extends ServiceProvider
 {
     /**
@@ -33,10 +35,31 @@ class TagServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerTagService();
+    }
+    
+    public function registerTagService()
+    {
+        $this->registerTagServiceProtected();
+        
+        $this->app->singleton('TagService', function ($app) {
+            return new TagService($app['TagServiceProtected']);
+        });
+    }
+
+    public function registerTagServiceProtected()
+    {
         $this->registerTag();
         $this->registerUserTag();
         $this->registerProblemTag();
-        $this->registerTagService();
+        
+        $this->app->singleton('TagServiceProtected', function ($app) {
+            return new TagServiceProtected(
+                $app['TagRepository'],
+                $app['UserTagRepository'],
+                $app['ProblemTagRepository']
+            );
+        });
     }
     
     public function registerTag()
@@ -63,19 +86,6 @@ class TagServiceProvider extends ServiceProvider
         });
     }
     
-    public function registerTagService()
-    {
-        $this->app->singleton('TagService', function ($app) {
-            $tagService = new TagService(
-                $app['TagRepository'],
-                $app['UserTagRepository'],
-                $app['ProblemTagRepository']
-            );
-            
-            return $tagService;
-        });
-    }
-    
     protected $defer = true;
     
     public function provides()
@@ -84,6 +94,7 @@ class TagServiceProvider extends ServiceProvider
             'TagRepository',
             'UserTagRepository',
             'ProblemTagRepository',
+            'TagServiceProtected',
             'TagService'
         ];
     }

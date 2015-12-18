@@ -7,17 +7,17 @@ use Illuminate\Support\ServiceProvider;
 use App\Repositories\SolutionRepository,
     App\Repositories\UserRepository,
     App\Repositories\CodeRepository,
-    App\Repositories\StatisticsRepository,
     App\Repositories\ResultRepository;
     
 use App\Models\Solution,
     App\Models\User,
     App\Models\Code,
-    App\Models\Statistics,
     App\Models\Result;
 
 use App\Services\StatisticsService,
     App\Services\SolutionService;
+    
+use App\Services\Protects\SolutionServiceProtected;
 
 class SolutionServiceProvider extends ServiceProvider
 {
@@ -38,12 +38,34 @@ class SolutionServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerSolutionService();
+    }
+    
+    public function registerSolutionService()
+    {
+        $this->registerSolutionServiceProtected();
+        
+        $this->app->singleton('SolutionService', function ($app) {
+            return new SolutionService($app['SolutionServiceProtected']);
+        });
+    }
+
+    public function registerSolutionServiceProtected()
+    {
         $this->registerSolution();
         $this->registerUser();
         $this->registerCode();
-        $this->registerStatistics();
         $this->registerResult();
-        $this->registerSolutionService();
+        
+        $this->app->singleton('SolutionServiceProtected', function ($app) {
+            return new SolutionServiceProtected(
+                $app['SolutionRepository'],
+                $app['UserRepository'],
+                $app['CodeRepository'],
+                $app['ResultRepository'],
+                $app['StatisticsService']
+            );
+        });
     }
     
     public function registerSolution()
@@ -70,14 +92,6 @@ class SolutionServiceProvider extends ServiceProvider
         });
     }
     
-    public function registerStatistics()
-    {
-        $this->app->singleton('StatisticsRepository', function ($app) {
-            $model = new Statistics;
-            return new StatisticsRepository($model);
-        });
-    }
-    
     public function registerResult()
     {
         $this->app->singleton('ResultRepository', function ($app) {
@@ -85,22 +99,7 @@ class SolutionServiceProvider extends ServiceProvider
             return new ResultRepository($model);
         });
     }
-    
-    public function registerSolutionService()
-    {
-        $this->app->singleton('SolutionService', function ($app) {
-            $solutionService = new SolutionService(
-                $app['SolutionRepository'],
-                $app['UserRepository'],
-                $app['CodeRepository'],
-                $app['ResultRepository'],
-                $app['StatisticsService']
-            );
-            
-            return $solutionService;
-        });
-    }
-    
+
     protected $defer = true;
     
     public function provides()
@@ -112,6 +111,7 @@ class SolutionServiceProvider extends ServiceProvider
             'ProblemRepository',
             'ResultRepository',
             'StatisticsService',
+            'SolutionServiceProtected',
             'SolutionService'
         ];
     }

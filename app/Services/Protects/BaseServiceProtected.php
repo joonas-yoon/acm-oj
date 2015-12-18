@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Protects;
 
 use Sentinel;
 
-abstract class BaseService
+abstract class BaseServiceProtected
 {
-    protected $service;
-    
     protected $user;
     protected $user_id = null;
     protected $paginateCount = 20;
@@ -21,7 +19,6 @@ abstract class BaseService
         $this->user = $user;
         if($user)
             $this->user_id = $user->id;
-        $this->service->setUser($user);
     }
     
     public function getUser()

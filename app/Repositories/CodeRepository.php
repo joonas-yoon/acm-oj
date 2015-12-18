@@ -11,6 +11,6 @@ class CodeRepository extends BaseRepository
         $this->model = $code;
     }
     
+    
+    
 }
-
-?>

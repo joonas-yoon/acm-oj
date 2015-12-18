@@ -14,7 +14,10 @@ use App\Models\Problem,
     App\Models\ProblemTag,
     App\Models\Thank;
 
+use App\Services\Protects\ProblemServiceProtected;
+
 use App\Services\ProblemService;
+
 
 class ProblemServiceProvider extends ServiceProvider
 {
@@ -35,11 +38,35 @@ class ProblemServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerProblemService();
+    }
+    
+    public function registerProblemService()
+    {
+        $this->registerProblemServiceProtected();
+        
+        $this->app->singleton('ProblemService', function ($app) {
+            return new ProblemService(
+                $app['ProblemServiceProtected']
+            );
+        });
+    }
+
+    public function registerProblemServiceProtected()
+    {
         $this->registerProblem();
         $this->registerThank();
         $this->registerProblemThank();
         $this->registerProblemTag();
-        $this->registerProblemService();
+        
+        $this->app->singleton('ProblemServiceProtected', function ($app) {
+            return new ProblemServiceProtected(
+                $app['ProblemRepository'],
+                $app['ThankRepository'],
+                $app['ProblemThankRepository'],
+                $app['ProblemTagRepository']
+            );
+        });
     }
     
     public function registerProblem()
@@ -74,20 +101,6 @@ class ProblemServiceProvider extends ServiceProvider
         });
     }
     
-    public function registerProblemService()
-    {
-        $this->app->singleton('ProblemService', function ($app) {
-            $problemService = new ProblemService(
-                $app['ProblemRepository'],
-                $app['ThankRepository'],
-                $app['ProblemThankRepository'],
-                $app['ProblemTagRepository']
-            );
-            
-            return $problemService;
-        });
-    }
-    
     protected $defer = true;
     
     public function provides()
@@ -97,6 +110,7 @@ class ProblemServiceProvider extends ServiceProvider
             'ThankRepository',
             'ProblemThankRepository',
             'ProblemTagRepository',
+            'ProblemServiceProtected',
             'ProblemService'
         ];
     }

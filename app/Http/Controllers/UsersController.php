@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use UserService;
 use StatisticsService;
+use ProblemService;
 
 use App\Models\Language;
 use Sentinel;
@@ -28,7 +29,8 @@ class UsersController extends Controller
         $user = Sentinel::getUser();
         UserService::setUser($user);
         StatisticsService::setUser($user);
-
+        ProblemService::setUser($user);
+        
         $this->middleware('auth', [
             'except' => [
                 'show'
@@ -42,8 +44,8 @@ class UsersController extends Controller
     {
         $user = UserService::getUserByNameOrEmail($username);
         
-        $acceptProblem = StatisticsService::getAcceptProblemsByUser($user->id);
-        $triedProblem = StatisticsService::getTriedProblemsByUser($user->id);
+        $acceptProblem = ProblemService::getAcceptProblemsByUser($user->id);
+        $triedProblem = ProblemService::getTriedProblemsByUser($user->id);
         $userTriedProblemCount  = $acceptProblem->count();
         $userAcceptProblemCount = $triedProblem->count();
         $userTotalProblemCount = $userTriedProblemCount + $userAcceptProblemCount;

@@ -90,7 +90,7 @@
     </form>
   </div>
 
-  @include('pagination.default', ['paginator' => $paginations])
+  @include('pagination.default', ['paginator' => $problems])
 
 </div>
 @stop

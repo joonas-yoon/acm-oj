@@ -27,9 +27,7 @@ class ProblemsController extends Controller
      * Instantiate a new ProblemsController instance.
      */
     
-    public function __construct
-    (
-    )
+    public function __construct()
     {
         $this->middleware('auth', [
             'except' => [
@@ -75,12 +73,10 @@ class ProblemsController extends Controller
 
     public function creatingProblemsList()
     {
-        $paginations = ProblemService::getAuthorWithReadyProblem();
-        
-        $problems = array_pluck($paginations, 'problem');
+        $problems = ProblemService::getReadyProblemsByAuthor();
 
-        $title = '문제 제작 - '.$paginations->currentPage().' 페이지';
-        return view('problems.maker.list', compact('problems', 'title', 'paginations'));
+        $title = '문제 제작 - '.$problems->currentPage().' 페이지';
+        return view('problems.maker.list', compact('problems', 'title'));
     }
 
     /**

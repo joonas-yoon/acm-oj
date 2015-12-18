@@ -3,7 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Problem,
-    App\Models\Result;
+    App\Models\Result,
+    App\Models\Thank;
 
 class ProblemRepository extends BaseRepository
 {
@@ -46,6 +47,45 @@ class ProblemRepository extends BaseRepository
                     ->withStatistics($user_id, Result::acceptCode)
                     ->whereStatus(Problem::openCode)
                     ->take($takes);
+    }
+    
+    public function getProblemByStatus($status)
+    {
+        return $this->model->list()
+                    ->withUser()
+                    ->whereStatus($status);
+    }
+    
+    public function getProblemsByAuthor($user_id)
+    {
+        return $this->model->list()
+                    ->hasUser($user_id, Thank::authorCode);
+    }
+    
+    public function getReadyProblemsByAuthor($user_id)
+    {
+        return $this->getProblemsByAuthor($user_id)
+                    ->inStatus([Problem::hiddenCode, Problem::readyCode]);
+    }
+    
+    public function getAcceptProblemsByUser($user_id)
+    {
+        return $this->model->list()
+                    ->whereHas('statisticses', function($query) use ($user_id) {
+                       $query->whereUser($user_id)
+                             ->whereResult(Result::acceptCode)
+                             ->whereCountUp(0);
+                    });
+    }
+    
+    public function getTriedProblemsByUser($user_id)
+    {
+        return $this->model->list()
+                    ->whereHas('statisticses', function($query) use ($user_id) {
+                       $query->whereUser($user_id)
+                             ->whereResult(Result::acceptCode)
+                             ->whereCount(0);
+                    });
     }
 }
 ?>

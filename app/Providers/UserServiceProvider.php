@@ -10,6 +10,8 @@ use App\Models\User;
 
 use App\Services\UserService;
 
+use App\Services\Protects\UserServiceProtected;
+
 class UserServiceProvider extends ServiceProvider
 {
     
@@ -30,10 +32,29 @@ class UserServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerUser();
         $this->registerUserService();
     }
     
+    public function registerUserService()
+    {
+        $this->registerUserServiceProtected();
+        
+        $this->app->singleton('UserService', function ($app) {
+            return new UserService($app['UserServiceProtected']);
+        });
+    }
+
+    public function registerUserServiceProtected()
+    {
+        $this->registerUser();
+        
+        $this->app->singleton('UserServiceProtected', function ($app) {
+            return new UserServiceProtected(
+                $app['UserRepository']
+            );
+        });
+    }
+
     public function registerUser()
     {
         $this->app->singleton('UserRepository', function ($app) {
@@ -41,18 +62,6 @@ class UserServiceProvider extends ServiceProvider
             return new UserRepository($model);
         });
     }
-    
-    public function registerUserService()
-    {
-        $this->app->singleton('UserService', function ($app) {
-            $userService = new UserService(
-                $app['UserRepository']
-            );
-            
-            return $userService;
-        });
-    }
-    
 
     protected $defer = true;
     
@@ -60,6 +69,7 @@ class UserServiceProvider extends ServiceProvider
     {
         return [
             'UserRepository',
+            'UserServiceProtected',
             'UserService'
         ];
     }

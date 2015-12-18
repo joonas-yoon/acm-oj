@@ -29,6 +29,12 @@ class ProblemThankRepository extends BaseRepository
                     ->inProblemStatus([Problem::hiddenCode, Problem::readyCode]);
     }
     
+    public function getProblemThanks($problem_id)
+    {
+        return $this->model->withUser()->withThank()
+                    ->whereProblem($problem_id);
+    }
+    
     public function getUser($problem_id, $thank_id)
     {
         return $this->model->whereProblem($problem_id)

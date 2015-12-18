@@ -20,6 +20,8 @@ use App\Models\Result,
 
 use App\Services\StatisticsService;
 
+use App\Services\Protects\StatisticsServiceProtected;
+
 class StatisticsServiceProvider extends ServiceProvider
 {
     /**
@@ -39,13 +41,37 @@ class StatisticsServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerStatisticsService();
+    }
+    
+    public function registerStatisticsService()
+    {
+        $this->registerStatisticsServiceProtected();
+        
+        $this->app->singleton('StatisticsService', function ($app) {
+            return new StatisticsService($app['StatisticsServiceProtected']);
+        });
+    }
+
+    public function registerStatisticsServiceProtected()
+    {
         $this->registerStatistics();
         $this->registerUserStatistics();
         $this->registerProblemStatistics();
         $this->registerProblem();
         $this->registerUser();
         $this->registerResult();
-        $this->registerStatisticsService();
+        
+        $this->app->singleton('StatisticsServiceProtected', function ($app) {
+            return new StatisticsServiceProtected(
+                $app['StatisticsRepository'],
+                $app['UserStatisticsRepository'],
+                $app['ProblemStatisticsRepository'],
+                $app['ProblemRepository'],
+                $app['UserRepository'],
+                $app['ResultRepository']
+            );
+        });
     }
     
     public function registerStatistics()
@@ -96,22 +122,6 @@ class StatisticsServiceProvider extends ServiceProvider
         });
     }
     
-    public function registerStatisticsService()
-    {
-        $this->app->singleton('StatisticsService', function ($app) {
-            $statisticsService = new StatisticsService(
-                $app['StatisticsRepository'],
-                $app['UserStatisticsRepository'],
-                $app['ProblemStatisticsRepository'],
-                $app['ProblemRepository'],
-                $app['UserRepository'],
-                $app['ResultRepository']
-            );
-            
-            return $statisticsService;
-        });
-    }
-
     protected $defer = true;
     
     public function provides()
@@ -123,6 +133,7 @@ class StatisticsServiceProvider extends ServiceProvider
             'ProblemRepository',
             'UserRepository',
             'ResultRepository',
+            'StatisticsServiceProtected',
             'StatisticsService'
         ];
     }

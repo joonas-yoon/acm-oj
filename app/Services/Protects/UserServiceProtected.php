@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Protects;
 
-use App\Services\Protects\UserServiceProtected;
+use App\Repositories\UserRepository;
 
 use App\Models\User;
 
-class UserService extends BaseService
+class UserServiceProtected extends BaseServiceProtected
 {
     protected $userRepository;
 
     public function __construct
     (
-        UserServiceProtected $userServiceProtected
+        UserRepository $userRepository
     )
     {
-        $this->service = $userServiceProtected;
+        $this->userRepository = $userRepository;
     }
     
     /**
@@ -26,7 +26,7 @@ class UserService extends BaseService
      */
     public function getUserByNameOrEmail($nameOrEmail)
     {
-        return $this->service->getUserByNameOrEmail($nameOrEmail);
+        return $this->userRepository->getUserByNameOrEmail($nameOrEmail);
     }
     
     
@@ -39,8 +39,7 @@ class UserService extends BaseService
      */
     public function updateProfile(array $profiles)
     {
-        $profiles = array_only($profiles, User::$editable);
-        return $this->service->updateProfile($profiles);
+        return $this->userRepository->update($this->user_id, $profiles);
     }
 
 }

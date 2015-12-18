@@ -2,32 +2,16 @@
 
 namespace App\Services;
 
-use App\Repositories\TagRepository,
-    App\Repositories\UserTagRepository,
-    App\Repositories\ProblemTagRepository;
-
-use App\Models\Tag;
-
-use DB;
+use App\Services\Protects\TagServiceProtected;
 
 class TagService extends BaseService
 {
-    protected $tagRepository;
-    protected $userTagRepository;
-    protected $problemTagRepository;
-    
-    const limitTagCount = 3;
-
     public function __construct
     (
-        TagRepository $tagRepository,
-        UserTagRepository $userTagRepository,
-        ProblemTagRepository $problemTagRepository
+        TagServiceProtected $tagServiceProtected
     )
     {
-        $this->tagRepository = $tagRepository;
-        $this->userTagRepository = $userTagRepository;
-        $this->problemTagRepository = $problemTagRepository;
+        $this->service = $tagServiceProtected;
     }
     
     
@@ -38,7 +22,7 @@ class TagService extends BaseService
      */
     public function getLimitTagCount()
     {
-        return $this::limitTagCount;
+        return $this->service->getLimitTagCount();
     }
     
     /**
@@ -50,13 +34,7 @@ class TagService extends BaseService
      */
     public function getPopularTags($problem_id, $take = 3)
     {
-        $tagIds = $this->problemTagRepository->getPopularTags($problem_id, $take);
-        
-        $tags = [];
-        foreach($tagIds as $tag)
-            array_push($tags, $tag->tag);
-        
-        return $tags;
+        return $this->service->getPopularTags($problem_id, $take);
     }
     
     /**
@@ -67,7 +45,7 @@ class TagService extends BaseService
      */
     public function getTags($problem_id)
     {
-        return $this->getPopularTags($problem_id, 0);
+        return $this->service->getTags($problem_id);
     }
     
     
@@ -79,32 +57,7 @@ class TagService extends BaseService
      */
     public function deleteTags($problem_id)
     {
-        $userTags = $this->userTagRepository
-                         ->getUserTagsByProblem($this->user_id, $problem_id)
-                         ->get();
-        
-        foreach($userTags as $userTag) {
-            DB::beginTransaction();
-            
-            try {
-                
-                $this->problemTagRepository
-                     ->subProblemTag($userTag->problem_id, $userTag->tag_id);
-                
-                
-                // I think this approach is bad. but using for performance.
-                // origin code : $this->userTagRepository->delete($userTag->id);
-                $userTag->delete();
-
-            } catch(\Exception $e) {
-                DB::rollback();
-                return false;
-            }
-            
-            DB::commit();
-        }
-        
-        return true;
+        return $this->service->deleteTags($problem_id);
     }
 
 
@@ -117,41 +70,7 @@ class TagService extends BaseService
      */
     public function insertTags($problem_id, array $tags)
     {
-        
-        $this->deleteTags($problem_id);
-        
-        foreach( $tags as $tagName) {
-            $tag_id = $this->tagRepository->getOrCreate([
-                'name' => $tagName
-            ])->id;
-
-            $problemTag = $this->problemTagRepository->getOrCreate([
-                'problem_id' => $problem_id,
-                'tag_id' => $tag_id
-            ]);
-            
-            DB::beginTransaction();
-            
-            try {
-                
-                $this->userTagRepository->create([
-                    'user_id' => $this->user_id,
-                    'problem_id' => $problem_id,
-                    'tag_id' => $tag_id
-                ]);
-                
-                // I think this approach is bad. but using for performance.
-                $problemTag->addTag();
-                
-            } catch(\Exception $e) {
-                DB::rollback();
-                return false;
-            }
-            
-            DB::commit();
-        }
-        
-        return true;
+        return $this->service->insertTags($problem_id, $tags);
     }
     
     /**
@@ -163,7 +82,7 @@ class TagService extends BaseService
      */
     public function updateTag($tag_id, $status)
     {
-        return $this->tagRepository->update($tag_id, ['status' => $status]);
+        return $this->service->updateTag($tag_id, $status);
     }
     
     /**
@@ -174,7 +93,7 @@ class TagService extends BaseService
      */
     public function createTag($name)
     {
-        return $this->tagRepository->create(['name' => $name]);
+        return $this->service->createTag($name);
     }
     
     /**
@@ -185,7 +104,7 @@ class TagService extends BaseService
      */
     public function getTagByName($name)
     {
-        return $this->tagRepository->getTag('name', $name);
+        return $this->service->getTagByName($name);
     }
     
     /**
@@ -196,12 +115,7 @@ class TagService extends BaseService
      */
     public function getTagWithProblem($tag_id)
     {
-        if($this->tagRepository->get($tag_id)->status != Tag::openCode)
-            return abort(404);
-            
-        return $this->problemTagRepository
-                    ->getTagWithProblem($this->user_id, $tag_id)
-                    ->paginate($this->paginateCount);
+        return $this->service->getTagWithProblem($tag_id);
     }
     
     /**
@@ -212,8 +126,6 @@ class TagService extends BaseService
      */
     public function getOpenTagsWithProblem()
     {
-        return $this->tagRepository
-                    ->getOpenTagsWithProblem()
-                    ->paginate($this->paginateCount);
+        return $this->service->getOpenTagsWithProblem();
     }
 }

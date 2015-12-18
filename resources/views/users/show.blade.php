@@ -49,10 +49,10 @@
       <h5 class="ui top attached header">해결한 문제들</h5>
       <div class="ui attached blue segment">
         <div class="ui light grey labels">
-        @foreach( $acceptProblem as $stastics )
-          <a class="ui label" href="/problems/{{ $stastics->problem->id }}">
-            {{ $stastics->problem->id }}
-            <span class="detail">{{ $stastics->problem->title }}</span>
+        @foreach( $acceptProblem as $problem )
+          <a class="ui label" href="/problems/{{ $problem->id }}">
+            {{ $problem->id }}
+            <span class="detail">{{ $problem->title }}</span>
           </a>
         @endforeach
         </div>
@@ -66,10 +66,10 @@
       <h5 class="ui top attached header">도전 중인 문제들</h5>
       <div class="ui attached blue segment">
         <div class="ui light grey labels">
-        @foreach( $triedProblem as $stastics )
-          <a class="ui label" href="/problems/{{ $stastics->problem->id }}">
-            {{ $stastics->problem->id }}
-            <span class="detail">{{ $stastics->problem->title }}</span>
+        @foreach( $triedProblem as $problem )
+          <a class="ui label" href="/problems/{{ $problem->id }}">
+            {{ $problem->id }}
+            <span class="detail">{{ $problem->title }}</span>
           </a>
         @endforeach
         </div>

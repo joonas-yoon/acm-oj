@@ -67,16 +67,24 @@ class Solution extends Model
 
     public function statisticses()
     {
-        return $this->hasMany('App\Models\Statistics', 'user_id');
+        return $this->hasMany('App\Models\Statistics', 'problem_id', 'problem_id');
     }
     
     public function scopeWithWired($query, $user_id)
     {
-        return $query->with(['problem', 'user', 'result', 'language', 'statisticses' => function($query2) use ($user_id) {
-            $query2->whereUser($user_id)
-                   ->whereProblem('solutions.problem_id')
-                   ->whereResult(Result::acceptCode)
-                   ->whereCountUp(0);
+        return $query->with([
+            'problem' => function($query2) {
+                $query2->list();
+            },
+            'user' => function($query2) {
+                $query2->list();
+            },
+            'result',
+            'language',
+            'statisticses' => function($query2) use ($user_id) {
+                $query2->whereUser($user_id)
+                       ->whereResult(Result::acceptCode)
+                       ->whereCountUp(0);
         }]);
     }
     
