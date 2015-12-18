@@ -1,0 +1,11 @@
+.pusher {
+    padding: 2em 1.5em;
+}
+
+.pusher.pushed {
+    margin-right: 250px;
+}
+
+.pusher>.content {
+    padding-top: 1.24rem;
+}

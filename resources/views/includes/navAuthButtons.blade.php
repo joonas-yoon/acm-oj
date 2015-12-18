@@ -17,6 +17,12 @@
       <a class="item" href="/settings">설정</a>
       <div class="ui divider"></div>
       <a class="item" href="/logout">로그 아웃</a>
+      @if( is_admin() )
+      <div class="ui divider"></div>
+      <a href="/admin" class="item">
+          <i class="wrench icon"></i> 관리자
+      </a>
+      @endif
     </div>
   </div>
   @endif

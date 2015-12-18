@@ -35,7 +35,8 @@ class Problem extends Model
         'title',
         'total_submit',
         'status',
-        'is_special'
+        'is_special',
+        'updated_at'
     ];
     
     static public $editable = [

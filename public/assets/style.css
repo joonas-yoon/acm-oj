@@ -33,6 +33,15 @@ html, body {
     background-color: transparent;
     border-color: rgba(34,36,38,.25);
 }
+.ui.label .detail {
+    background: rgba(0,0,0,.1);
+    margin: -.5833em -.833em -.5833em .5em;
+    padding: .5833em .833em;
+    border-radius: 0 .28571429rem .28571429rem 0;
+}
+.ui.feed>.event>.label {
+    align-self: center;
+}
 .ui.comments {
     max-width: 100%;
 }

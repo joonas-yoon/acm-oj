@@ -155,4 +155,5 @@ Route::group(['prefix' => 'sessions', 'as' => 'sessions'], function()
 Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'admin'], function()
 {
     Route::get('/', 'AdminController@index');
+    Route::get('problems', 'AdminController@problems');
 });

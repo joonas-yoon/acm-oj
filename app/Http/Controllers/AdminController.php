@@ -7,8 +7,26 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use StatisticsService;
+use ProblemService;
+use TagService;
+
+use Sentinel;
+use Carbon\Carbon;
+
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        // $this->middleware('admin', [        ]);
+        parent::__construct();
+        
+        $user = Sentinel::getUser();
+        ProblemService::setUser($user);
+        TagService::setUser($user);
+        StatisticsService::setUser($user);
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -84,5 +102,13 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    
+    public function problems()
+    {
+        $problems = ProblemService::getReadyProblems()->sortByDesc('updated_at');
+        
+        return view('admins.problems', compact('problems'));
     }
 }
