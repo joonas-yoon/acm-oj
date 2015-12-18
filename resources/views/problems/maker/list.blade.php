@@ -49,7 +49,7 @@
           <a href="{{ url('/problems/create/data?problem='.$problem->id) }}" class="ui green tiny button">데이터 추가</a>
           <a href="#" class="ui blue tiny button problem-confirm" data-problem-title="{{ $problem->title }}" data-problem-id="{{ $problem->id }}">작성 완료</a>
           @else
-          <a class="ui tiny button disabled"><i class="icon spinner"></i> 검토중..</a>
+          <a class="ui tiny button disabled"><i class="spinner loading icon"></i> 검토중..</a>
           @endif
         </td>
       </tr>

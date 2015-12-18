@@ -24,7 +24,7 @@
       <div class="content">
         <div class="summary">
           <a href="/problems/preview/{{ $problem->id }}">{{ $problem->id }}번 {{ $problem->title }}</a>
-          &nbsp;가 추가되었습니다.
+          &nbsp;가 대기중으로 전환되었습니다.
           <div class="date" data-content="{{ $problem->updated_at }}" data-variation="inverted">{{ $problem->updated_at->diffForHumans() }}</div>
         </div>
         @if( count($problem->problemTags) > 0 )

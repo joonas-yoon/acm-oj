@@ -9,14 +9,43 @@
 <div class="ui container">
   
   @include('problems.nav', ['problem_id' => $problem->id])
-
-  @if ($problem->is_special)
+  
+  @if( if_route(['problems.preview']) )
+  <div class="ui icon info message">
+    <i class="book icon"></i>
+    <div class="content">
+      <div class="header">
+        {{ $problem->id }}번 미리보기
+      </div>
+      <p>이 문제에 대한 행동을 취할 수 있습니다.</p>
+      @if( is_admin() )
+        @if( $problem->status == App\Models\Problem::readyCode )
+        <a class="ui labeled icon positive button" href="/problems/{{ $problem->id }}/publish">
+          <i class="plus icon"></i> 공개하기
+        </a>
+        @elseif( $problem->status == App\Models\Problem::openCode )
+        <a class="ui labeled icon negative button" href="/problems/{{ $problem->id }}/publish/cancel">
+          <i class="minus icon"></i> 문제 숨기기
+        </a>
+        @endif
+      @endif
+      <a class="ui labeled icon basic teal button" href="/problems/create/data?problem={{ $problem->id }}">
+        <i class="inbox icon"></i> 데이터 추가
+      </a>
+      <a class="ui labeled icon negative button">
+        <i class="trash icon"></i> 문제 삭제하기
+      </a>
+    </div>
+  </div>
+  @endif
+  
+  @if( $problem->is_special )
   <a class="ui red ribbon label">스페셜 저지</a>
   @endif
 
   <h2 class="ui header">
     {{ $problem->title }}
-    @if( Sentinel::check())
+    @if( Sentinel::check() )
       @if( ($uac = ($problem->statisticses->first()? $problem->statisticses->first()->count: -1)) > 0 )
         <a class="ui green basic label">해결</a>
       @elseif( $uac == 0 )

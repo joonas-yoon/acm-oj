@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 use App\Models\Language,
+    App\Models\Problem,
     App\Models\Result,
     App\Models\User;
 
@@ -32,6 +33,12 @@ class ProblemsController extends Controller
         $this->middleware('auth', [
             'except' => [
                 'index', 'newProblems', 'show'
+            ]
+        ]);
+        
+        $this->middleware('admin', [
+            'only' => [
+                'publish'
             ]
         ]);
         
@@ -240,12 +247,40 @@ class ProblemsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 공개된 문제만 볼 수 있음
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
+    {
+        $problem = ProblemService::getProblem($id);
+        
+        if( $problem->status != 1 ){
+            // 관리자라면 미리보기로 관리가 가능하도록 페이지 이동
+            if( is_admin() ) return redirect( action('ProblemsController@preview', [$id]) );
+            
+            return abort(404);
+        }
+        
+        $problem->description = Markdown::convertToHtml($problem->description);
+        $problem->input       = Markdown::convertToHtml($problem->input);
+        $problem->output      = Markdown::convertToHtml($problem->output);
+        $problem->hint        = Markdown::convertToHtml($problem->hint);
+
+        $tags = TagService::getPopularTags($problem->id);
+
+        return view('problems.show', compact('problem', 'tags'));
+    }
+
+    /**
+     * 공개되지 않은 문제만을 볼 수 있음
+     * 문제에 대한 관리 인터페이스가 존재함
+     * 
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function preview($id)
     {
         $problem = ProblemService::getProblem($id);
         
@@ -262,21 +297,9 @@ class ProblemsController extends Controller
         $problem->output      = Markdown::convertToHtml($problem->output);
         $problem->hint        = Markdown::convertToHtml($problem->hint);
 
-
         $tags = TagService::getPopularTags($problem->id);
 
-
         return view('problems.show', compact('problem', 'tags'));
-    }
-
-    /**
-     *
-     * 추상화를 위해 남겨둠
-     *
-     */
-    public function preview($id)
-    {
-        return $this->show($id);
     }
 
     /**
@@ -368,6 +391,22 @@ class ProblemsController extends Controller
             ProblemService::updateProblemStatus($problem->id, $request->status);
 
         return Redirect::back();
+    }
+    
+    /**
+     * Publish problem with changing status 0 to 1
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Redirect
+     */
+    public function publish($problem_id, $bool = '')
+    {
+        $problem = ProblemService::getProblem($problem_id);
+        if( is_admin() && $problem ) {
+            ProblemService::updateProblemStatus($problem->id, $bool != 'cancel' ? Problem::openCode : Problem::readyCode);
+            return redirect()->back()->with('success', '관리자에게 성공적으로 요청되었습니다.');
+        }
+        return redirect()->back()->with('error', '요청에 실패했습니다');
     }
 
     /**

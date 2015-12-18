@@ -60,7 +60,9 @@ Route::group(['prefix' => 'problems'], function()
         'as'   => 'problems.preview',
         'uses' => 'ProblemsController@preview'
     ]);
+    
     Route::post('{problems}/status', 'ProblemsController@updateStatus');
+    Route::get('{problems}/publish/{bool?}', 'ProblemsController@publish');
 });
 
 Route::resource('problems', 'ProblemsController');
