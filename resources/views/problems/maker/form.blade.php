@@ -36,13 +36,13 @@
   </div>
 
   <div class="ui horizontal divider"><i class="pencil icon"></i>&nbsp;&nbsp;문제 설명</div>
-  {!! Form::textarea('description', old('description')) !!}
+  {!! Form::textarea('description', old('description'), ['class'=>'html-editor']) !!}
 
   <div class="ui horizontal divider">입력 형식</div>
-  {!! Form::textarea('input', old('input')) !!}
+  {!! Form::textarea('input', old('input'), ['class'=>'html-editor']) !!}
 
   <div class="ui horizontal divider">출력 형식</div>
-  {!! Form::textarea('output', old('output')) !!}
+  {!! Form::textarea('output', old('output'), ['class'=>'html-editor']) !!}
 
   <div class="ui horizontal divider">예제</div>
   <div class="ui stackable grid">
@@ -61,7 +61,7 @@
   </div>
 
   <div class="ui horizontal divider">Hint</div>
-  {!! Form::textarea('hint', old('hint')) !!}
+  {!! Form::textarea('hint', old('hint'), ['class'=>'html-editor']) !!}
 
   <div class="ui horizontal divider"><i class="heart icon"></i>&nbsp;Thanks to</div>
   <div class="context">

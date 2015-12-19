@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
     @include('includes.head')
+    @yield('head')
 </head>
 <body>
     @include('includes.header')

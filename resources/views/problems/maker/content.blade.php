@@ -29,4 +29,6 @@
 
 @section('script')
 
+  @include('includes.editor-script')
+  
 @stop
