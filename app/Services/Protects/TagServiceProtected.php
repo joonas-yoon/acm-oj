@@ -213,4 +213,29 @@ class TagServiceProtected extends BaseServiceProtected
                     ->getOpenTagsWithProblem()
                     ->paginate($this->paginateCount);
     }
+    
+    /**
+     * 유저가 해당 문제에 등록한 태그 목록 가져오기
+     *
+     * @param int   $problem_id
+     * @return collection of tag
+     */
+    public function getTagsByUser($problem_id)
+    {
+        return $this->tagRepository
+                    ->getTagsByUser($this->user_id, $problem_id)
+                    ->get();
+    }
+
+
+    /**
+     * 유저가 사용한 모든 태그 목록 가져오기 (미구현)
+     *
+     * @param int   $problem_id
+     * @return collection of tag
+     */
+    public function getAllTagsByUser()
+    {
+
+    }
 }

@@ -132,4 +132,15 @@ class TagService extends BaseService
     {
         return $this->service->getOpenTagsWithProblem();
     }
+    
+    /**
+     * 유저가 해당 문제에 등록한 태그 목록 가져오기
+     *
+     * @param int   $problem_id
+     * @return collection of tag
+     */
+    public function getTagsByUser($problem_id)
+    {
+        return $this->service->getTagsByUser($problem_id);
+    }
 }

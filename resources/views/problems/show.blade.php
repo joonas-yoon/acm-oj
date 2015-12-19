@@ -154,6 +154,80 @@
 
   </div>
   
+  @if( $problem->userAccept > 0 )
+  <div class="ui add tag small modal">
+    <div class="header">어떤 알고리즘을 사용하셨나요?</div>
+    <div class="content">
+      <p>문제 해결에 사용하신 알고리즘을 선택하여, 문제에 태그를 추가해주세요!</p>
+      <p>
+        <i class="help circle icon"></i> 태그에 대해 자세히 알고싶다면,&nbsp;
+        <a href="/tags/">태그 목록</a>을 참고하세요.
+      </p>
+      <div class="ui info message">
+        <p>새로운 태그를 추가하시면, 관리자 승인 후 추가됩니다.</p>
+      </div>
+      <form method="post" action="{{ action('ProblemsController@insertTags', $problem->id) }}" class="ui tags form">
+        {!! csrf_field() !!}
+        <input type="hidden" name="problem_id" value="{{ $problem->id }}"/>
+        <select name="tags[]" multiple="" class="ui search multiple tags dropdown">
+          <option value="">선택하세요.</option>
+          @foreach( App\Models\Tag::getOpenTags()->get() as $tag )
+          <option value="{{ $tag->name }}">{{ $tag->name }}</option>
+          @endforeach
+        </select>
+      </form>
+    </div>
+    <div class="actions">
+      <div class="ui approve positive button">다 골랐어요!</div>
+      <div class="ui cancel button">나중에 할게요</div>
+    </div>
+  </div>
+  <div class="ui result tag small modal">
+    <h2 class="ui icon header" style="padding-top:3em; padding-bottom:3em;">
+      <i class="gift icon"></i>
+      <div class="content">
+        <div class="sub header">소중한 의견을 작성해주셔서 감사합니다!</div>
+      </div>
+    </h2>
+  </div>
+  <script>
+  $('.add.tag.modal')
+    .modal('attach events', '.add.tag.button')
+    .modal({
+      onApprove: function(){
+        $('.result.tag.modal')
+          .modal({
+            blurring: true,
+            onVisible: function(){
+              $('form.tags').submit();
+            }
+          })
+          .modal('show');
+      }
+    })
+  ;
+  
+  $('.ui.tags.dropdown')
+    .dropdown({
+      allowAdditions: true,
+      maxSelections: 3,
+      message: {
+        addResult     : '새로운 태그: <b>{term}</b>',
+        count         : '선택한 항목 {count} 개',
+        maxSelections : '최대 {maxCount}개 까지 등록할 수 있습니다.',
+        noResults     : '일치하는 결과가 없습니다.'
+      }
+    })
+    .dropdown('set selected',[
+      // $tags를 이 사람이 선택한 태그로 수정해야함.
+      @foreach( TagService::getTagsByUser($problem->id) as $tag )
+        '{{ $tag->name }}',
+      @endforeach
+    ])
+  ;
+  </script>
+  @endif
+  
   <div class="ui horizontal divider">Comments</div>
 
   <div class="ui threaded comments" id="comments">

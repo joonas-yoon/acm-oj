@@ -28,4 +28,9 @@ class TagRepository extends BaseRepository
     {
         return $this->model->firstOrCreate($values);
     }
+    
+    public function getTagsByUser($user_id, $problem_id)
+    {
+        return $this->model->hasUserTag($user_id, $problem_id);
+    }
 }

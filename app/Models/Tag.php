@@ -30,6 +30,11 @@ class Tag extends Model
     {
         return $this->hasOne('App\Models\ProblemTag', 'tag_id');
     }
+    
+    public function userTags()
+    {
+        return $this->hasMany('App\Models\UserTag', 'tag_id');
+    }
 
     public function scopeGetOpenTags($query) {
         return $query->where('status', 1);
@@ -47,5 +52,12 @@ class Tag extends Model
     public function scopeWhereStatus($query, $status)
     {
         return $query->where('status', $status);
+    }
+    
+    public function scopeHasUserTag($query, $user_id, $problem_id)
+    {
+        return $query->whereHas('userTags', function($query2) use ($user_id, $problem_id) {
+            $query2->whereUser($user_id)->whereProblem($problem_id);
+        });
     }
 }

@@ -391,6 +391,23 @@ class ProblemsController extends Controller
         }
         return redirect()->back()->with('error', '요청에 실패했습니다');
     }
+    
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function insertTags(Request $request)
+    {
+        $pid  = $request->get('problem_id');
+        $tags = $request->get('tags');
+        
+        if( TagService::insertTags($pid, (array)$tags) )
+            return redirect()->back();
+        
+        return redirect()->back()->with('error', '요청에 실패했습니다');
+    }
 
     /**
      * Remove the specified resource from storage.

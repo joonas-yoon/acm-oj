@@ -62,6 +62,7 @@ Route::group(['prefix' => 'problems'], function()
     ]);
     
     Route::post('{problems}/status', 'ProblemsController@updateStatus');
+    Route::post('{problems}/insert/tag', 'ProblemsController@insertTags');
     Route::get('{problems}/publish/{bool?}', 'ProblemsController@publish');
 });
 
