@@ -65,6 +65,9 @@
         <a class="ui red basic label">도전 중</a>
       @endif
     @endif
+    @if( is_admin() && ! if_route(['problems.preview']) )
+      <a href="/problems/preview/{{ $problem->id }}"><i class="setting icon"></i></a>
+    @endif
   </h2>
 
   <table class="ui celled padded single line table segment unstackable">
@@ -74,7 +77,7 @@
     <th>정답 수</th>
     <th>제출 수</th>
     <th>정답률</th>
-    <th>평점</th>
+    <th>난이도</th>
     <th>태그 보기</th>
   </tr></thead>
   <tbody><tr>

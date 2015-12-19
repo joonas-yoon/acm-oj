@@ -28,7 +28,7 @@
           <div class="event">
             <div class="content">
               <div class="summary">
-                 평점 7.4 : <div class="ui star rating" data-rating="3" data-max-rating="5"></div>
+                 난이도 7.4 : <div class="ui star rating" data-rating="3" data-max-rating="5"></div>
               </div>
             </div>
           </div>

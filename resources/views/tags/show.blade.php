@@ -40,7 +40,7 @@
       </div>
       <div class="statistic">
         <div class="value">6.8</div>
-        <div class="label">평균 평점</div>
+        <div class="label">평균 난이도</div>
       </div>
     </div>
     
