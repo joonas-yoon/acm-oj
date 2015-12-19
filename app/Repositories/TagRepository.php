@@ -13,20 +13,25 @@ class TagRepository extends BaseRepository
         $this->model = $tag;
     }
     
+    public function getOrCreate(array $values)
+    {
+        return $this->model->firstOrCreate($values);
+    }
+    
     public function getTag($column, $value)
     {
         return $this->model->where($column, $value)->first();
+    }
+    
+    public function getTagsWithProblem()
+    {
+        return $this->model->withProblemTag();
     }
     
     public function getOpenTagsWithProblem()
     {
         return $this->model->withProblemTag(Problem::openCode)
                     ->whereStatus(Tag::openCode);
-    }
-    
-    public function getOrCreate(array $values)
-    {
-        return $this->model->firstOrCreate($values);
     }
     
     public function getTagsByUser($user_id, $problem_id)

@@ -1,7 +1,7 @@
 @extends('admins.layouts.master')
 
 @section('title')
-    관리자 페이지
+  문제 관리
 @stop
 
 @section('pre-content')
@@ -15,8 +15,10 @@
 
 @section('content')
 
+  @include('pagination.default', ['paginator' => $problems])
+  
   <div class="ui feed">
-    @foreach( $problems as $problem )
+    @foreach( $problems->sortByDesc('updated_at') as $problem )
     <div class="event">
       <div class="label">
         <img src="{{ $problem->user->first()->photo_link }}">

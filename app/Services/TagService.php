@@ -123,9 +123,22 @@ class TagService extends BaseService
     }
     
     /**
+     * 모든 태그와 그 태그를 가지고 있는 문제 목록을 가져오기
+     *
+     * @return paginate of Tag with problem
+     */
+    public function getTagsWithProblem()
+    {
+        if( ! is_admin($this->user_id) )
+            return false;
+            
+        return $this->service->getTagsWithProblem();
+    }
+    
+    
+    /**
      * 모든 열린 태그와 그 태그를 가지고 있는 문제 목록을 가져오기
      *
-     * @param int   $tag_id
      * @return paginate of Tag with problem
      */
     public function getOpenTagsWithProblem()

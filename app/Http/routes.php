@@ -159,4 +159,5 @@ Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'admin'], fu
 {
     Route::get('/', 'AdminController@index');
     Route::get('problems', 'AdminController@problems');
+    Route::get('tags', 'AdminController@tags');
 });

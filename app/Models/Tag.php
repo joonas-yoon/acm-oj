@@ -37,11 +37,18 @@ class Tag extends Model
     }
 
     public function scopeGetOpenTags($query) {
-        return $query->where('status', 1);
+        return $query->where('status', $this::openCode);
     }
     
-    public function scopeWithProblemTag($query, $status)
+    public function scopeGetHiddenTags($query) {
+        return $query->where('status', $this::hiddenCode);
+    }
+    
+    public function scopeWithProblemTag($query, $status = -1)
     {
+        if( $status < 0 )
+            return $query->with('problemTags');
+        
         return $query->with(['problemTags' => function($query2) use ($status) {
                         $query2->whereHas('problem', function($query3) use ($status) {
                             $query3->whereStatus($status);

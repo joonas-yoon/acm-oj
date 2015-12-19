@@ -19,11 +19,9 @@
     <a class="item {{ active_class(if_uri_start(['admin/problems'])) }}" href="/admin/problems">
       문제 관리
     </a>
-  @for($i=1; $i<20; ++$i)
-    <a class="item">
-      {{ $i }}
+    <a class="item {{ active_class(if_uri_start(['admin/tags'])) }}" href="/admin/tags">
+      태그 관리
     </a>
-  @endfor
   </div>
 
   <div class="pusher pushed">

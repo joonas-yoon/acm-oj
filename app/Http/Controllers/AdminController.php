@@ -105,10 +105,28 @@ class AdminController extends Controller
     }
     
     
+    /**
+     * 문제 관리 페이지를 뿌린다.
+     *
+     * @return \Illuminate\Http\View
+     */
     public function problems()
     {
-        $problems = ProblemService::getReadyProblems()->sortByDesc('updated_at');
+        $problems = ProblemService::getReadyProblems();
         
         return view('admins.problems', compact('problems'));
+    }
+    
+    
+    /**
+     * 태그 관리 페이지를 뿌린다.
+     *
+     * @return \Illuminate\Http\View
+     */
+    public function tags()
+    {
+        $tags = TagService::getTagsWithProblem();
+                
+        return view('admins.tags', compact('tags'));
     }
 }
