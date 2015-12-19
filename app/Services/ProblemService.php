@@ -108,7 +108,7 @@ class ProblemService extends BaseService
     
     public function getReadyProblems()
     {
-        if( !is_admin() )
+        if( ! is_admin($this->user_id) )
             return false;
         
         return $this->service->getReadyProblems();

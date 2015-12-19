@@ -296,6 +296,9 @@ class ProblemsController extends Controller
         $problem->input       = Markdown::convertToHtml($problem->input);
         $problem->output      = Markdown::convertToHtml($problem->output);
         $problem->hint        = Markdown::convertToHtml($problem->hint);
+        
+        $problem->userAccept  = $problem->statisticses->first() ?
+                                $problem->statisticses->first()->count : -1;
 
         $tags = TagService::getPopularTags($problem->id);
 
