@@ -25,9 +25,9 @@
       </div>
     </div>
     <div class="tags field">
-      <label>태그</label>
-      <select name="tags[]" multiple="" class="ui search multiple dropdown"  data-title="Using click events" data-content="Click">
-        <option value=""></option>
+      <label>태그 <i class="circle help popup icon" data-title="알고리즘을 선택하세요." data-content="요청된 태그는 관리자 승인 후 등록됩니다."></i></label>
+      <select name="tags[]" multiple="" class="ui search multiple tags dropdown">
+        <option value="">태그 추가하기</option>
         @foreach( App\Models\Tag::getOpenTags()->get() as $tag )
         <option value="{{ $tag->name }}">{{ $tag->name }}</option>
         @endforeach
@@ -76,23 +76,23 @@
   </div>
   
   <script>
-  $('.ui.dropdown')
+  $('.ui.tags.dropdown')
     .dropdown({
-      allowAdditions: true
+      allowAdditions: true,
+      maxSelections: 3,
+      message: {
+        addResult     : '새로운 태그 요청: <b>{term}</b>',
+        count         : '선택한 항목 {count} 개',
+        maxSelections : '최대 {maxCount}개 까지 등록할 수 있습니다.',
+        noResults     : '일치하는 결과가 없습니다.'
+      }
     })
     .dropdown('set selected',[
-      @foreach( (isset($tags) ? $tags : []) as $tag )
+      // $tags를 이 사람이 선택한 태그로 수정해야함.
+      @foreach( TagService::getTagsByUser($problem->id) as $tag )
         '{{ $tag->name }}',
       @endforeach
     ])
   ;
-  $('.tags.field')
-    .popup({
-      on: 'focus',
-      position : 'center bottom',
-      target   : '.test.image',
-      title    : 'My favorite dog',
-      content  : 'My favorite dog would like other dogs as much as themselves'
-    })
-  ;
+  $('.help.icon.popup').popup();
   </script>

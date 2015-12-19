@@ -17,7 +17,5 @@ class UserTagRepository extends BaseRepository
         return $this->model->whereUser($user_id)
                     ->whereProblem($problem_id);
     }
-    
-}
 
-?>
+}

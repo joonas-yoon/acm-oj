@@ -255,7 +255,7 @@ class ProblemsController extends Controller
     {
         $problem = ProblemService::getProblem($id);
         
-        if( $problem->status != 1 ){
+        if( $problem->status != Problem::openCode ){
             // 관리자라면 미리보기로 관리가 가능하도록 페이지 이동
             if( is_admin() ) return redirect( action('ProblemsController@preview', [$id]) );
             
@@ -266,9 +266,12 @@ class ProblemsController extends Controller
         $problem->input       = Markdown::convertToHtml($problem->input);
         $problem->output      = Markdown::convertToHtml($problem->output);
         $problem->hint        = Markdown::convertToHtml($problem->hint);
+        
+        $problem->userAccept  = $problem->statisticses->first() ?
+                                $problem->statisticses->first()->count : -1;
 
         $tags = TagService::getPopularTags($problem->id);
-
+        
         return view('problems.show', compact('problem', 'tags'));
     }
 
@@ -309,7 +312,7 @@ class ProblemsController extends Controller
     {
         $problem = ProblemService::getProblem($problem_id);
 
-        if( ! is_admin() && $problem->status != 0 ) {
+        if( ! is_admin() && $problem->status != Problem::hiddenCode ) {
             // 관리자가 아니라면
             // 숨겨진 문제(1) 가 아니면 접근 불가
             return abort(404);
@@ -337,9 +340,9 @@ class ProblemsController extends Controller
                              ->withErrors('태그는 최대 '. $limitTagCount .'개까지만 등록할 수 있습니다.');
         }
         
-        TagService::insertTags($problem->id, $tags);
+        TagService::insertTags($problem->id, (array)$tags);
         
-        if( $problem->status == 1 )
+        if( $problem->status == Problem::openCode )
             return redirect( action('ProblemsController@index', $problem->id) );
         else
             return redirect( action('ProblemsController@preview', $problem->id) );
@@ -349,7 +352,7 @@ class ProblemsController extends Controller
     {
         if($request->from == 'confirm'){
             // 문제 검토 요청
-            $request->merge(array('status' => 3)); // 문제 제작 완료
+            $request->merge(array('status' => Problem::readyCode)); // 문제 제작 완료
         }
 
         $validator = \Validator::make(
@@ -365,7 +368,7 @@ class ProblemsController extends Controller
         }
 
         $problem = ProblemService::getProblem($id);
-        if( $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+        if( ! $this->amIAuthorOfProblem($problem->id) ) return abort(404);
         
         if( $problem )
             ProblemService::updateProblemStatus($problem->id, $request->status);

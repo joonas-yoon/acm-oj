@@ -59,9 +59,9 @@
   <h2 class="ui header">
     {{ $problem->title }}
     @if( Sentinel::check() )
-      @if( ($uac = ($problem->statisticses->first()? $problem->statisticses->first()->count: -1)) > 0 )
+      @if( $problem->userAccept > 0 )
         <a class="ui green basic label">해결</a>
-      @elseif( $uac == 0 )
+      @elseif( $problem->userAccept == 0 )
         <a class="ui red basic label">도전 중</a>
       @endif
     @endif
@@ -88,9 +88,14 @@
     </td>
     <td>
       <div class="ui toggle checkbox vhint">
-        <input type="checkbox" name="vhint">
         <label><i class="eye icon"></i></label>
+        <input type="checkbox" name="vhint">
       </div>
+      @if( $problem->userAccept > 0 )
+      <button class="ui icon tiny compact positive add tag button">
+        <i class="plus icon"></i>
+      </button>
+      @endif
     </td>
   </tr></tbody>
   </table>
@@ -148,7 +153,7 @@
     </div>
 
   </div>
-
+  
   <div class="ui horizontal divider">Comments</div>
 
   <div class="ui threaded comments" id="comments">
@@ -245,7 +250,7 @@
   $('.ui.search')
     .search({
       apiSettings: {
-        url: 'custom-search/?q={query}'
+        url: '/search-fast/?q={query}'
       },
       type: 'category'
     })
