@@ -262,17 +262,13 @@ class ProblemsController extends Controller
             return abort(404);
         }
         
-        $problem->description = Markdown::convertToHtml($problem->description);
-        $problem->input       = Markdown::convertToHtml($problem->input);
-        $problem->output      = Markdown::convertToHtml($problem->output);
-        $problem->hint        = Markdown::convertToHtml($problem->hint);
-        
         $problem->userAccept  = $problem->statisticses->first() ?
                                 $problem->statisticses->first()->count : -1;
 
-        $tags = TagService::getPopularTags($problem->id);
+        $tags   = TagService::getPopularTags($problem->id);
+        $myTags = TagService::getTagsByUser($problem->id);
         
-        return view('problems.show', compact('problem', 'tags'));
+        return view('problems.show', compact('problem', 'tags', 'myTags'));
     }
 
     /**
@@ -291,11 +287,6 @@ class ProblemsController extends Controller
         
             if( ! $this->amIAuthorOfProblem($problem->id) ) return abort(404);
         }
-        
-        $problem->description = Markdown::convertToHtml($problem->description);
-        $problem->input       = Markdown::convertToHtml($problem->input);
-        $problem->output      = Markdown::convertToHtml($problem->output);
-        $problem->hint        = Markdown::convertToHtml($problem->hint);
         
         $problem->userAccept  = $problem->statisticses->first() ?
                                 $problem->statisticses->first()->count : -1;

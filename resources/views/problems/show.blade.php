@@ -135,12 +135,24 @@
     <div class="context">
       {!!  $problem->hint !!}
       <div class="vhint tags">
+        <h2 class="ui sub header">이 문제의 인기 태그 TOP3 </h2>
         @if( count($tags) > 0 )
           @foreach( $tags as $tag )
             <a class="ui tag label" href="/tags/{{ $tag->id }}">{{ $tag->name }}</a>
           @endforeach
         @endif
       </div>
+      
+      @if( isset($myTags) && $problem->userAccept > 0 )
+        <h2 class="ui sub header">내가 추가한 태그: </h2>
+        @foreach( $myTags as $tag )
+          @if( $tag->status != \App\Models\Tag::openCode )
+          <a class="ui tag label disabled"><i class="spinner loading icon"></i> {{ $tag->name }} (검토중)</a>
+          @else
+          <a class="ui tag label" href="/tags/{{ $tag->id }}">{{ $tag->name }}</a>
+          @endif
+        @endforeach
+      @endif
     </div>
 
     <div class="ui horizontal divider"><i class="heart icon"></i>&nbsp;Thanks to</div>
@@ -222,8 +234,7 @@
       }
     })
     .dropdown('set selected',[
-      // $tags를 이 사람이 선택한 태그로 수정해야함.
-      @foreach( TagService::getTagsByUser($problem->id) as $tag )
+      @foreach( (isset($myTags) ? $myTags : []) as $tag )
         '{{ $tag->name }}',
       @endforeach
     ])

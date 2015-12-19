@@ -89,7 +89,7 @@
     })
     .dropdown('set selected',[
       // $tags를 이 사람이 선택한 태그로 수정해야함.
-      @foreach( TagService::getTagsByUser($problem->id) as $tag )
+      @foreach( (isset($problem) ? TagService::getTagsByUser($problem->id) : []) as $tag )
         '{{ $tag->name }}',
       @endforeach
     ])
