@@ -59,7 +59,7 @@ class ProblemService extends BaseService
      */    
     public function getProblemThanks($problem_id)
     {
-        return $this->service->getProblemThank($problem_id);
+        return $this->service->getProblemThanks($problem_id);
     }
 
     /**

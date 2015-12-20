@@ -86,7 +86,7 @@ class ProblemServiceProtected extends BaseServiceProtected
     public function getProblemThanks($problem_id)
     {
         return $this->problemThankRepository
-                    ->getProblemThank($problem_id)
+                    ->getProblemThanks($problem_id)
                     ->get();
     }
 

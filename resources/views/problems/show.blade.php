@@ -100,7 +100,7 @@
         <label><i class="eye icon"></i></label>
         <input type="checkbox" name="vhint">
       </div>
-      @if( $problem->userAccept > 0 )
+      @if( ! if_route(['problems.preview']) && $problem->userAccept > 0 )
       <button class="ui icon tiny compact positive add tag button">
         <i class="plus icon"></i>
       </button>
@@ -160,22 +160,21 @@
         @endforeach
       @endif
     </div>
-
+    
+    @if( isset($problem->thanks) )
     <div class="ui horizontal divider"><i class="heart icon"></i>&nbsp;Thanks to</div>
-    <div class="context">
+    <div class="thanks context">
+      @foreach( $problem->thanks as $info )
       <div class="ui label">
-        번역
-        <a class="detail">@author1 @author2</a>
+        {{ $info->thank->name }}
+        <a class="detail" href="/user/{{ $info->user->name }}">{{ $info->user->name }}</a>
       </div>
-      <div class="ui label">
-        오타
-        <a class="detail">@author3</a>
-      </div>
+      @endforeach
     </div>
-
+    @endif
   </div>
   
-  @if( $problem->userAccept > 0 )
+  @if( ! if_route(['problems.preview']) && $problem->userAccept > 0 )
   <div class="ui add tag small modal">
     <div class="header">어떤 알고리즘을 사용하셨나요?</div>
     <div class="content">

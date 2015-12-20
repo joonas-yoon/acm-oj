@@ -268,6 +268,8 @@ class ProblemsController extends Controller
         $tags   = TagService::getPopularTags($problem->id);
         $myTags = TagService::getTagsByUser($problem->id);
         
+        $problem->thanks = ProblemService::getProblemThanks($problem->id);
+        
         return view('problems.show', compact('problem', 'tags', 'myTags'));
     }
 
