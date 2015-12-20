@@ -119,4 +119,17 @@ class StatisticsService extends BaseService
     }
 
 
+    /**
+     * 채점결과 추가하기
+     * 
+     * @param int   $user_id
+     * @param int   $problem_id
+     * @param int   $result_id
+     * @return void
+     */
+    public function addResult($user_id, $problem_id, $result_id)
+    {
+        return $this->service->addResult($user_id, $problem_id, $result_id);
+    }
+
 }

@@ -166,4 +166,43 @@ class StatisticsServiceProtected extends BaseServiceProtected
     }
 
 
+    /**
+     * 채점결과 추가하기
+     *
+     * @param int   $user_id
+     * @param int   $problem_id
+     * @param int   $result_id
+     * @return void
+     */
+    public function addResult($user_id, $problem_id, $result_id)
+    {
+        $statistics = $this->statisticsRepository->firstOrCreate([
+            'user_id' => $user_id,
+            'problem_id' => $problem_id,
+            'result_id' => $result_id
+        ]);
+        
+        $statistics->increment('count');
+        
+        $problemStatistics = $this->problemStatisticsRepository->firstOrCreate([
+            'problem_id' => $problem_id,
+            'result_id' => $result_id
+        ]);
+        
+        $problemStatistics->increment('count');
+        
+        $userStatistics = $this->userStatisticsRepository->firstOrCreate([
+            'user_id' => $user_id,
+            'result_id' => $result_id
+        ]);
+        
+        $userStatistics->increment('count');
+        
+        if($result_id == Result::acceptCode && $statistics->count == 1)
+        {
+            $user = $this->userRepository->get($user_id);
+            $user->increment('total_clear');
+        }
+    }
+
 }

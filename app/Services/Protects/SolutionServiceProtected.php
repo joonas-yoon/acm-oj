@@ -103,25 +103,30 @@ class SolutionServiceProtected extends BaseServiceProtected
     
     
     /**
-     * 결과 업데이트 (관리자용)
+     * 강제로 채점하기 (관리자용)
      *
      * @param int $solution_id
      * @param int $result_id
      * @return boolean
      */
-    public function updateResult($solution_id, $result_id)
+    public function updateReadyToResult($solution_id, $result_id)
     {
-        /*
         $solution = $this->solutionRepository->get($solution_id);
-        $statistics = Statistics::firstOrCreate([
-            'user_id' => $solution->user_id, 
-            'problem_id' => $solution->problem_id,
-            'result_id' => $result_id
-        ]);
-        $statistics->increment('count');
-        */
-        return $this->solutionRepository
-                    ->update($solution_id, ['result_id' => $result_id]);
+        if(!$solution || $solution->result_id > 3)
+            return false;
+        
+        DB::beginTransaction();
+        try {
+            $this->statisticsService
+                 ->addResult($solution->user_id, $solution->problem_id, $result_id);
+        
+            $solution->update(['result_id' => $result_id]);
+        } catch(\Exception $e) {
+            DB::rollback();
+            abort(404);
+        }
+        DB::commit();
+        return true;
     }
     
     /**

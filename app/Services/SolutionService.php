@@ -51,15 +51,17 @@ class SolutionService extends BaseService
     
     
     /**
-     * 결과 업데이트 (관리자용)
+     * 강제로 채점하기 (관리자용)
      *
      * @param int $solution_id
      * @param int $result_id
      * @return boolean
      */
-    public function updateResult($solution_id, $result_id)
+    public function updateReadyToResult($solution_id, $result_id)
     {
-        return $this->service->updateResult($solution_id, $result_id);
+        if($result_id < 4)
+            return false;
+        return $this->service->updateReadyToResult($solution_id, $result_id);
     }
     
     /**
