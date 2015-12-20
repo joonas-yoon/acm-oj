@@ -1,5 +1,11 @@
 @extends('master')
 
+@section('head')
+  <!-- prism source code highlighter -->
+  <link href="/assets/prism.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/assets/prism.js"></script>
+@stop
+
 @section('title')
 {{ $problem->id }}번 - {{ $problem->title }}
 @stop

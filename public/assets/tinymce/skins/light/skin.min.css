@@ -14,9 +14,6 @@
 .mce-menu-item.mce-disabled * { color: #ddd !important; }
 .mce-edit-area { border: 0 solid #ddd; border-width: 1px !important; }
 
-
-
-.mce-toolbar.mce-abs-layout-item
-.mce-flow-layout .mce-toolbar .mce-btn {
-    background: #000;
-}
+/**
+ *  테이블 선택 시 나타나는 오버레이 버튼들 CSS 수정 필요.
+ */
