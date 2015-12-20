@@ -25,7 +25,7 @@ class TagRepository extends BaseRepository
     
     public function getTagsWithProblem()
     {
-        return $this->model->withProblemTag();
+        return $this->model->withProblemTag(Problem::openCode);
     }
     
     public function getOpenTagsWithProblem()

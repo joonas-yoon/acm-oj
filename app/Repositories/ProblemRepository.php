@@ -72,6 +72,7 @@ class ProblemRepository extends BaseRepository
     public function getAcceptProblemsByUser($user_id)
     {
         return $this->model->list()
+                    ->whereStatus(Problem::openCode)
                     ->whereHas('statisticses', function($query) use ($user_id) {
                        $query->whereUser($user_id)
                              ->whereResult(Result::acceptCode)
@@ -82,6 +83,7 @@ class ProblemRepository extends BaseRepository
     public function getTriedProblemsByUser($user_id)
     {
         return $this->model->list()
+                    ->whereStatus(Problem::openCode)
                     ->whereHas('statisticses', function($query) use ($user_id) {
                        $query->whereUser($user_id)
                              ->whereResult(Result::acceptCode)

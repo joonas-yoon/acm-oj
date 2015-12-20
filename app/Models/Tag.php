@@ -46,13 +46,13 @@ class Tag extends Model
     
     public function scopeWithProblemTag($query, $status = -1)
     {
-        if( $status < 0 )
+        if( $status == -1 )
             return $query->with('problemTags');
         
         return $query->with(['problemTags' => function($query2) use ($status) {
                         $query2->whereHas('problem', function($query3) use ($status) {
                             $query3->whereStatus($status);
-                        });
+                        })->whereCountUp(0);
                     }]);
     }
     
