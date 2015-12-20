@@ -38,7 +38,7 @@ html, body {
     padding: 0;
 }
 
-html,body,div,header,footer,section,
+html,body,header,footer,section,
 a,fieldset,form,header,image,img,input,label,nav,p,table,tbody,td,textarea,th,tr{
     font-family: Lato,'Noto Sans KR','Nanum Barun Gothic','Helvetica Neue',AppleGothic,Arial,Helvetica,sans-serif;
 }
