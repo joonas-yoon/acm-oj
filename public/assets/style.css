@@ -10,30 +10,24 @@ html, body {
 }
 
 html,body,div,header,footer,section,
-a,fieldset,form,header,image,img,input,label,
-nav,p,table,tbody,td,textarea,th,tr
-{
-    font-family: 'Nanum Barun Gothic',Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+a,fieldset,form,header,image,img,input,label,nav,p,table,tbody,td,textarea,th,tr{
+    font-family: 'Nanum Barun Gothic',Lato,'Helvetica Neue',AppleGothic,Arial,Helvetica,sans-serif;
 }
+pre, code { font-family: Consolas,Monaco,'Andale Mono','Ubuntu Mono',AppleGothic,monospace !important; }
 
-
-pre, code {
-    font-family: Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace !important;
-}
-
-#footer {
-    padding-top: 3em;
-}
+#footer { padding-top: 3em; }
+#MathJax_Message { display: none !important; }
 
 /**
  *
  * Override Derived Semantic Elements
  *
  */
+ 
 .ui.header, .ui.button,
 .ui.form input:not([type]), .ui.form input[type=text], .ui.form input[type=email], .ui.form input[type=search], .ui.form input[type=password], .ui.form input[type=date], .ui.form input[type=datetime-local], .ui.form input[type=tel], .ui.form input[type=time], .ui.form input[type=url], .ui.form input[type=number]
 {
-    font-family: 'Nanum Barun Gothic',Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+    font-family: 'Nanum Barun Gothic',Lato,'Helvetica Neue',AppleGothic,Arial,Helvetica,sans-serif;
 }
 
 .ui.main.container {
