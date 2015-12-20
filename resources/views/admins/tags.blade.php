@@ -24,7 +24,7 @@
   @include('pagination.default', ['paginator' => $tags])
   
   <div class="ui relaxed middle aligned divided selection list">
-  @foreach( $tags->sortByDesc('updated_at') as $tag )
+  @forelse( $tags->sortByDesc('updated_at') as $tag )
     <div class="item">
       <div class="right floated content">
         <div class="ui icon vk button" data-content="수정하기">
@@ -54,7 +54,13 @@
         @endif
       </div>
     </div>
-  @endforeach
+  @empty
+    <div class="item">
+      <div class="content">
+        없음
+      </div>
+    </div>
+  @endforelse
   </div>
   
   @include('pagination.default', ['paginator' => $tags])

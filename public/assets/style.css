@@ -207,6 +207,9 @@ html, body {
     font-size: medium;
     line-height: 30px;
 }
+#problem .context .table {
+    margin: .75em auto;
+}
 .vhint.tags {
     display: none;
     -webkit-transition: display .2s linear;

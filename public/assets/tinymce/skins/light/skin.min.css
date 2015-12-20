@@ -13,3 +13,10 @@
 .mce-menu-item:hover { background: #eee; }
 .mce-menu-item.mce-disabled * { color: #ddd !important; }
 .mce-edit-area { border: 0 solid #ddd; border-width: 1px !important; }
+
+
+
+.mce-toolbar.mce-abs-layout-item
+.mce-flow-layout .mce-toolbar .mce-btn {
+    background: #000;
+}

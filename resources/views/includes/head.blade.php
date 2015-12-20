@@ -6,6 +6,7 @@
 
     <title>Orion Online Judge</title>
 
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="/assets/semantic-ui/css/semantic.min.css" />
     <link rel="stylesheet" type="text/css" href="/assets/style.css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
