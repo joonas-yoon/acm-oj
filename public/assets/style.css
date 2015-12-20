@@ -36,6 +36,8 @@
 html, body {
     margin: 0;
     padding: 0;
+    color: #333;
+    line-height: 1.4;
 }
 
 html,body,header,footer,section,
@@ -43,6 +45,14 @@ a,fieldset,form,header,image,img,input,label,nav,p,table,tbody,td,textarea,th,tr
     font-family: Lato,'Noto Sans KR','Nanum Barun Gothic','Helvetica Neue',AppleGothic,Arial,Helvetica,sans-serif;
 }
 pre, code, .ace_content { font-family: Consolas,Monaco,'Andale Mono','Ubuntu Mono',AppleGothic,monospace !important; }
+
+blockquote {
+    margin: 10px auto;
+    padding: .75em 2em;
+    border-left: .5em solid #CCC;
+    background: #f5f5f5;
+    color: #555;
+}
 
 #footer { padding-top: 3em; }
 #MathJax_Message { display: none !important; }
@@ -244,7 +254,9 @@ pre, code, .ace_content { font-family: Consolas,Monaco,'Andale Mono','Ubuntu Mon
 #problem .ui.horizontal.divider {
     padding-top: 2.5rem;
 }
-#problem .context {
+#problem .context,
+#problem table {
+    color: #454545;
     font-size: medium;
     line-height: 30px;
 }
