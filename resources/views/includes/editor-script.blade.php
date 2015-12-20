@@ -21,7 +21,7 @@
       relative_urls: false,
       force_br_newlines : true,
       force_p_newlines : false,
-      forced_root_block : 'p',
+      forced_root_block : false,
       remove_linebreaks : true,
     
       height: 300,

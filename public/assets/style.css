@@ -1,3 +1,32 @@
+
+/**
+ *
+ * Define web Font-face
+ *
+ */
+ 
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 100;
+    src: local('Noto Sans Thin'), local('Noto Sans Thin'), local('Noto Sans Thin');
+    src: url(NotoSansKR-Thin-subset.eot);
+    src: url(NotoSansKR-Thin-subset.eot?#iefix) format('embedded-opentype'),
+    url(NotoSansKR-Thin-subset.woff) format('woff'),
+    url(NotoSansKR-Thin-subset.otf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Noto Sans Light'), local('Noto Sans Light'), local('Noto Sans Light');
+    src: url(NotoSansKR-Light-subset.eot);
+    src: url(NotoSansKR-Light-subset.eot?#iefix) format('embedded-opentype'),
+    url(NotoSansKR-Light-subset.woff) format('woff'),
+    url(NotoSansKR-Light-subset.otf) format('truetype');
+}
+
 /**
  *
  * Override Default Elements
@@ -11,9 +40,9 @@ html, body {
 
 html,body,div,header,footer,section,
 a,fieldset,form,header,image,img,input,label,nav,p,table,tbody,td,textarea,th,tr{
-    font-family: 'Nanum Barun Gothic',Lato,'Helvetica Neue',AppleGothic,Arial,Helvetica,sans-serif;
+    font-family: Lato,'Noto Sans KR','Nanum Barun Gothic','Helvetica Neue',AppleGothic,Arial,Helvetica,sans-serif;
 }
-pre, code { font-family: Consolas,Monaco,'Andale Mono','Ubuntu Mono',AppleGothic,monospace !important; }
+pre, code, .ace_content { font-family: Consolas,Monaco,'Andale Mono','Ubuntu Mono',AppleGothic,monospace !important; }
 
 #footer { padding-top: 3em; }
 #MathJax_Message { display: none !important; }
@@ -23,11 +52,12 @@ pre, code { font-family: Consolas,Monaco,'Andale Mono','Ubuntu Mono',AppleGothic
  * Override Derived Semantic Elements
  *
  */
- 
+
 .ui.header, .ui.button,
+.ui.list .list>.item .header, .ui.list>.item .header,
 .ui.form input:not([type]), .ui.form input[type=text], .ui.form input[type=email], .ui.form input[type=search], .ui.form input[type=password], .ui.form input[type=date], .ui.form input[type=datetime-local], .ui.form input[type=tel], .ui.form input[type=time], .ui.form input[type=url], .ui.form input[type=number]
 {
-    font-family: 'Nanum Barun Gothic',Lato,'Helvetica Neue',AppleGothic,Arial,Helvetica,sans-serif;
+    font-family: Lato,'Noto Sans KR','Nanum Barun Gothic','Helvetica Neue',AppleGothic,Arial,Helvetica,sans-serif;
 }
 
 .ui.main.container {
