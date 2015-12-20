@@ -16,16 +16,15 @@
       ,
       plugins : [
         'advlist autolink link image lists table preview visualblocks paste',
-        'code codesample autoresize fontawesome fullscreen'
+        'code codesample fontawesome fullscreen'
       ],
       relative_urls: false,
-      force_br_newlines : true,
+      force_br_newlines : false,
       force_p_newlines : true,
       forced_root_block : '',
+      convert_newlines_to_brs: true,
       remove_linebreaks : true,
       paste_as_text: true,
-      autoresize_bottom_margin: 50,
-      autoresize_max_height: 700,
     
       height: 300,
       content_css: [
@@ -40,15 +39,16 @@
       },
       
       style_formats: [
-        { title: "Headers",
+        { title: "제목글",
           items: [
-            {title: "Header 1", format: "h2", class: 'ui header'},
-            {title: "Header 2", format: "h3", class: 'ui header'},
-            {title: "Header 3", format: "h4", class: 'ui header'},
-            {title: "Header 4", format: "h5", class: 'ui header'},
-            {title: "Header 5", format: "h6", class: 'ui header'}]
+            {title: "제목 1", format: "h2", class: 'ui header'},
+            {title: "제목 2", format: "h3", class: 'ui header'},
+            {title: "제목 3", format: "h4", class: 'ui header'},
+            {title: "제목 4", format: "h5", class: 'ui header'},
+            {title: "제목 5", format: "h6", class: 'ui header'}]
         },
-        { title: '인용글', block: 'blockquote' },
+        { title: "문단", block: 'p' },
+        { title: "인용글", block: 'blockquote' },
       ],
     });
     tinymce.init({
