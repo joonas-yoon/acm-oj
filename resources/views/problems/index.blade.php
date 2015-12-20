@@ -16,7 +16,7 @@
         <th>문제 제목</th>
         <th>정답</th>
         <th>제출</th>
-        <th>비율</th>
+        <th>정답률</th>
       </tr>
     </thead>
     <tbody>

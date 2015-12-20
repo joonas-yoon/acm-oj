@@ -5,20 +5,19 @@
       <div class="four wide column">
         <h4 class="ui inverted header" style="font-family: Lato;font-weight: 100;font-size: 1.5rem;">Orion Online Judge</h4>
         <div class="ui inverted link list">
-          <a class="item" href="#" target="_blank">소개</a>
-          <a class="item" href="#" target="_blank">도움말</a>
-          <a class="item" href="#" target="_blank">뉴스</a>
+          <a class="item" href="/about" target="_blank">소개</a>
+          <a class="item" href="/help" target="_blank">도움말</a>
+          <a class="item" href="/news" target="_blank">뉴스</a>
           <a class="item" href="#" target="_blank">Slack</a>
-          <a class="item" href="/cla.html" target="_blank">License</a>
+          <a class="item" href="/license" target="_blank">License</a>
         </div>
       </div>
       <div class="four wide column">
         <h4 class="ui inverted header">문제</h4>
         <div class="ui inverted link list">
-          <a class="item" href="#">문제 목록</a>
-          <a class="item" href="#">분류: 태그</a>
-          <a class="item" href="#">분류: 난이도</a>
-          <a class="item" href="#">문제 생성</a>
+          <a class="item" href="/problems">문제 목록</a>
+          <a class="item" href="/tags">분류: 태그</a>
+          <a class="item" href="/problems/create/lists">문제 생성</a>
           <a class="item" href="#">문제 번역</a>
           <a class="item" href="#">코드 보기</a>
         </div>
@@ -26,11 +25,11 @@
       <div class="four wide column">
         <h4 class="ui inverted header">OTHER</h4>
         <div class="ui inverted link list">
-          <a class="item" href="#">랭킹</a>
-          <a class="item" href="#">게시판</a>
+          <a class="item" href="/rank">랭킹</a>
+          <a class="item" href="/posts">게시판</a>
           <a class="item" href="#">팀 게시판</a>
           <a class="item" href="#">팀 대회</a>
-          <a class="item" href="#">위키</a>
+          <a class="item" href="/wiki">위키</a>
         </div>
       </div>
 

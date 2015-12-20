@@ -339,7 +339,7 @@ class ProblemsController extends Controller
         TagService::insertTags($problem->id, (array)$tags);
         
         if( $problem->status == Problem::openCode )
-            return redirect( action('ProblemsController@index', $problem->id) );
+            return redirect( action('ProblemsController@show', $problem->id) );
         else
             return redirect( action('ProblemsController@preview', $problem->id) );
     }

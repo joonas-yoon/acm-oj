@@ -334,12 +334,6 @@
 
 @section('script')
   <script>
-  $('.ui.sticky')
-    .sticky({
-      context: '#problem',
-      offset: 10
-    })
-  ;
   $('.ui.search')
     .search({
       apiSettings: {
