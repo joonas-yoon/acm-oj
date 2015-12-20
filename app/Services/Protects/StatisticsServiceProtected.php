@@ -49,7 +49,7 @@ class StatisticsServiceProtected extends BaseServiceProtected
     public function getRate($acceptCount, $submitCount)
     {
         if($submitCount)
-            return 100 * $acceptCount / ($acceptCount + $submitCount);
+            return 100 * $acceptCount / ($submitCount);
         return 0;
     }
     
