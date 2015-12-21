@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Result,
-    App\Models\Language;
+    App\Models\Language,
+    App\Models\Problem;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -114,6 +115,9 @@ class SolutionsController extends Controller
         $code = $solution->code;
 
         if( $solution->is_hidden )
+            return abort(404);
+        
+        if( $solution->problem->status != Problem::openCode )
             return abort(404);
                 
         if( Sentinel::getUser()->id != $solution->user_id ) {

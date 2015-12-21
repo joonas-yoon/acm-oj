@@ -77,6 +77,7 @@ Route::group(['prefix' => 'tags', 'as' => 'tags'], function()
     {
         Route::get('/', 'TagsController@show')->name('.show');
         Route::get('problems', 'TagsController@problems')->name('.problems');
+        Route::get('publish/{yes?}', 'TagsController@publish')->name('.publish');
     });
 });
 

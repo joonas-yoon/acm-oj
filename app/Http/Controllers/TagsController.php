@@ -63,6 +63,24 @@ class TagsController extends Controller
     }
     
     /**
+     * Update status of the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function publish($id, $status = 'n')
+    {
+        if( ! is_admin() ) return abort(404);
+        
+        $tag = Tag::find($id);
+        $status = $status == 'y' ? (Tag::openCode) : (Tag::hiddenCode);
+        
+        TagService::updateTag($tag->id, $status);
+        
+        return redirect()->back()->with('success', '['.$tag->name.']을 공개했습니다.');
+    }
+    
+    /**
      * Display a listing of the resource with its problems connected;
      *
      * @return \Illuminate\Http\Response
