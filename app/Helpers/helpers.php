@@ -82,3 +82,22 @@ if (!function_exists('is_admin')) {
         return $user && $user->inRole($admin);
     }
 }
+
+if (!function_exists('paging_query')) {
+    /**
+     * Add or Change value of query named 'page' on current url
+     * 
+     * @param string  $url
+     * @param int     $page
+     *
+     * @return bool
+     */
+    function paging_query($query, $page, $lastPage = null)
+    {
+        parse_str($query, $params);
+        if( $page < 1 ) $page = 1;
+        if( $lastPage && $page > $lastPage ) $page = $lastPage;
+        $params['page'] = $page;
+        return implode('&', array_map(function ($v, $k) { return sprintf("%s=%s", $k, $v); }, $params, array_keys($params)));
+    }
+}
