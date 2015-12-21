@@ -61,9 +61,10 @@ Route::group(['prefix' => 'problems'], function()
         'uses' => 'ProblemsController@preview'
     ]);
     
-    Route::post('{problems}/status', 'ProblemsController@updateStatus');
-    Route::post('{problems}/insert/tag', 'ProblemsController@insertTags');
-    Route::get('{problems}/publish/{bool?}', 'ProblemsController@publish');
+    Route::post('{problems}/status',          'ProblemsController@updateStatus');
+    Route::get ('{problems}/publish/{bool?}', 'ProblemsController@publish');
+    Route::post('{problems}/insert/tag',      'ProblemsController@insertTags');
+    Route::get ('{problems}/download/data',   'ProblemsController@downloadData');
 });
 
 Route::resource('problems', 'ProblemsController');

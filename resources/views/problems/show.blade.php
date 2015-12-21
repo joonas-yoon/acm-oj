@@ -32,7 +32,13 @@
         <div class="header">
           {{ $problem->id }}번 미리보기
         </div>
-        <p>이 문제에 대한 행동을 취할 수 있습니다.</p>
+        <p>
+          이 문제에 대한 행동을 취할 수 있습니다.
+          @if( $problem->datafiles )
+          <br/>데이터가 추가된 상태입니다!
+          @endif
+        </p>
+        
         @if( is_admin() )
           @if( $problem->status == App\Models\Problem::readyCode )
           <a class="ui labeled icon positive button" href="/problems/{{ $problem->id }}/publish">
@@ -44,9 +50,17 @@
           </a>
           @endif
         @endif
+        
+        @if( $problem->datafiles )
+        <a class="ui labeled icon teal button" href="/problems/create/data?problem={{ $problem->id }}">
+          <i class="inbox icon"></i> 데이터 변경
+        </a>
+        @else
         <a class="ui labeled icon basic teal button" href="/problems/create/data?problem={{ $problem->id }}">
           <i class="inbox icon"></i> 데이터 추가
         </a>
+        @endif
+        
         <a class="ui labeled icon vk button" href="/problems/{{ $problem->id }}/edit">
           <i class="pencil icon"></i> 수정하기
         </a>

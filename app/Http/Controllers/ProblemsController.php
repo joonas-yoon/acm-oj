@@ -16,11 +16,10 @@ use StatisticsService;
 use ProblemService;
 use TagService;
 
-use GrahamCampbell\Markdown\Facades\Markdown;
-
 use Input;
 use Storage;
 use Sentinel;
+use Response;
 
 class ProblemsController extends Controller
 {
@@ -81,6 +80,9 @@ class ProblemsController extends Controller
     public function creatingProblemsList()
     {
         $problems = ProblemService::getReadyProblemsByAuthor();
+        foreach($problems as $p) {
+            $p->datafiles = $this->hasData($p->id);
+        }
 
         $title = '문제 제작 - '.$problems->currentPage().' 페이지';
         return view('problems.maker.list', compact('problems', 'title'));
@@ -98,7 +100,9 @@ class ProblemsController extends Controller
             
             if( ! $this->amIAuthorOfProblem($problem_id) ) return abort(404);
             
-            return view('problems.maker.data', compact('problem_id'));
+            $hasData = $this->hasData($problem_id);
+            
+            return view('problems.maker.data', compact('problem_id', 'hasData'));
         }
         else if( $step == 'finish' ){
             return view('problems.maker.finish');
@@ -262,8 +266,8 @@ class ProblemsController extends Controller
             return abort(404);
         }
         
-        $problem->userAccept  = $problem->statisticses->first() ?
-                                $problem->statisticses->first()->count : -1;
+        $problem->userAccept = Sentinel::check() && $problem->statisticses->first() ?
+                               $problem->statisticses->first()->count : -1;
 
         $tags   = TagService::getPopularTags($problem->id);
         $myTags = TagService::getTagsByUser($problem->id);
@@ -290,6 +294,7 @@ class ProblemsController extends Controller
             if( ! $this->amIAuthorOfProblem($problem->id) ) return abort(404);
         }
         
+        $problem->datafiles = $this->hasData($problem->id);
         $problem->userAccept  = $problem->statisticses->first() ?
                                 $problem->statisticses->first()->count : -1;
 
@@ -404,6 +409,33 @@ class ProblemsController extends Controller
         
         return redirect()->back()->with('error', '요청에 실패했습니다');
     }
+    
+    /**
+     * Download dataset of the specified problem from storage.
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function downloadData($problem_id)
+    {
+        if( ! $this->amIAuthorOfProblem($problem_id) )
+            return abort(404);
+        if( ! $this->hasData($problem_id) )
+            return abort(404);
+        
+        $datDirectory = storage_path('app/data');
+        $fileName = "{$problem_id}-dataset.zip";
+        
+        $cmd = "cd {$datDirectory} && mkdir -p zip && zip zip/{$fileName} ".
+            $problem_id.'/*.in '. $problem_id .'/*.out';
+        shell_exec( $cmd );
+        
+        $path = $datDirectory .'/zip/'. $problem_id.'-dataset.zip';
+        $header = array(
+            'Content-Type' => 'application/octet-stream',
+        );
+        return Response::download($path, "{$problem_id}-dataset.zip", $header);
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -424,6 +456,16 @@ class ProblemsController extends Controller
         if( ! Sentinel::check() ) return redirect()->guest('login');
         $author_id = ProblemService::getAuthorOfProblem($problem_id);
         return (Sentinel::getUser()->id == $author_id);
+    }
+    
+    private function hasData($problem_id)
+    {
+        if( ! $this->amIAuthorOfProblem($problem_id) )
+            return false;
+            
+        $fileDirectory = "data/{$problem_id}";
+        
+        return Storage::has($fileDirectory);
     }
 }
 
