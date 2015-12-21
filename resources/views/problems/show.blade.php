@@ -17,14 +17,12 @@
   @include('problems.nav', ['problem_id' => $problem->id])
   
   @if( if_route(['problems.preview']) )
-    @if( $problem->status == App\Models\Problem::hiddenCode )
+  
+    @if( $problem->is_hiddenCode )
     <div class="ui icon warning message">
       <i class="warning icon"></i>
       <div class="content">
         <div class="header">현재 작성중인 문제입니다.</div>
-        <p>이 문제에 대한 행동을 취할 수 없습니다.</p>
-      </div>
-    </div>
     @else
     <div class="ui icon info message">
       <i class="book icon"></i>
@@ -32,21 +30,29 @@
         <div class="header">
           {{ $problem->id }}번 미리보기
         </div>
+    @endif
+    
         <p>
-          이 문제에 대한 행동을 취할 수 있습니다.
+          이 문제에 대한 행동을 다음과 같이 취할 수 있습니다.
           @if( $problem->datafiles )
           <br/>데이터가 추가된 상태입니다!
           @endif
         </p>
         
         @if( is_admin() )
-          @if( $problem->status == App\Models\Problem::readyCode )
-          <a class="ui labeled icon positive button" href="/problems/{{ $problem->id }}/publish">
+          @if( $problem->is_readyCode )
+          <a class="ui labeled icon positive button" href="/problems/{{ $problem->id }}/publish/open">
             <i class="plus icon"></i> 공개하기
           </a>
-          @elseif( $problem->status == App\Models\Problem::openCode )
-          <a class="ui labeled icon negative button" href="/problems/{{ $problem->id }}/publish/cancel">
+          @elseif( $problem->is_openCode )
+          <a class="ui labeled icon negative button" href="/problems/{{ $problem->id }}/publish/ready">
             <i class="minus icon"></i> 보류하기
+          </a>
+          @endif
+          
+          @if( ! $problem->is_hiddenCode )
+          <a class="ui labeled icon button" href="/problems/{{ $problem->id }}/publish/hidden">
+            <i class="ban icon"></i> 돌려보내기
           </a>
           @endif
         @endif
@@ -61,15 +67,17 @@
         </a>
         @endif
         
+        @if( is_admin() || (!is_admin() && $problem->is_hiddenCode) )
         <a class="ui labeled icon vk button" href="/problems/{{ $problem->id }}/edit">
           <i class="pencil icon"></i> 수정하기
         </a>
+        @endif
         <a class="ui labeled icon negative button">
           <i class="trash icon"></i> 삭제하기
         </a>
-      </div>
-    </div>
-    @endif
+        
+      </div><!-- /content -->
+    </div><!-- /message -->
   @endif
   
   @if( $problem->is_special )
@@ -78,14 +86,12 @@
 
   <h2 class="ui header">
     {{ $problem->title }}
-    @if( Sentinel::check() )
-      @if( $problem->userAccept > 0 )
-        <a class="ui green basic label">해결</a>
-      @elseif( $problem->userAccept == 0 )
-        <a class="ui red basic label">도전 중</a>
-      @endif
+    @if( $problem->userAccept > 0 )
+      <a class="ui green basic label">해결</a>
+    @elseif( $problem->userAccept == 0 )
+      <a class="ui red basic label">도전 중</a>
     @endif
-    @if( is_admin() && ! if_route(['problems.preview']) )
+    @if( is_admin() )
       <a href="/problems/preview/{{ $problem->id }}"><i class="setting icon"></i></a>
     @endif
   </h2>
@@ -114,7 +120,7 @@
         <label><i class="eye icon"></i></label>
         <input type="checkbox" name="vhint">
       </div>
-      @if( ! if_route(['problems.preview']) && $problem->userAccept > 0 )
+      @if( isset($myTags) && $problem->userAccept > 0 )
       <button class="ui icon tiny compact positive add tag button">
         <i class="plus icon"></i>
       </button>
@@ -188,7 +194,7 @@
     @endif
   </div>
   
-  @if( ! if_route(['problems.preview']) && $problem->userAccept > 0 )
+  @if( isset($myTags) && $problem->userAccept > 0 )
   <div class="ui add tag small modal">
     <div class="header">어떤 알고리즘을 사용하셨나요?</div>
     <div class="content">

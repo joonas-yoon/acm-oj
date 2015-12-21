@@ -90,6 +90,9 @@ blockquote {
     padding: .5833em .833em;
     border-radius: 0 .28571429rem .28571429rem 0;
 }
+.ui.labeled.icon.button, .ui.labeled.icon.buttons .button {
+    margin: 3px 2px;
+}
 .ui.feed>.event>.label {
     align-self: center;
 }

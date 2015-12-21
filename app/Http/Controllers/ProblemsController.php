@@ -266,15 +266,9 @@ class ProblemsController extends Controller
             return abort(404);
         }
         
-        $problem->userAccept = Sentinel::check() && $problem->statisticses->first() ?
-                               $problem->statisticses->first()->count : -1;
-
-        $tags   = TagService::getPopularTags($problem->id);
         $myTags = TagService::getTagsByUser($problem->id);
         
-        $problem->thanks = ProblemService::getProblemThanks($problem->id);
-        
-        return view('problems.show', compact('problem', 'tags', 'myTags'));
+        return $this->show_protected($problem, compact('myTags'));
     }
 
     /**
@@ -289,18 +283,32 @@ class ProblemsController extends Controller
         $problem = ProblemService::getProblem($id);
         
         if( ! is_admin() ) {
-            if( $problem->status != Problem::hiddenCode ) return abort(404);
-        
-            if( ! $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+            if( $problem->status == Problem::openCode ) return abort(404);
         }
         
-        $problem->datafiles = $this->hasData($problem->id);
-        $problem->userAccept  = $problem->statisticses->first() ?
-                                $problem->statisticses->first()->count : -1;
+        if( ! $this->amIAuthorOfProblem($problem->id) ) return abort(404);
+        
+        $problem->is_hiddenCode = $problem->status == Problem::hiddenCode;
+        $problem->is_readyCode  = $problem->status == Problem::readyCode;
+        $problem->is_openCode   = $problem->status == Problem::openCode;
+        
+        return $this->show_protected($problem);
+    }
+    
+    /**
+     * Show 와 Preview 에서 공유하는 뷰
+     */
+    private function show_protected($problem, array $compact = [])
+    {
+        $problem->datafiles  = $this->hasData($problem->id);
+        $problem->userAccept = Sentinel::check() && $problem->statisticses->first() ?
+                               $problem->statisticses->first()->count : -1;
 
         $tags = TagService::getPopularTags($problem->id);
+        
+        $problem->thanks = ProblemService::getProblemThanks($problem->id);
 
-        return view('problems.show', compact('problem', 'tags'));
+        return view('problems.show', $compact + compact('problem', 'tags'));
     }
 
     /**
@@ -378,16 +386,20 @@ class ProblemsController extends Controller
     }
     
     /**
-     * Publish problem with changing status 0 to 1
+     * Change the specifited resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Redirect
      */
-    public function publish($problem_id, $bool = '')
+    public function publish($problem_id, $status = 'hidden')
     {
         $problem = ProblemService::getProblem($problem_id);
         if( is_admin() && $problem ) {
-            ProblemService::updateProblemStatus($problem->id, $bool != 'cancel' ? Problem::openCode : Problem::readyCode);
+            if( $status == 'ready' ) $status = Problem::readyCode;
+            else if( $status == 'open' ) $status = Problem::openCode;
+            else $status = Problem::hiddenCode;
+            
+            ProblemService::updateProblemStatus($problem->id, $status);
             return redirect()->back()->with('success', '관리자에게 성공적으로 요청되었습니다.');
         }
         return redirect()->back()->with('error', '요청에 실패했습니다');
