@@ -38,16 +38,18 @@
           <div class="ui green segment">이 문제는 어때요?</div>
           <?php
           $randProblem = ProblemService::getOpenProblems();
-          $ac = 0;
-          $sc = 0;
-          if( $randProblem->count() > 0 ) {
-            $temp = $randProblem->random();
-            $ac = ($temp->problemStatisticses->first()? $temp->problemStatisticses->first()->count : 0);
-            $sc = $temp->total_submit;
+          $hasProblem = $randProblem->count() > 0;
+          if( $hasProblem ) {
+            $randProblem = $randProblem->random();
+            $ac = ($randProblem->problemStatisticses->first()? $randProblem->problemStatisticses->first()->count : 0);
+            $sc = $randProblem->total_submit;
+          } else {
+            $ac = 0;
+            $sc = 0;
           }
           $rate = number_format(StatisticsService::getRate($ac, $sc), 2);
           ?>
-          @if( $randProblem->count() > 0 )
+          @if( $hasProblem )
           <div class="ui card">
             @if( Sentinel::check() )
               {{-- 맞은 문제가 안나오고 전체 문제가 카운팅 되고 있음 --}}
