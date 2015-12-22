@@ -16,10 +16,18 @@
     <a class="item {{ active_class(if_uri(['admin'])) }}" href="/admin">
       대쉬보드
     </a>
-    <a class="item {{ active_class(if_uri_start(['admin/problems'])) }}" href="/admin/problems">
-      문제 관리
-    </a>
-    <a class="item {{ active_class(if_uri_start(['admin/tags'])) }}" href="/admin/tags">
+    <div class="item">
+      <div class="header">문제 관리</div>
+      <div class="menu">
+        <a class="item {{ active_class(if_uri(['admin/problems'])) }}" href="/admin/problems">
+          대기중인 문제 목록
+        </a>
+        <a class="item {{ active_class(if_uri(['admin/problems/rejudge'])) }}" href="/admin/problems/rejudge">
+          재채점
+        </a>
+      </div>
+    </div>
+    <a class="item {{ active_class(if_uri(['admin/tags'])) }}" href="/admin/tags">
       태그 관리
     </a>
   </div>

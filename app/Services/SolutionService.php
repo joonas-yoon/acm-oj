@@ -83,8 +83,8 @@ class SolutionService extends BaseService
      */
     public function rejudge($problem_id)
     {
-        //if(!is_admin())
-        //    abort(404);
+        if( ! is_admin() ) return abort(404);
+        
         return $this->service->rejudge($problem_id);
     }
 }

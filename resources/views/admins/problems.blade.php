@@ -1,7 +1,7 @@
 @extends('admins.layouts.master')
 
 @section('title')
-  문제 관리
+  관리자 - 문제 관리
 @stop
 
 @section('pre-content')
@@ -29,22 +29,18 @@
           &nbsp;가 대기중으로 전환되었습니다.
           <div class="date" data-content="{{ $problem->updated_at }}" data-variation="inverted">{{ $problem->updated_at->diffForHumans() }}</div>
         </div>
-        
-        @if( count($problem->tags) > 0 )
+        @if( ($hasData = ProblemService::hasData($problem->id)) || count($problem->tags) > 0 )
         <div class="extra content">
+          @if( $hasData )
+            <a href="/problems/create/data/?problem_id={{ $problem->id }}" class="ui tiny compact basic blue button"><i class="check icon"></i> 데이터 추가됨</a>
+          @endif
+          
           @foreach( $problem->tags as $tag )
           <a class="ui label {{ $tag->status ? '':'disabled' }}" href="/tags/{{ $tag->id }}">
             <i class="tag icon"></i>
             {{ $tag->name }}
-            
           </a>
           @endforeach
-        </div>
-        @endif
-        
-        @if( ProblemService::hasData($problem->id) )
-        <div class="extra content">
-          <a href="/problems/create/data/?problem_id={{ $problem->id }}" class="ui tiny compact basic blue button"><i class="check icon"></i> 데이터 추가됨</a>
         </div>
         @endif
         

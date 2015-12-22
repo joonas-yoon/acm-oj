@@ -150,7 +150,6 @@ class SolutionServiceProtected extends BaseServiceProtected
         }
         DB::commit();
         return true;
-             
     }
     
     /**
