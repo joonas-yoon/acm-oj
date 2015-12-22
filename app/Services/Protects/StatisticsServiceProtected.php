@@ -224,17 +224,12 @@ class StatisticsServiceProtected extends BaseServiceProtected
         
         $currentUser = 0;
         $submitCount = 0;
-        $accept = 0;
         foreach($statisticses as $statistics)
         {
             if($statistics->user_id != $currentUser)
             {
-                if($currentUser != 0 && $submitCount > 0)
-                    $this->userRepository->subSubmit($currentUser, $submitCount, $accept);
-
                 $currentUser = $statistics->user_id;
                 $submitCount = 0;
-                $accept = 0;
             }
             $submitCount += $statistics->count;
             
@@ -242,10 +237,8 @@ class StatisticsServiceProtected extends BaseServiceProtected
                 $this->userStatisticsRepository
                      ->subCount($statistics->user_id, $statistics->result_id, $statistics->count);
             if($statistics->result_id == Result::acceptCode && $statistics->count > 0)
-                $accept = 1;
+                $this->userRepository->subSubmit($currentUser, 0, 1);
         }
-        if($currentUser != 0 && $submitCount > 0)
-            $this->userRepository->subSubmit($currentUser, $submitCount, $accept);
         
         $this->statisticsRepository
              ->removeByProblem($problem_id);
