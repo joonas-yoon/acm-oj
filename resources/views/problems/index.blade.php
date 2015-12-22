@@ -13,10 +13,10 @@
     <thead>
       <tr>
         <th class="one wide">번호</th>
-        <th>문제 제목</th>
-        <th>정답</th>
-        <th>제출</th>
-        <th>정답률</th>
+        <th class="ten wide">문제 제목</th>
+        <th class="one wide">정답</th>
+        <th class="one wide">제출</th>
+        <th class="three wide">정답률</th>
       </tr>
     </thead>
     <tbody>

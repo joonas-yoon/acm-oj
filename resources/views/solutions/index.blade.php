@@ -56,15 +56,15 @@
   <table class="ui striped blue table compact unstackable">
     <thead>
       <tr>
-        <th>채점 번호</th>
-        <th>제출자</th>
-        <th>문제 번호</th>
+        <th style="width:7%;">채점 번호</th>
+        <th style="width:12%;">제출자</th>
+        <th style="width:10%;">문제 번호</th>
         <th>결과</th>
-        <th>시간</th>
-        <th>메모리</th>
-        <th>언어</th>
-        <th>코드 길이</th>
-        <th>제출한 시간</th>
+        <th style="width:10%;">시간</th>
+        <th style="width:10%;">메모리</th>
+        <th style="width:10%;">언어</th>
+        <th style="width:10%;">코드 길이</th>
+        <th style="width:10%;">제출한 시간</th>
       </tr>
     </thead>
     <tbody>
