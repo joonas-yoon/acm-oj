@@ -21,7 +21,6 @@ class ProblemService extends BaseService
      * 문제 만들기
      *
      * @param array $values
-     * @param int   $user_id
      * @return App\Models\Problem
      */
     public function createProblem(array $values)
@@ -86,7 +85,6 @@ class ProblemService extends BaseService
     /**
      * 유저가 만든 문제 목록 가져오기
      *
-     * @param int   $user_id
      * @return paginate of problem
      */
     public function getProblemsByAuthor()
@@ -98,7 +96,6 @@ class ProblemService extends BaseService
     /**
      * 유저가 만든 문제 목록 중 대기중인 문제 가져오기
      *
-     * @param int   $user_id
      * @return paginate of problem
      */
     public function getReadyProblemsByAuthor()
@@ -172,5 +169,34 @@ class ProblemService extends BaseService
     {
         $values = array_only($values, Problem::$editable);
         return $this->service->updateProblem($problem_id, $values);
+    }
+    
+    /**
+     * 해당 문제를 압축한 후 압축 파일의 경로를 반환 
+     *
+     * @param int   $problem_id
+     * @return zip file's path of the specified resource
+     */
+    public function zipData($problem_id)
+    {
+        if( ! $this->hasData($problem_id) )
+            return abort(404);
+            
+        return $this->service->zipData($problem_id);
+    }
+    
+    /**
+     * 해당 문제에 대한 데이터가 존재하는 지 확인
+     *
+     * @param int   $problem_id
+     * @return boolean
+     */
+    public function hasData($problem_id)
+    {
+        if( is_admin() )
+            return $this->service->hasData($problem_id);
+        else if( $this->user && $this->user->id == $this->getAuthorOfProblem($problem_id) )
+            return $this->service->hasData($problem_id);
+        return false;
     }
 }

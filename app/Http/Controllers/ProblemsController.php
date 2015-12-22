@@ -81,7 +81,7 @@ class ProblemsController extends Controller
     {
         $problems = ProblemService::getReadyProblemsByAuthor();
         foreach($problems as $p) {
-            $p->datafiles = $this->hasData($p->id);
+            $p->datafiles = ProblemService::hasData($p->id);
         }
 
         $title = '문제 제작 - '.$problems->currentPage().' 페이지';
@@ -100,7 +100,7 @@ class ProblemsController extends Controller
             
             if( ! $this->amIAuthorOfProblem($problem_id) ) return abort(404);
             
-            $hasData = $this->hasData($problem_id);
+            $hasData = ProblemService::hasData($problem_id);
             
             return view('problems.maker.data', compact('problem_id', 'hasData'));
         }
@@ -300,7 +300,7 @@ class ProblemsController extends Controller
      */
     private function show_protected($problem, array $compact = [])
     {
-        $problem->datafiles  = $this->hasData($problem->id);
+        $problem->datafiles  = ProblemService::hasData($problem->id);
         $problem->userAccept = Sentinel::check() && $problem->statisticses->first() ?
                                $problem->statisticses->first()->count : -1;
 
@@ -430,23 +430,11 @@ class ProblemsController extends Controller
      */
     public function downloadData($problem_id)
     {
-        if( ! $this->amIAuthorOfProblem($problem_id) )
-            return abort(404);
-        if( ! $this->hasData($problem_id) )
-            return abort(404);
-        
-        $datDirectory = storage_path('app/data');
-        $fileName = "{$problem_id}-dataset.zip";
-        
-        $cmd = "cd {$datDirectory} && mkdir -p zip && zip zip/{$fileName} ".
-            $problem_id.'/*.in '. $problem_id .'/*.out';
-        shell_exec( $cmd );
-        
-        $path = $datDirectory .'/zip/'. $problem_id.'-dataset.zip';
+        $path = ProblemService::zipData($problem_id);
         $header = array(
             'Content-Type' => 'application/octet-stream',
         );
-        return Response::download($path, "{$problem_id}-dataset.zip", $header);
+        return Response::download($path, "{$problem_id}번.zip", $header);
     }
 
     /**
@@ -468,16 +456,6 @@ class ProblemsController extends Controller
         if( ! Sentinel::check() ) return redirect()->guest('login');
         $author_id = ProblemService::getAuthorOfProblem($problem_id);
         return (Sentinel::getUser()->id == $author_id);
-    }
-    
-    private function hasData($problem_id)
-    {
-        if( ! $this->amIAuthorOfProblem($problem_id) )
-            return false;
-            
-        $fileDirectory = "data/{$problem_id}";
-        
-        return Storage::has($fileDirectory);
     }
 }
 

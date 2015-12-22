@@ -29,6 +29,7 @@
           &nbsp;가 대기중으로 전환되었습니다.
           <div class="date" data-content="{{ $problem->updated_at }}" data-variation="inverted">{{ $problem->updated_at->diffForHumans() }}</div>
         </div>
+        
         @if( count($problem->tags) > 0 )
         <div class="extra content">
           @foreach( $problem->tags as $tag )
@@ -40,6 +41,13 @@
           @endforeach
         </div>
         @endif
+        
+        @if( ProblemService::hasData($problem->id) )
+        <div class="extra content">
+          <a href="/problems/create/data/?problem_id={{ $problem->id }}" class="ui tiny compact basic blue button"><i class="check icon"></i> 데이터 추가됨</a>
+        </div>
+        @endif
+        
         <div class="meta">
           <a href="/user/{{ $problem->user->first()->name }}"><i class="pencil icon"></i> by {{ $problem->user->first()->name }}</a>
         </div>

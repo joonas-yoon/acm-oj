@@ -9,6 +9,8 @@ use App\Repositories\ProblemRepository,
 
 use App\Models\Thank,
     App\Models\Problem;
+    
+use Storage;
 
 class ProblemServiceProtected extends BaseServiceProtected
 {
@@ -218,5 +220,38 @@ class ProblemServiceProtected extends BaseServiceProtected
     public function updateProblem($problem_id, array $values)
     {
         return $this->problemRepository->update($problem_id, $values);
+    }
+    
+    
+    /**
+     * 해당 문제를 압축한 후 압축 파일의 경로를 반환 
+     *
+     * @param int   $problem_id
+     * @return zip file's path of the specified resource
+     */
+    public function zipData($problem_id)
+    {
+        $datDirectory = storage_path('app/data');
+        $fileName = "{$problem_id}-dataset.zip";
+        
+        $cmd = "cd {$datDirectory} && mkdir -p zip && zip zip/{$fileName} ".
+            $problem_id.'/*.in '. $problem_id .'/*.out';
+        shell_exec( $cmd );
+        
+        $path = $datDirectory .'/zip/'. $problem_id.'-dataset.zip';
+        
+        return $path;
+    }
+    
+    /**
+     * 해당 문제에 대한 데이터가 존재하는 지 확인
+     *
+     * @param int   $problem_id
+     * @return boolean
+     */
+    public function hasData($problem_id)
+    {
+        $fileDirectory = "data/{$problem_id}";
+        return Storage::has($fileDirectory);
     }
 }
