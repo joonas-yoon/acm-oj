@@ -20,6 +20,12 @@ class ProblemStatisticsRepository extends BaseRepository
                     ->first();
     }
     
+    public function remove($problem_id)
+    {
+        return $this->model
+                    ->whereProblem($problem_id)
+                    ->delete();
+    }
 }
 
 ?>

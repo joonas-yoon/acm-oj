@@ -128,4 +128,9 @@ class User extends SentinelUser implements AuthenticatableContract,
     {
         return $query->select(['id', 'name', 'total_submit', 'total_clear']);
     }
+    
+    public function scopeWhereUser($query, $user_id)
+    {
+        return $query->where('id', $user_id);
+    }
 }

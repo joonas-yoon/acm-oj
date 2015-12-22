@@ -205,4 +205,50 @@ class StatisticsServiceProtected extends BaseServiceProtected
         }
     }
 
+    /**
+     * 해당 문제에 관련된 통계 지우기 (관리자 용)
+     * 
+     * @param int   $problem_id
+     * @return void
+     */
+    public function removeStatistics($problem_id)
+    {
+        $this->problemRepository
+             ->update($problem_id, ['total_clear' => 0, 'total_submit' => 0]);
+        $this->problemStatisticsRepository
+             ->remove($problem_id);
+        
+        $statisticses = $this->statisticsRepository
+                             ->getByProblem($problem_id)
+                             ->get();
+        
+        $currentUser = 0;
+        $submitCount = 0;
+        $accept = 0;
+        foreach($statisticses as $statistics)
+        {
+            if($statistics->user_id != $currentUser)
+            {
+                if($currentUser != 0 && $submitCount > 0)
+                    $this->userRepository->subSubmit($currentUser, $submitCount, $accept);
+
+                $currentUser = $statistics->user_id;
+                $submitCount = 0;
+                $accept = 0;
+            }
+            $submitCount += $statistics->count;
+            
+            if($statistics->count > 0)
+                $this->userStatisticsRepository
+                     ->subCount($statistics->user_id, $statistics->result_id, $statistics->count);
+            if($statistics->result_id == Result::acceptCode && $statistics->count > 0)
+                $accept = 1;
+        }
+        if($currentUser != 0 && $submitCount > 0)
+            $this->userRepository->subSubmit($currentUser, $submitCount, $accept);
+        
+        $this->statisticsRepository
+             ->removeByProblem($problem_id);
+    }
+
 }

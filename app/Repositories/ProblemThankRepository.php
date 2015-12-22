@@ -42,5 +42,3 @@ class ProblemThankRepository extends BaseRepository
                     ->firstOrFail()->user_id;
     }
 }
-
-?>

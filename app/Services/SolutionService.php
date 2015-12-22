@@ -74,4 +74,17 @@ class SolutionService extends BaseService
     {
         return $this->service->getSolution($solution_id);
     }
+    
+    /**
+     * 재채점하기 (관리자용)
+     *
+     * @param int $problem_id
+     * @return void
+     */
+    public function rejudge($problem_id)
+    {
+        //if(!is_admin())
+        //    abort(404);
+        return $this->service->rejudge($problem_id);
+    }
 }

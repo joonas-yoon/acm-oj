@@ -132,4 +132,16 @@ class StatisticsService extends BaseService
         return $this->service->addResult($user_id, $problem_id, $result_id);
     }
 
+    /**
+     * 해당 문제에 관련된 통계 지우기 (관리자 용)
+     * 
+     * @param int   $problem_id
+     * @return void
+     */
+    public function removeStatistics($problem_id)
+    {
+        //if(!is_admin())
+        //    abort(404);
+        return $this->service->removeStatistics($problem_id);
+    }
 }

@@ -130,6 +130,30 @@ class SolutionServiceProtected extends BaseServiceProtected
     }
     
     /**
+     * 재채점하기 (관리자용)
+     *
+     * @param int $problem_id
+     * @return void
+     */
+    public function rejudge($problem_id)
+    {
+        DB::beginTransaction();
+        try {
+            $this->statisticsService
+                 ->removeStatistics($problem_id);
+            $this->solutionRepository
+                 ->updateStatusByProblem($problem_id, Result::waitCode);
+        } catch(\Exception $e) {
+            var_dump($e);
+            DB::rollback();
+            abort(404);
+        }
+        DB::commit();
+        return true;
+             
+    }
+    
+    /**
      * 솔루션 가져오기
      *
      * @param int $solution_id

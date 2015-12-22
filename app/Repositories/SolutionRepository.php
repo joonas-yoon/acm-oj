@@ -57,6 +57,12 @@ class SolutionRepository extends BaseRepository
         return $this->model->withWired($user_id)
                     ->whereSolution($solution_id);
     }
+    
+    public function updateStatusByProblem($problem_id, $result_id)
+    {
+        return $this->model->whereProblem($problem_id)
+                    ->update(['result_id' => $result_id]);
+    }
 }
 
 ?>

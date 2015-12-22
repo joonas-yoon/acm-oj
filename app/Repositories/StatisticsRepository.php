@@ -39,6 +39,18 @@ class StatisticsRepository extends BaseRepository
                     ->hasProblemStatus(Problem::openCode)
                     ->orderBy('problem_id');
     }
+    
+    public function getByProblem($problem_id)
+    {
+        return $this->model->whereProblem($problem_id)
+                    ->orderBy('user_id');
+    }
+    
+    public function removeByProblem($problem_id)
+    {
+        return $this->model->whereProblem($problem_id)
+                    ->delete();
+    }
 }
 
 ?>

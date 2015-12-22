@@ -19,6 +19,11 @@ class UserStatisticsRepository extends BaseRepository
                     ->first();
     }
     
+    public function subCount($user_id, $result_id, $count)
+    {
+        return $this->getCount($user_id, $result_id)
+                    ->decrement('count', $count);
+    }
 }
 
 ?>
