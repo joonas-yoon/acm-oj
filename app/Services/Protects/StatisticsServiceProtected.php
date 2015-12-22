@@ -198,10 +198,15 @@ class StatisticsServiceProtected extends BaseServiceProtected
         
         $userStatistics->increment('count');
         
-        if($result_id == Result::acceptCode && $statistics->count == 1)
+        if($result_id == Result::acceptCode)
         {
-            $user = $this->userRepository->get($user_id);
-            $user->increment('total_clear');
+            $problem = $this->problemRepository->get($problem_id);
+            $problem->increment('total_clear');
+            if($statistics->count == 1)
+            {
+                $user = $this->userRepository->get($user_id);
+                $user->increment('total_clear');
+            }
         }
     }
 
@@ -214,7 +219,7 @@ class StatisticsServiceProtected extends BaseServiceProtected
     public function removeStatistics($problem_id)
     {
         $this->problemRepository
-             ->update($problem_id, ['total_clear' => 0, 'total_submit' => 0]);
+             ->update($problem_id, ['total_clear' => 0]);
         $this->problemStatisticsRepository
              ->remove($problem_id);
         
