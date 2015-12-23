@@ -1,5 +1,5 @@
 @if (count($errors) > 0)
-    <div class="ui warning message">
+    <div class="ui red message">
         <i class="close icon"></i>
         <div class="header">
             앗! 문제가 생겼습니다.
@@ -11,3 +11,5 @@
         </ul>
     </div>
 @endif
+
+@include('errors.session')

@@ -128,8 +128,8 @@ Route::group(['prefix' => 'password', 'as' => 'password'], function()
 {
     Route::get('/', function(){ return redirect('/password/reset'); });
     
-    Route::get ('change', 'UsersController@showChangePassword');
-    Route::post('change', 'UsersController@postChangePassword');
+    Route::get  ('change', 'UsersController@showChangePassword');
+    Route::patch('change', 'UsersController@postChangePassword');
     Route::get ('reset', 'UsersController@showResetPassword');
     Route::post('reset/{key}', 'UsersController@postResetPassword');
 });

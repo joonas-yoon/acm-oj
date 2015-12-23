@@ -94,10 +94,21 @@ class UsersController extends Controller
     {
         return $this->showSettings('password');
     }
-    public function postChangePassword(Request $request)
+    public function postChangePassword(Requests\ChangePasswordRequest $request)
     {
-        //
-        return var_dump($request);
+        $user = Sentinel::getUser();
+        $new_password = $request->get('new_password');
+        
+        $credentials = array('password' => $request->get('old_password'));
+        if( ! Sentinel::validateCredentials($user, $credentials) ) {
+            return Redirect::back()->with('error', '비밀번호가 일치하지 않습니다.');
+        }
+        
+        if( ! Sentinel::update($user, ['password' => $new_password]) ) {
+            return Redirect::back()->with('error', '비밀번호 변경에 실패했습니다.');
+        }
+        
+        return Redirect::back()->with('success', '비밀번호를 변경하였습니다.');
     }
     
     public function showResetPassword()

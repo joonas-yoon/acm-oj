@@ -1,15 +1,17 @@
 @if( Session::has('success') )
-  <div class="ui success message">
+  <div class="ui green message">
     <div class="content">
-        {!! Session::get('success') !!}
+      <i class="checkmark icon"></i>&nbsp;
+      {!! Session::get('success') !!}
     </div>
   </div>
 @endif
 
 @if( Session::has('error') )
-  <div class="ui negative message">
+  <div class="ui red message">
     <div class="content">
-        {!! Session::get('error') !!}
+      <i class="warning icon"></i>&nbsp;
+      {!! Session::get('error') !!}
     </div>
   </div>
 @endif

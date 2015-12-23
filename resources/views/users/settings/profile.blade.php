@@ -73,16 +73,7 @@
     
     <div class="field">
       <div class="ui error message"></div>
-      @if (Session::has('error') )
-      <div class="ui red message">
-          <i class="warning icon"></i>&nbsp;{!! session('error') !!}
-      </div>
-      @endif
-      @if (Session::has('success') )
-      <div class="ui green message">
-          <i class="checkmark icon"></i>&nbsp;{!! session('success') !!}
-      </div>
-      @endif
+      @include('errors.session')
     </div>
     
     <div class="ui divider"></div>
@@ -113,7 +104,6 @@
     })
   ;
   $('.ui.checkbox').checkbox();
-  $('.ui.accordion.field').accordion();
   $('.message.green')
     .visibility({
       onRefresh: function(){
