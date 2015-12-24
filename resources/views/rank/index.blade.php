@@ -20,7 +20,7 @@
         <th>한마디</th>
         <th>해결 수</th>
         <th>제출 수</th>
-        <th>비율</th>
+        <th>정답률</th>
       </tr>
     </thead>
     <tbody>

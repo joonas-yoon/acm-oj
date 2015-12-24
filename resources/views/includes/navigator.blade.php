@@ -14,7 +14,7 @@
       <a href="#" class="ui item">대회</a>
       <a href="/solutions" class="ui item {{ active_class(if_uri_start(['solutions'])) }}">채점 현황</a>
       <a href="/rank" class="ui item {{ active_class(if_uri_start(['rank'])) }}">랭킹</a>
-      <a href="/articles" class="ui item {{ active_class(if_uri_start(['articles'])) }}">게시판</a>
+      <a href="/posts" class="ui item {{ active_class(if_uri_start(['posts'])) }}">게시판</a>
       <a href="#" class="ui item">팀</a>
       @include('includes.navAuthButtons')
     </div>

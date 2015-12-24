@@ -53,7 +53,7 @@
     </div>
   </form>
 
-  <table class="ui striped blue table compact unstackable">
+  <table class="ui striped blue table compact single line unstackable">
     <thead>
       <tr>
         <th style="width:7%;">채점 번호</th>
