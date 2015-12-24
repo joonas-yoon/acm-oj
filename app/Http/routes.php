@@ -156,6 +156,11 @@ Route::group(['prefix' => 'sessions', 'as' => 'sessions'], function()
     });
 });
 
+Route::group(['prefix' => 'posts', 'as' => 'posts'], function()
+{
+    //
+});
+Route::resource('posts', 'PostsController');
 
 Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'admin'], function()
 {

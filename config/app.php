@@ -151,6 +151,7 @@ return [
         App\Providers\SolutionServiceProvider::class,
         App\Providers\StatisticsServiceProvider::class,
         App\Providers\UserServiceProvider::class,
+        App\Providers\PostServiceProvider::class,
 
         /*
          * Semantic UI Framework Service Provider
@@ -228,6 +229,7 @@ return [
         'SolutionService' => App\Services\Facades\SolutionService::class,
         'StatisticsService' => App\Services\Facades\StatisticsService::class,
         'UserService' => App\Services\Facades\UserService::class,
+        'PostService' => App\Services\Facades\PostService::class,
         
         /**
          *  Third-Party Classes
