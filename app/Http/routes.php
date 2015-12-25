@@ -158,9 +158,23 @@ Route::group(['prefix' => 'sessions', 'as' => 'sessions'], function()
 
 Route::group(['prefix' => 'posts', 'as' => 'posts'], function()
 {
-    //
+    Route::get('/', function(){return Redirect::route('posts.list');});
+    
+    Route::group(['prefix' => 'list', 'as' => '.list'], function()
+    {
+        Route::get('/', 'PostsController@index');
+    });
+    
+    Route::get('create', 'PostsController@create')
+         ->name('.create');
+    Route::put('create', 'PostsController@store')
+         ->name('.store');
+    Route::put('create/reply', 'PostsController@storeComment')
+         ->name('.reply');
+         
+    Route::get('{id}', 'PostsController@show')
+         ->name('.show');
 });
-Route::resource('posts', 'PostsController');
 
 Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'admin'], function()
 {

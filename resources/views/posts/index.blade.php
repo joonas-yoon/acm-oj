@@ -8,23 +8,36 @@
   <div class="ui container">
     @include('posts.nav')
     
-    <table class="ui stripted table fixed">
+    <table class="ui stripted table compact fixed">
       <thead>
-        <th class="two wide">분류</th>
+        <th class="two wide center aligned">분류</th>
         <th class="ten wide">제목</th>
         <th class="two wide">글쓴이</th>
         <th class="two wide center aligned">날짜/시간</th>
       </thead>
       <tbody>
       @foreach($posts as $post)
-        <td>{{ str_random() }}</td>
-        <td>{{ $post->title }}</td>
-        <td>{{ $post->user->name }}</td>
+      <tr>
+        <td class="center aligned">
+          <a href="#" class="ui label disabled">준비중</a>
+        </td>
+        <td>
+          <a href="/posts/{{ $post->id }}">
+            {{ $post->title }}
+            @if( $post->commentsCount > 0 )
+            &nbsp;<a class="ui label tiny compact">{{ $post->commentsCount }}</a>
+            @endif
+          </a>
+        </td>
+        <td>
+          <a href="/user/{{ $post->user->name }}">{{ $post->user->name }}</a>
+        </td>
         <td class="center aligned">
           <a href="#" class="date" data-content="{{ $post->created_at }}" data-variation="inverted">
           {{ $post->created_at->diffForHumans() }}
           </a>
         </td>
+      </tr>
       @endforeach
       </tbody>
     </table>

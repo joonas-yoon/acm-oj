@@ -28,10 +28,43 @@ class PostServiceProtected extends BaseServiceProtected
         $this->problemRepository = $problemRepository;
     }
     
+    public function createPost(array $values)
+    {   
+        if( ! array_has($values, 'user_id') )
+            array_set($values, 'user_id', $this->user_id);
+            
+        return $this->postRepository->create($values);
+    }
+    
+    public function createComment(array $values)
+    {
+        if( ! array_has($values, 'user_id') )
+            array_set($values, 'user_id', $this->user_id);
+            
+        $id  = array_get($values, 'id');
+        $pid = array_get($values, 'parent_id');
+            
+        $values = array_set($values, 'is_comment', true);
+        $values = array_set($values, 'title', $pid.'의 댓글 #'.$id);
+        
+        return $this->postRepository->create($values);
+    }
+    
+    public function getPost($id)
+    {
+        return $this->postRepository->getPost($id);
+    }
+    
     public function getPosts()
     {
         return $this->postRepository
-                    ->getWithUser()
+                    ->getPosts()
                     ->paginate($this->paginateCount);
+    }
+    
+    public function getComments($parent_id)
+    {
+        return $this->postRepository
+                    ->getComments($parent_id);
     }
 }

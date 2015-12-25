@@ -9,8 +9,24 @@ use App\Http\Controllers\Controller;
 
 use PostService;
 
+use Sentinel;
+
 class PostsController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+        
+        $this->middleware('auth', [
+            'except' => [
+                'index', 'show'
+            ]
+        ]);
+        
+        $user = Sentinel::getUser();
+        PostService::setUser($user);
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -19,6 +35,9 @@ class PostsController extends Controller
     public function index()
     {
         $posts = PostService::getPosts();
+        foreach($posts as $post){
+            array_set($post, 'commentsCount', PostService::getComments($post->id)->count());
+        }
         
         return view('posts.index', compact('posts'));
     }
@@ -30,7 +49,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -39,9 +58,18 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Requests\CreatePostRequest $request)
     {
-        //
+        $post = PostService::createPost($request->all());
+        
+        return redirect()->route('posts.show', $post->id);
+    }
+    
+    public function storeComment(Requests\CreateCommentRequest $request)
+    {
+        $post = PostService::createComment($request->all());
+        
+        return redirect()->route('posts.show', $post->parent_id);
     }
 
     /**
@@ -52,7 +80,11 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = PostService::getPost($id);
+        
+        $post->comments = PostService::getComments($id)->get();
+        
+        return view('posts.show', compact('post'));
     }
 
     /**

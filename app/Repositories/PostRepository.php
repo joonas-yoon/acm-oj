@@ -11,14 +11,22 @@ class PostRepository extends BaseRepository
         $this->model = $post;
     }
     
-    public function getPosts()
-    {
-        return $this->model->list();
-    }
-    
-    public function getWithUser()
+    public function getPost($id)
     {
         return $this->model->list()
-                    ->withUser();
+                    ->onPost()
+                    ->find($id);
+    }
+    
+    public function getPosts()
+    {
+        return $this->model->list()
+                    ->onPost()->withUser();
+    }
+    
+    public function getComments($parent_id)
+    {
+        return $this->model->list()
+                    ->commentsOf($parent_id)->withUser();
     }
 }
