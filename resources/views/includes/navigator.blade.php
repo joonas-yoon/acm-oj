@@ -1,6 +1,6 @@
 
 <!-- Navigator -->
-<div class="nav" id="navigator">
+<div class="nav" id="navigator" role="navigation">
 
   <div class="ui blue secondary {{ isset($isIndex) ? 'fixed' : 'pointing' }} menu">
     <div class="ui container">

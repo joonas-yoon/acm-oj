@@ -136,6 +136,12 @@ blockquote {
     background-color: #dedede !important;
     color: #343434 !important;
 }
+.ui.top.attached.header.grey {
+    background: #f2f2f2;
+}
+.ui.comments .comment {
+    padding: .125em 0;
+}
 
 /**
  *
@@ -252,6 +258,11 @@ blockquote {
     padding-bottom: 1.5em;
     margin-top: 1em;
     margin-bottom: 1.5em;
+}
+.main.content img {
+    height: auto !important;
+    max-width: 100%;
+    float: none !important;
 }
  
 #problem .ui.horizontal.divider {

@@ -26,7 +26,7 @@ class CreateProblemRequest extends Request
     public function rules()
     {
         return [
-            'title'       => 'required',
+            'title'       => 'required|max:100',
             'description' => 'required|min:2|max:2000',
             'time_limit'  => 'required|numeric|min:1|max:10',
             'memory_limit'=> 'required|numeric|min:64|max:512',

@@ -62,12 +62,20 @@
         | link image | code'
       ,
       forced_root_block : false,
-      plugins : 'advlist autolink link image lists table visualblocks code codesample bbcode',
+      plugins : 'advlist autolink link image lists table visualblocks code codesample',
       relative_urls: false,
-      
+      force_br_newlines : false,
+      force_p_newlines : true,
+      forced_root_block : '',
+      convert_newlines_to_brs: true,
+      remove_linebreaks : true,
+      paste_as_text: true,
+    
       content_css: [
         '/assets/style.css',
-        '/assets/semantic-ui/css/semantic.min.css'
+        '/assets/semantic-ui/css/semantic.min.css',
+        '/assets/tinymce/style.css',
+        '//netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
       ],
       skin_url: '/assets/tinymce/skins/light',
       table_default_attributes: {
