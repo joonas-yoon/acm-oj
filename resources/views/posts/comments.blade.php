@@ -3,7 +3,7 @@
     <div class="ui threaded comments">
         
       @forelse($parent->comments as $comment)
-      <div class="comment">
+      <div class="comment {{ isset($post->user) && $post->user->name == $comment->user->name ? 'owner':'' }}">
         <a class="avatar">
           <img src="{{ $comment->user->photo_link }}">
         </a>

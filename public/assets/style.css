@@ -54,7 +54,10 @@ blockquote {
     color: #555;
 }
 
-#footer { padding-top: 3em; }
+#footer {
+    padding-top: 3em;
+    margin-top: 2em;
+}
 #MathJax_Message { display: none !important; }
 
 /**
@@ -139,8 +142,15 @@ blockquote {
 .ui.top.attached.header.grey {
     background: #f2f2f2;
 }
-.ui.comments .comment {
-    padding: .125em 0;
+.ui.comments .comment,
+.ui.comments .comment:first-child {
+    padding: .4em;
+}
+.ui.comments .comment.owner {
+    background: #fbfbfb;
+    border-left: 3px solid #ccc;
+    margin-left: -3px;
+    box-sizing: border-box;
 }
 
 /**
