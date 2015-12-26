@@ -33,6 +33,9 @@ class PostServiceProtected extends BaseServiceProtected
         if( ! array_has($values, 'user_id') )
             array_set($values, 'user_id', $this->user_id);
             
+        if( ! array_has($values, 'parent_on') )
+            array_set($values, 'parent_on', 'post');
+            
         return $this->postRepository->create($values);
     }
     
@@ -40,6 +43,9 @@ class PostServiceProtected extends BaseServiceProtected
     {
         if( ! array_has($values, 'user_id') )
             array_set($values, 'user_id', $this->user_id);
+            
+        if( ! array_has($values, 'parent_on') )
+            array_set($values, 'parent_on', 'post');
             
         $id  = array_get($values, 'id');
         $pid = array_get($values, 'parent_id');
@@ -55,16 +61,16 @@ class PostServiceProtected extends BaseServiceProtected
         return $this->postRepository->getPost($id);
     }
     
-    public function getPosts()
+    public function getPosts($parent_on)
     {
         return $this->postRepository
-                    ->getPosts()
+                    ->getPosts($parent_on)
                     ->paginate($this->paginateCount);
     }
     
-    public function getComments($parent_id)
+    public function getComments($parent_id, $parent_on)
     {
         return $this->postRepository
-                    ->getComments($parent_id);
+                    ->getComments($parent_id, $parent_on);
     }
 }

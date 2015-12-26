@@ -69,24 +69,17 @@ class Post extends Model
         return $query->select(Post::$listColumns);
     }
     
-    public function scopeCommentsOf($query, $parent_id)
+    public function scopeCommentsOf($query, $parent_id, $parent_on = 'post')
     {
         return $query->where('is_comment', true)
                      ->where('parent_id', $parent_id)
                      ->orderBy('created_at');
     }
     
-    public function scopeOnPost($query)
+    public function scopeOnPost($query, $parent_on = 'post')
     {
         return $query->where('is_comment', false)
-                     ->where('parent_on', 'post')
-                     ->orderBy('created_at', 'desc');
-    }
-    
-    public function scopeOnProblem($query)
-    {
-        return $query->where('is_comment', false)
-                     ->where('parent_on', 'problem')
+                     ->where('parent_on', $parent_on)
                      ->orderBy('created_at', 'desc');
     }
     

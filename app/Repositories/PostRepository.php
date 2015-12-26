@@ -18,15 +18,16 @@ class PostRepository extends BaseRepository
                     ->find($id);
     }
     
-    public function getPosts()
+    public function getPosts($parent_on)
     {
         return $this->model->list()
-                    ->onPost()->withUser();
+                    ->onPost($parent_on)
+                    ->withUser();
     }
     
-    public function getComments($parent_id)
+    public function getComments($parent_id, $parent_on)
     {
         return $this->model->list()
-                    ->commentsOf($parent_id)->withUser();
+                    ->commentsOf($parent_id, $parent_on)->withUser();
     }
 }

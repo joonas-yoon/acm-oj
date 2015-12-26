@@ -15,6 +15,7 @@ use App\Models\Language,
 use StatisticsService;
 use ProblemService;
 use TagService;
+use PostService;
 
 use Input;
 use Storage;
@@ -29,6 +30,8 @@ class ProblemsController extends Controller
     
     public function __construct()
     {
+        parent::__construct();
+        
         $this->middleware('auth', [
             'except' => [
                 'index', 'newProblems', 'show'
@@ -265,6 +268,7 @@ class ProblemsController extends Controller
             
             return abort(404);
         }
+        $problem->comments = PostService::getComments($problem->id, 'problem')->get();
         
         $myTags = TagService::getTagsByUser($problem->id);
         

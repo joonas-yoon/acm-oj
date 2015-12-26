@@ -69,6 +69,9 @@ class PostsController extends Controller
     {
         $post = PostService::createComment($request->all());
         
+        if( $post->parent_on == 'problem' )
+            return redirect()->route('problems.show', $post->parent_id);
+        
         return redirect()->route('posts.show', $post->parent_id);
     }
 

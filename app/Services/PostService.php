@@ -57,9 +57,9 @@ class PostService extends BaseService
      *
      * @return Illuminate\Support\Collection
      */
-    public function getPosts()
+    public function getPosts($parent_on = 'post')
     {
-        return $this->service->getPosts();
+        return $this->service->getPosts($parent_on);
     }
     
     /**
@@ -67,8 +67,8 @@ class PostService extends BaseService
      *
      * @return Illuminate\Support\Collection
      */
-    public function getComments($parent_id)
+    public function getComments($parent_id, $parent_on = 'post')
     {
-        return $this->service->getComments($parent_id);
+        return $this->service->getComments($parent_id, $parent_on);
     }
 }
