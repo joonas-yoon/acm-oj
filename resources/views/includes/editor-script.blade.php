@@ -10,13 +10,13 @@
       menubar: false,
       toolbar: 
         'styleselect | undo redo | bold italic underline strikethrough \
-        | subscript superscript | alignleft aligncenter alignright \
+        | subscript superscript | alignjustify alignleft aligncenter alignright \
         | bullist numlist | codesample visualblocks table \
-        | link image fontawesome | preview code fullscreen'
+        | link image | preview code fullscreen'
       ,
       plugins : [
         'advlist autolink link image lists table preview visualblocks paste',
-        'code codesample fontawesome fullscreen'
+        'code codesample fullscreen'
       ],
       relative_urls: false,
       force_br_newlines : false,

@@ -147,8 +147,8 @@ blockquote {
     padding: .4em;
 }
 .ui.comments .comment.owner {
-    background: #fbfbfb;
-    border-left: 3px solid #ccc;
+    /*background: #fbfbfb;*/
+    border-left: 3px solid #5EA1D4;
     margin-left: -3px;
     box-sizing: border-box;
 }
@@ -377,6 +377,14 @@ blockquote {
 body.fullscreen {
     overflow: hidden;
 }
+
+/*
+ * MCE editor
+ */
+ .mce-path {
+    display: none !important;
+    padding: 0;
+ }
 
 /**
  *

@@ -195,7 +195,7 @@ class ProblemService extends BaseService
     {
         if( is_admin() )
             return $this->service->hasData($problem_id);
-        else if( $this->user && $this->user->id == $this->getAuthorOfProblem($problem_id) )
+        else if( $this->user_id == $this->getAuthorOfProblem($problem_id) )
             return $this->service->hasData($problem_id);
         return false;
     }
