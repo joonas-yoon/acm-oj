@@ -1,6 +1,6 @@
 @if( isset($parent) && $parent->comments )
 
-    <div class="ui threaded comments">
+    <div class="ui threaded comments" id="comments">
         
       @forelse($parent->comments as $comment)
       <div class="comment {{ isset($post->user) && $post->user->name == $comment->user->name ? 'owner':'' }}">
@@ -28,34 +28,35 @@
       @if( Sentinel::check() )
       {!! Form::open(['url' => action('PostsController@storeComment'), 'method' => 'PUT', 'class'=>'ui form']) !!}
       {!! Form::hidden('parent_id', $parent->id) !!}
-      @if( isset($parent_on) )
-      {!! Form::hidden('parent_on', $parent_on) !!}
-      @endif
-      
-      @include('errors.list')
+        @if( isset($parent_on) )
+        {!! Form::hidden('parent_on', $parent_on) !!}
+        @endif
         
-      <div class="comment">
-        <a class="avatar">
-          <img src="{{ Sentinel::getUser()->photo_link }}">
-        </a>
-        <div class="content">
-          <div class="text">
-            <textarea id="editor" name="content" class="html-editor-simple">
-              {!! old('content') !!}
-            </textarea>
+        @include('errors.list')
+          
+        <div class="comment">
+          <a class="avatar">
+            <img src="{{ Sentinel::getUser()->photo_link }}">
+          </a>
+          <div class="content">
+            <div class="text">
+              <textarea id="editor" name="content" class="html-editor-simple">
+                {!! old('content') !!}
+              </textarea>
+            </div>
+            <button type="submit" class="ui blue labeled submit icon button">
+              <i class="icon edit"></i> 댓글 쓰기
+            </button>
           </div>
-          <button type="submit" class="ui blue labeled submit icon button">
-            <i class="icon edit"></i> 댓글 쓰기
-          </button>
         </div>
-      </div>
-      {!! Form::close() !!}
+        {!! Form::close() !!}
       @else
       <div class="ui divider"></div>
       <a href="/login" class="ui blue labeled submit icon button">
         <i class="icon edit"></i> 댓글 쓰기
       </a>
       @endif
+      
     </div>
     
 @else

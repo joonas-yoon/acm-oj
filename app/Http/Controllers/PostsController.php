@@ -87,6 +87,11 @@ class PostsController extends Controller
         
         $post->comments = PostService::getComments($id)->get();
         
+        if( $this->isAuthorOfPost($post) ) {
+            $post->edit_link = route('posts.edit', $post->id);
+            $post->delete_link = route('posts.delete', $post->id);
+        }
+        
         return view('posts.show', compact('post'));
     }
 
@@ -98,7 +103,12 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = PostService::getPost($id);
+        
+        if( ! $this->isAuthorOfPost($post) )
+            return abort(404);
+        
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -110,9 +120,29 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = PostService::getPost($id);
+        
+        if( ! $this->isAuthorOfPost($post) )
+            return abort(404);
+        
+        if( ! PostService::updatePost($post->id, $request->all()) )
+            return abort(404);
+        
+        return redirect()->route('posts.show', $post->id);
     }
-
+    
+    public function delete($id)
+    {
+        $post = PostService::getPost($id);
+        
+        if( ! $this->isAuthorOfPost($post) )
+            return abort(404);
+            
+        $post->commentsCount = PostService::getComments($id)->count();
+        
+        return view('posts.delete', compact('post'));
+    }
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -121,6 +151,26 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = PostService::getPost($id);
+        
+        if( ! $this->isAuthorOfPost($post) )
+            return abort(404);
+            
+        if( ! PostService::deletePost($post->id) )
+            return abort(404);
+            
+        return redirect()->route('posts');
+    }
+    
+    public function isAuthorOfPost($post, $user_id = null)
+    {
+        $user = Sentinel::check();
+        if( ! $user ) return false;
+        
+        if( $user_id == null ) $user_id = $user->id;
+        
+        if( ! is_admin() && $user_id != $post->user_id ) return false;
+        
+        return true;
     }
 }

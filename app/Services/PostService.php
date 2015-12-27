@@ -38,6 +38,30 @@ class PostService extends BaseService
     }
     
     /**
+     * 게시글 수정
+     *
+     * @param array $values
+     * @return App\Models\Post
+     */
+    public function updatePost($post_id, array $values)
+    {
+        $values = array_only($values, Post::$editable);
+        return $this->service->updatePost($post_id, $values);
+    }
+    
+    /**
+     * 게시글 삭제
+     *
+     * @param array $values
+     * @return boolean
+     */
+    public function deletePost($post_id)
+    {
+        return $this->service->deletePost($post_id);
+    }
+        
+    
+    /**
      * 하나의 게시글 가져오기
      *
      * @return Illuminate\Support\Collection

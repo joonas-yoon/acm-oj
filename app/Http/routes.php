@@ -174,6 +174,15 @@ Route::group(['prefix' => 'posts', 'as' => 'posts'], function()
          
     Route::get('{id}', 'PostsController@show')
          ->name('.show');
+    Route::patch('{id}', 'PostsController@update')
+         ->name('.update');
+    Route::delete('{id}', 'PostsController@destroy')
+         ->name('.destroy');
+         
+    Route::get('{id}/edit', 'PostsController@edit')
+         ->name('.edit');
+    Route::get('{id}/delete', 'PostsController@delete')
+         ->name('.delete');
 });
 
 Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'admin'], function()

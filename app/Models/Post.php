@@ -62,6 +62,10 @@ class Post extends Model
         $this->attributes['parent_id'] = $value;
     }
     
+    public function getTitleAttribute($value) {
+        return strlen($value) < 1 ? '제목없음' : $value;
+    }
+    
     // Scopes
     
     public function scopeList($query)

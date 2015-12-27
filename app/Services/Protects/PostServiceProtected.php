@@ -56,6 +56,16 @@ class PostServiceProtected extends BaseServiceProtected
         return $this->postRepository->create($values);
     }
     
+    public function updatePost($post_id, array $values)
+    {
+        return $this->postRepository->update($post_id, $values);
+    }
+    
+    public function deletePost($post_id)
+    {
+        return $this->postRepository->delete($post_id);
+    }
+    
     public function getPost($id)
     {
         return $this->postRepository->getPost($id);
