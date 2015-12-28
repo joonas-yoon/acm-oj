@@ -75,7 +75,6 @@ class PostService extends BaseService
         return $post;
     }
     
-    
     /**
      * 게시글 목록 가져오기
      *
@@ -94,5 +93,15 @@ class PostService extends BaseService
     public function getComments($parent_id, $parent_on = 'post')
     {
         return $this->service->getComments($parent_id, $parent_on);
+    }
+    
+    /**
+     * 모든 (또는 특정) 유저의 가장 최근에 제출된 항목을 가져오기
+     *
+     * @return Illuminate\Support\Collection
+     */
+    public function getLastestSubmit($user_id = null)
+    {
+        return $this->service->getLastestSubmit($user_id);
     }
 }

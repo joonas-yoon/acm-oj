@@ -83,4 +83,10 @@ class PostServiceProtected extends BaseServiceProtected
         return $this->postRepository
                     ->getComments($parent_id, $parent_on);
     }
+    
+    public function getLastestSubmit($user_id)
+    {
+        return $this->postRepository
+                    ->getLastestSubmit($user_id);
+    }
 }

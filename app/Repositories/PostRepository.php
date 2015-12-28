@@ -30,4 +30,17 @@ class PostRepository extends BaseRepository
         return $this->model->list()
                     ->commentsOf($parent_id, $parent_on)->withUser();
     }
+    
+    public function getLastestSubmit($user_id = null)
+    {
+        if( ! $user_id ){
+            return $this->model
+                        ->orderBy('id', 'desc')
+                        ->first();
+        }
+        
+        return $this->model->orderBy('id', 'desc')
+                    ->where('user_id', $user_id)
+                    ->first();
+    }
 }

@@ -101,3 +101,20 @@ if (!function_exists('paging_query')) {
         return implode('&', array_map(function ($v, $k) { return sprintf("%s=%s", $k, $v); }, $params, array_keys($params)));
     }
 }
+
+if (!function_exists('diff_timestamp')) {
+    /**
+     * Laravel (Carbon) display date difference only in timestamp
+     * 
+     * @param string $datetime_a
+     * @param string $datetime_b
+     *
+     * @return DateInterval
+     */
+    function diff_timestamp($datetime_a, $datetime_b = null)
+    {
+        if( $datetime_b == null ) $datetime_b = date('Y-m-d H:i:s');
+        $diff = strtotime($datetime_a) - strtotime($datetime_b);
+        return abs($diff);
+    }
+}
