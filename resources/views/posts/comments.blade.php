@@ -40,9 +40,7 @@
           </a>
           <div class="content">
             <div class="text">
-              <textarea id="editor" name="content" class="html-editor-simple">
-                {!! old('content') !!}
-              </textarea>
+              {!! Form::textarea('content', old('content'), ['id' => 'editor', 'class' => 'html-editor-simple']) !!}
             </div>
             <button type="submit" class="ui blue labeled submit icon button">
               <i class="icon edit"></i> 댓글 쓰기
@@ -64,3 +62,5 @@
   댓글을 표시할 수 없습니다.
 </p>
 @endif
+
+<script>$('.date.popup').popup();</script>
