@@ -61,7 +61,7 @@ class PostsController extends Controller
     public function store(Requests\CreatePostRequest $request)
     {
         $user_id = Sentinel::getUser()->id;
-        $lastest = PostService::getLastestSubmit($user_id);
+        $lastest = PostService::getLatestSubmit($user_id);
         if( diff_timestamp($lastest->created_at) < 1*60 ) {
             return redirect()->back()
                              ->with('error', '도배 방지를 위해, 1분 이내에 글을 연속적으로 작성하실 수 없습니다.');
@@ -75,7 +75,7 @@ class PostsController extends Controller
     public function storeComment(Requests\CreateCommentRequest $request)
     {
         $user_id = Sentinel::getUser()->id;
-        $lastest = PostService::getLastestSubmit($user_id);
+        $lastest = PostService::getLatestSubmit($user_id);
         if( diff_timestamp($lastest->created_at) < 1*60 ) {
             return redirect()->back()
                              ->with('error', '도배 방지를 위해, 1분 이내에 글을 연속적으로 작성하실 수 없습니다.');

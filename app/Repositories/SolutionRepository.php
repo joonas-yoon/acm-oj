@@ -58,6 +58,19 @@ class SolutionRepository extends BaseRepository
                     ->whereSolution($solution_id);
     }
     
+    public function getLatestSubmit($user_id = null)
+    {
+        if( ! $user_id ){
+            return $this->model
+                        ->orderBy('id', 'desc')
+                        ->first();
+        }
+        
+        return $this->model->orderBy('id', 'desc')
+                    ->where('user_id', $user_id)
+                    ->first();
+    }
+    
     public function updateStatusByProblem($problem_id, $result_id)
     {
         return $this->model->whereProblem($problem_id)

@@ -11,6 +11,8 @@
 
   <h2 class="ui dividing header">{{ $problem->title }}</h2>
 
+  @include('errors.list')
+  
   {!! Form::open(['url' => action('SolutionsController@store'), 'class' => 'ui form submit']) !!}
 
   <div class="ui stackable grid">
@@ -29,37 +31,17 @@
       </div>
     </div>
   </div>
-
-  @if (count($errors) > 0)
-  
-    <div class="ui stackable grid">
-      <div class="two wide column field column-label">오류</div>
-      <div class="fourteen wide column field">
-        <div class="ui visible warning message">
-            <div class="header">
-                Sorry, please correct them below.
-            </div>
-            <ul class="ui list">
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-            </ul>
-        </div>
-      </div>
-    </div>
-  
-  @endif
   
   <div class="ui stackable grid">
     <div class="two wide column field column-label">소스 코드</div>
     <div class="fourteen wide column field inline">
-      <div id="editor" class="code" data-theme="{{ $defaults['code_theme'] }}">{{ old('code') }}</div>
+      <div id="editor" class="code" data-theme="{{ $defaults['code_theme'] }}"></div>
       <div class="ui divider hidden"></div>
       {!! Form::submit('제출', ['class' => 'ui blue button']) !!}
     </div>
   </div>
 
-  {!! Form::textarea('code', '', ['style'=>'display:none;']) !!}
+  {!! Form::textarea('code', old('code'), ['style'=>'display:none;']) !!}
   {!! Form::hidden('problem_id', $problem->id) !!}
   {!! Form::close() !!}
 
@@ -92,6 +74,8 @@
     $('form.submit').on('submit', function(){
       $('textarea[name=code]').val(editor.getValue());
     });
+    var oldCode = $('textarea[name=code]').val();
+    editor.getSession().setValue(oldCode);
   })
   </script>
 @stop

@@ -164,4 +164,10 @@ class SolutionServiceProtected extends BaseServiceProtected
                     ->getSolution($this->user_id, $solution_id)
                     ->firstOrFail();
     }
+    
+    public function getLatestSubmit($user_id)
+    {
+        return $this->solutionRepository
+                    ->getLatestSubmit($user_id);
+    }
 }

@@ -76,6 +76,16 @@ class SolutionService extends BaseService
     }
     
     /**
+     * 모든 (또는 특정) 유저의 가장 최근에 제출된 항목을 가져오기
+     *
+     * @return Illuminate\Support\Collection
+     */
+    public function getLatestSubmit($user_id = null)
+    {
+        return $this->service->getLatestSubmit($user_id);
+    }
+    
+    /**
      * 재채점하기 (관리자용)
      *
      * @param int $problem_id

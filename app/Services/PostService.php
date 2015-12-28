@@ -100,8 +100,8 @@ class PostService extends BaseService
      *
      * @return Illuminate\Support\Collection
      */
-    public function getLastestSubmit($user_id = null)
+    public function getLatestSubmit($user_id = null)
     {
-        return $this->service->getLastestSubmit($user_id);
+        return $this->service->getLatestSubmit($user_id);
     }
 }

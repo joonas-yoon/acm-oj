@@ -99,6 +99,13 @@ class SolutionsController extends Controller
         $request['is_hidden'] = false;
         $request['is_published'] = isset($request->is_published);
         
+        $user_id = Sentinel::getUser()->id;
+        $lastest = SolutionService::getLatestSubmit($user_id);
+        if( diff_timestamp($lastest->created_at) < 1*60 ) {
+            return redirect()->back()
+                             ->with('error', '1분 후에 다시 시도해주세요.');
+        }
+        
         SolutionService::createSolution($request->all());
         return redirect('/solutions/?from=problem&problem_id=' . $request->problem_id );
     }

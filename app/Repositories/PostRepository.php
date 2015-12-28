@@ -31,7 +31,7 @@ class PostRepository extends BaseRepository
                     ->commentsOf($parent_id, $parent_on)->withUser();
     }
     
-    public function getLastestSubmit($user_id = null)
+    public function getLatestSubmit($user_id = null)
     {
         if( ! $user_id ){
             return $this->model
