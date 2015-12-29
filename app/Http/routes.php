@@ -190,6 +190,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin', 'middleware' => 'admin'], fu
     Route::group(['prefix' => 'problems'], function()
     {
         Route::get('/', 'AdminController@problems');
+        Route::get('thanks', 'AdminController@problemsThanks');
         Route::get('rejudge', 'AdminController@rejudge');
         Route::post('rejudge', 'AdminController@processRejudge');
     });

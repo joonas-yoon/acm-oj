@@ -66,6 +66,17 @@ class AdminController extends Controller
     }
     
     /**
+     * 문제와 연결된 추가 정보 관리 (작성자, 오타 수정 등)
+     *
+     * @return \Illuminate\Http\View
+     */
+    public function problemsThanks()
+    {
+        $allThanks = Thank::all();
+        return view('admins.thanks', compact('allThanks'));
+    }
+    
+    /**
      * 재채점 관리 페이지
      *
      * @return \Illuminate\Http\View

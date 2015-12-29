@@ -22,6 +22,9 @@
         <a class="item {{ active_class(if_uri(['admin/problems'])) }}" href="/admin/problems">
           대기중인 문제 목록
         </a>
+        <a class="item {{ active_class(if_uri(['admin/problems/thanks'])) }}" href="/admin/problems/thanks">
+          추가 정보 관리
+        </a>
         <a class="item {{ active_class(if_uri(['admin/problems/rejudge'])) }}" href="/admin/problems/rejudge">
           재채점
         </a>
