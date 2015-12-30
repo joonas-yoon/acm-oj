@@ -44,7 +44,9 @@ html,body,header,footer,section,
 a,fieldset,form,header,image,img,input,label,nav,p,table,tbody,td,textarea,th,tr{
     font-family: Lato,'Noto Sans KR','Nanum Barun Gothic','Helvetica Neue',AppleGothic,Arial,Helvetica,sans-serif;
 }
-pre, code, .ace_content { font-family: Consolas,Monaco,'Andale Mono','Ubuntu Mono',AppleGothic,monospace !important; }
+
+pre, code, blockquote > font,
+.ace_content { font-family: Consolas,Helvetica,'Noto Sans KR','Nanum Barun Gothic',Monaco,'Andale Mono','Ubuntu Mono',AppleGothic,monospace !important; }
 
 blockquote {
     margin: 10px auto;
