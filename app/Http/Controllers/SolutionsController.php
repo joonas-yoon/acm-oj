@@ -101,9 +101,9 @@ class SolutionsController extends Controller
         
         $user_id = Sentinel::getUser()->id;
         $lastest = SolutionService::getLatestSubmit($user_id);
-        if( diff_timestamp($lastest->created_at) < 1*60 ) {
+        if( diff_timestamp($lastest->created_at) < 10 ) {
             return redirect()->back()
-                             ->with('error', '1분 후에 다시 시도해주세요.');
+                             ->with('error', '10초 후에 다시 시도해주세요.');
         }
         
         SolutionService::createSolution($request->all());
