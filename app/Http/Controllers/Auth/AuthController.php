@@ -69,6 +69,7 @@ class AuthController extends Controller
             // messages
             'name.required' => '아이디 또는 이메일을 입력하세요',
             'password.required' => '비밀번호를 입력하세요.',
+            'password.min' => '비밀번호가 너무 짧습니다.',
             'regex' => '아이디 또는 이메일을 다시 확인하세요.',
         ]);
     }
@@ -183,7 +184,7 @@ class AuthController extends Controller
         $rules = [
             'name'     => 'required|min:3|max:50|unique:users',
             'email'    => 'required|unique:users|regex:'.$this->getEmailRegexp(),
-            'password' => 'required|min:4|confirmed'
+            'password' => 'required|min:6|confirmed'
         ];
         
         $messages = [
@@ -197,6 +198,7 @@ class AuthController extends Controller
             
             'password.required' => '비밀번호를 입력하세요.',
             'password.confirmed' => '비밀번호가 일치하지 않습니다.',
+            'password.min' => '비밀번호는 :min자 이상이여야 합니다.',
             
             'fail' => 'asdasd',
         ];

@@ -154,6 +154,10 @@ blockquote {
     margin-left: -3px;
     box-sizing: border-box;
 }
+.ui.avatar.image, .ui.avatar.image img, .ui.avatar.image svg,
+.ui.avatar.images .image, .ui.avatar.images img, .ui.avatar.images svg {
+    height: 2em !important;
+}
 
 /**
  *
