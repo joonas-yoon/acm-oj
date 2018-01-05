@@ -18,20 +18,20 @@ Laravel is accessible, yet powerful, providing powerful tools needed for large, 
 
 ## Screenshots
 
-![Screen shot - 메인 페이지](./docs/screenshots/메인 페이지 at 2016_03_20 07_21 PM.png)
+![Screen shot - 메인 페이지](./docs/screenshots/%EB%A9%94%EC%9D%B8%20%ED%8E%98%ec%9d%b4%ec%a7%80%20at%202016_03_20%2007_21%20PM.png)
 
-![Screen shot - 문제 목록](./docs/screenshots/문제 목록 at 2016_03_20 07_22 PM.png)
+![Screen shot - 문제 목록](./docs/screenshots/%EB%AC%B8%EC%A0%9C%20%EB%AA%A9%EB%A1%9D%20at%202016_03_20%2007_22%20PM.png)
 
-![Screen shot - 문제제작](./docs/screenshots/문제제작 at 2016_03_20 07_33 PM.png)
+![Screen shot - 문제제작](./docs/screenshots/%EB%AC%B8%EC%A0%9C%EC%A0%9C%EC%9E%91%20at%202016_03_20%2007_33%20PM.png)
 
-![Screen shot - 문제작성](./docs/screenshots/문제작성3 at 2016_03_20 07_34 PM.png)
+![Screen shot - 문제작성](./docs/screenshots/%EB%AC%B8%EC%A0%9C%EC%9E%91%EC%84%B13%20at%202016_03_20%2007_34%20PM.png)
 
-![Screen shot - 채점현황](./docs/screenshots/채점현황 at 2016_03_20 07_28 PM.png)
+![Screen shot - 채점현황](./docs/screenshots/%EC%B1%84%EC%A0%90%ED%98%84%ED%99%A9%20at%202016_03_20%2007_28%20PM.png)
 
-![Screen shot - 유저 프로필](./docs/screenshots/details/Pasted image at 2015_12_12 08_20 PM.png)
+![Screen shot - 유저 프로필](./docs/screenshots/details/Pasted%20image%20at%202015_12_12%2008_20%20PM.png)
 
-![Screen shot - 유저 설정](./docs/screenshots/유저 설정 at 2016_03_20 07_35 PM.png)
+![Screen shot - 유저 설정](./docs/screenshots/%EC%9C%A0%EC%A0%80%20%EC%84%A4%EC%A0%95%20at%202016_03_20%2007_35%20PM.png)
 
 ## Contributor
 
-@joonas-yoon @yukariko
+[@joonas-yoon](https://github.com/joonas-yoon) [@yukariko](https://github.com/Yukariko)
