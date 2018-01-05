@@ -1,8 +1,6 @@
-210.117.181.105
+domain: orionoj.net
 
-orionoj.net
-
-<Attention>
+**Attention**
 > source root is been on "/var/www/" for release.
 > i am using dircetory "/root/joonas/ for debug/test,
 > and it used in apache's configure file too.
